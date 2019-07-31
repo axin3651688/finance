@@ -51,34 +51,38 @@
 }
 .el-menu-vertical_title{
     font-size: 20px;
-    margin-left: 30px;
+    padding-left: 85px !important;
+    color: rgb(48, 49, 51);
+    // background: red;
+    // color: #1790ff; 
 }
 /*
  * 目录部分（暂无数据提示！）的样式
  */
-.aside_title_message {
-    text-align:center;
-    margin-top:20px;
-}
+// .aside_title_message {
+//     text-align:center;
+//     margin-top:20px;
+// }
 /*
  * 目录字体设置
  */
 .aside_title{
     font-size: 28px;
-    font-weight: 100;
-    letter-spacing: 10px;
+    //font-weight: 100;
+    //letter-spacing: 10px;
     text-align: center;
     margin-top: 50px;
-    // color:#606266;
-    color: #303133;
+    margin-bottom: 40px;
+    //// color:#606266;
+    //color: #303133;
 }
 /*
  * 正文部分（标题）的样式
  */
 .container_main_title {
     text-align:center;
-    font-size:25px;
-    font-weight: 200;
+    font-size:24px;
+    font-weight: 700;
     margin-bottom: 20px;
 }
 /*

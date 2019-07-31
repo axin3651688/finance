@@ -16,7 +16,7 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="指标名称" width="360" align="center"></el-table-column>
+            <el-table-column prop="sname" label="指标名称" width="360" align="left"></el-table-column>
             <el-table-column prop="sdescription" label="说明" align="left" :show-overflow-tooltip="showOverflowTooltip"></el-table-column>
             <el-table-column label="操作" width="160" align="center">
                 <template slot-scope="scope">
@@ -103,7 +103,7 @@ export default {
         dimIndex_query_by_stypeA(){
             let me = this ;
             let params = { stype: "JT" } ;
-            dimIndex_query_by_stype(params).then(res => {
+            dimIndex_query_by_stype(params).then(res => {debugger
                 if(res.data.code === 200){
                     me.tableData = res.data.data ;
                     if(me.tableData.length >= 9){
@@ -111,8 +111,11 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
+                } else if(res.data.code === 1001){
+                    me.tableData = [] ;
+                    me.$message(res.data.msg) ;
                 } else {
-                    me.$message.error(res.data.msg) ;
+                    // me.$message.error(res.data.msg) ;
                 }
             });
         },

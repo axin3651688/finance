@@ -10,7 +10,6 @@ export default {
          * @author szc 2019年5月28日20:02:13
          */
         instructionContent(param) {
-            debugger;
             let me = this,
                 instructionsRpt = me.$store.instructionsRpt || [],
                 contentDown = me.contentDown,

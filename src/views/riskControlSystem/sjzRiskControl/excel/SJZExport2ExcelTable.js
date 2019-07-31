@@ -330,7 +330,7 @@ function s2ab(s) {
     return buf;
 }
 
-export function export_table_to_excel(id, name, columns) { //debugger
+export function export_table_to_excel(id, name, columns) { 
     // var theTable = document.getElementById(id);
     // 导出table
     var theTable = document.getElementById(id).getElementsByTagName("table");
@@ -339,15 +339,25 @@ export function export_table_to_excel(id, name, columns) { //debugger
 
     /* original data */
     var data = oo[0];
+    // 截取
+    // data[0] = data[0].splice(0, 1) ;
     // 去除null值与操作列
-    data[0] = data[0].filter(res => { //debugger
-        if(!res || res=="操作"){}else{ return res ;}
+    data[0] = data[0].filter((res, index) => { //debugger
+        if(index === 1 || res=="操作"){}else{ return res ;}
     }) ;
+    // for(let i=1; i<data.length; i++){
+    //     data[i] = data[i].filter((res, index) => {
+    //         if(res === null)res = "" ;
+    //         if(index===1 || res=="查看修改"){}else{ return res ; }
+    //     });
+    // }
     for(let i=1; i<data.length; i++){
-        data[i] = data[i].filter(res => {
-            if(!res || res=="查看修改"){}else{ return res ; }
-        });
+        let len  = data[i].length ;
+        data[i].splice(len-1, 1)
+        data[i].splice(1, 1) ;
     }
+    // return false ;
+
     var ws_name = "SheetJS";
     var wb = new Workbook(),
         ws = sheet_from_array_of_arrays(data, oo[2], columns);

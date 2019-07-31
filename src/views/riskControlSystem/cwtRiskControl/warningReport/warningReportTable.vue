@@ -7,6 +7,8 @@
                     border
                     :height="tableheight"
                     :header-cell-style="headerRowStyle"
+                    :row-style="{height:'40px'}"
+                    :cell-style="{padding:'0px'}"
                     style="width: 100%"
             >
                 <el-table-column
@@ -28,6 +30,7 @@
                                 :key="index"
                                 :show-overflow-tooltip="true"
                                 :prop="item.id"
+
                                 header-align="center"
                                 :label="item.text"
                                 :width="item.width"
@@ -36,14 +39,25 @@
                                 <template v-if="item.id === 'company'">
 
                                     <template v-if="scope.row[scope.column.property]">
-                                        <template v-for="(com, index) of scope.row[scope.column.property].split(',')">
-                                            &nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com.split('-')[0]}}</a>
-                                        </template>
+                                        <!--<template v-for="(com, index) of scope.row[scope.column.property].split(',')">-->
+                                        <el-button  style="color:  #409eff;" size="mini" @click="desCompanyClick(scope.row[scope.column.property])">公司明细
+                                        </el-button>
+
+                                        <!--&nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com.split('-')[0]}}</a>-->
+                                        <!--</template>-->
                                     </template>
 
                                 </template>
 
+
+                                <!--<template v-else-if="item.id === 'company'">-->
+                                <!--<el-button @click="desCompanyClick(scope.row[scope.column.property])"></el-button>-->
+                                <!--</template>-->
+
                                 <template v-else-if="item.id === 'sjz'">
+                                    {{ setNumberToStander(scope.row[scope.column.property], false) }}
+                                </template>
+                                <template v-else-if="item.id === 'zb'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
                                 <template v-else-if="item.id === 'zgz'">
@@ -100,6 +114,14 @@
                     return "";
                 }
             },
+            /**
+             * 行高设置
+             * @return {string}
+             */
+            RowStyle(row){
+                debugger;
+                return 'height: 20px';
+            },
 
             /**
              * 表格内公司点击事件
@@ -120,6 +142,10 @@
                         })
                     ],
                 );
+            },
+
+            desCompanyClick(company) {
+                this.$emit('companyClicked', company)
             }
 
         }

@@ -277,7 +277,7 @@ export default {
             }
         })
     },
-    elementUI_tree(data, me, vax) {
+    elementUI_tree(data, me, vax) { 
         //封装树对象数据
         const setting = {
             data: {
@@ -297,8 +297,8 @@ export default {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item) {
                 item.id = item.scode;
-                // item.label = "(" + item.scode + ") " + item.sname;
-                item.label = item.sname;
+                item.label = "(" + item.scode + ") " + item.sname;
+                // item.label = item.sname;
                 return item;
             });
             if (vax === null) {
@@ -339,7 +339,7 @@ export default {
      * @param {*} sparam    请求参数={ cubeId：4，sql：sql }
      */
     getSql_quertData_all($this, sparam) {
-        eva_city_Request(sparam).then(rec => {
+        eva_city_Request(sparam).then(rec => { 
             if (rec.data.code === 200) {
                 let data = rec.data.data;
                 return $this.setSql_quertData_all(data);

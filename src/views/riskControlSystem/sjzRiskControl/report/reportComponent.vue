@@ -18,7 +18,7 @@
                 <el-container style="height: 100%">
                     <!-- 目录部分 -->
                     <el-aside class="container_aside">
-                        <div class="aside_title"><p>目录</p></div>
+                        <div class="aside_title"><p>目&nbsp&nbsp录</p></div>
                         <div v-if="directory.length > 0">
                             <el-menu :default-active="directory[0].scode" class="el-menu-vertical-demo">
                                 <el-menu-item class="el-menu-vertical_title" v-for="(item, index) in directory" :key="item.scode" :index="item.scode">
@@ -258,7 +258,8 @@ export default {
             // 过滤出有数据的等级
             this.gradeData = this.data.grade_data.filter((red, index) => { return red.ncount > 0 }) ;
             // 过滤出有数据的数据(目录)
-            this.directory = this.data.stype_data.filter((res, index) => { return res.ncount > 0 ; }) ;
+            let directory = this.data.stype_data.filter((res, index) => { return res.ncount > 0 ; }) ;
+            this.directory = this.sortByKey(directory, "scode")
             // 前缀+序号的（大写的）
             this.directory.forEach((res, index) => { res.text = this.numArray[index] + res.sname; res.id = '#'+res.scode }) ;
             //   评估
@@ -290,6 +291,16 @@ export default {
                 this.html2 = '截止'+this.dataSource.year + '年' + this.dataSource.month +'月份，经风险评估分析，'+rowData.company+'在风险上面共存在'+len+'条，'+
                     '从风险类型来看，其中'+ directory_text + '从风险等级来看，其中' + gradeData_text ;
             }
+        },
+        /**
+         * 数组对象排序
+         */
+        sortByKey(array, key){
+            return array.sort(function(a,b){
+                var x = a[key];
+                var y = b[key];
+                return((x<y)?-1:((x>y)?1:0));
+            })
         },
         // 上报按钮
         onClick(){

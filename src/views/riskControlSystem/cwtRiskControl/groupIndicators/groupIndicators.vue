@@ -20,7 +20,7 @@
             <table-component
                     :tableData="tableData"
                     :columns="tableColumns"
-                    :tableheight="550"
+                    :tableheight="480"
                     :tabletitle="tableTitle"
                     :dataChange="dataChange"
             >
@@ -197,5 +197,6 @@
         height: 300px;
         margin-bottom: 20px;
         min-width: 532px;
+        width: 532px;
     }
 </style>

@@ -29,7 +29,7 @@
                     show-checkbox
                     accordion
                     node-key="id"
-                    check-strictly
+                    :check-strictly="false"
                     @check-change="handleCheckChange"
                     :filter-node-method="filterNode"
                     ref="tree2">
@@ -98,32 +98,32 @@ export default {
          */
         handleCheckChange(node, isCheck, $cc){
             // debugger
-            let me = this ;
-            let nodeObj = node ;
-            node = [node] ;
+            // let me = this ;
+            // let nodeObj = node ;
+            // node = [node] ;
             /**
              * 如果isCheck为 true 时，即选中状态，否则为 false ，即不选中状态；
              * 为真时，把勾选公司放进deet数组里
              * 为假时，把勾选公司从deet数组里移除
              */
-            if(isCheck){
-                node.forEach(res => { me.deat.push(res.id) ; });
-            }else{
-                me.deat = me.deat.filter((key, index) => { if(key !== nodeObj.id)return key ; })
-            }           
-            console.log('123', me.deat) ;
+            // if(isCheck){
+            //     node.forEach(res => { me.deat.push(res.id) ; });
+            // }else{
+            //     me.deat = me.deat.filter((key, index) => { if(key !== nodeObj.id)return key ; })
+            // }           
+            // console.log('123', me.deat) ;
         },
         /**
          * @event 1.下达按钮
          */
         onSubmit(){
-            // debugger
+            debugger
             let me = this ;
             let params = {} ;
             let rowId = [] ;
-            me.newThis.selection.forEach(ress => {
-                rowId.push(ress.id) ;
-            })
+            me.newThis.selection.forEach(ress => { rowId.push(ress.id) ; })
+            let nodes = me.$refs.tree2.getCheckedNodes() ;
+            nodes.forEach(ress => { me.deat.push(ress.id) ; }) 
             let $params = me.$store.state.prame.command;
             if(me.deat.length === 0){
                 me.$message({ message: "温馨提示：由于您没有选择公司，无法下达！", type: "warning" }) ;
@@ -133,12 +133,13 @@ export default {
                     ids:  rowId ,
                     period: $params.year + mini.getPeriod($params) 
                 }
-                riskdistinguish_risk_release(params).then(res => {
+                riskdistinguish_risk_release(params).then(res => { debugger
                     if(res.data.code === 200){
                         me.deat = [] ;
                         me.$message({ message: "下达成功!", type: "success" }) ;
+                        me.onCancel() ;
                     }else{
-                        me.$message.error("下达失败!");
+                        me.$message.error(res.data.msg);
                         
                     }
                 }) ;
@@ -156,6 +157,7 @@ export default {
          */
         onCancel(){
             this.newThis.riskRelease = false ;
+            this.$refs.tree2.setCheckedKeys([]);
         }
     }
 }

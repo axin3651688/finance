@@ -190,8 +190,8 @@ export default {
         /**
          * 【催报请求人员部门数据】
          */
-        setSql_quertData_all(data){
-            this.comtree2 = mini.reportDataTree(data) ;
+        setSql_quertData_all(data){ 
+            this.comtree2 = mini.reportDataTree(data, this) ;
         },
         /**
          * 【催报确认请求】子组件（rushdialog）的确认按钮

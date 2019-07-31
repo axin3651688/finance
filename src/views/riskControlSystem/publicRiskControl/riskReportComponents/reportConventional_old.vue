@@ -115,7 +115,7 @@
 
 <style scoped>
     .container-title {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 20px;
@@ -144,7 +144,7 @@
     }
 
     .left_1 {
-        font-family: 'Arial Negreta', 'Arial';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-size: 16px;
         color: #333333;
@@ -154,21 +154,21 @@
         margin-left: 20px;
         font-size: 14px;
         padding: 2px 10px;
-        font-family: 'Arial Normal', 'Arial';
+        font-family: '微软雅黑';
         border-radius: 10px;
         color: white;
     }
 
     .container-center div {
         font-size: 16px;
-        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 700;
         margin-bottom: 20px;
         margin-top: 20px;
     }
 
     .container-center p {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-size: 16px;
         color: #333;

@@ -92,7 +92,11 @@ export default {
         },
         // tab 被选中时触发
         handleClick(val){
-            
+            if(val.name == "first") {   // 指标维护
+                val.$children[0].dimIndex_query_by_stypeA() ;
+            } else {                    // 数据维护
+                val.$children[0].gettableData_request() ;
+            }
         }
     }
 }

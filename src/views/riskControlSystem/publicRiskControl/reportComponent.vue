@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 26px;margin-left: 26px;textAlign:center;color: #303133;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 28px;textAlign:center;color: #333333;">目&nbsp&nbsp录</h1>
                     <div v-if="leftNode && leftNode.length > 0">
                         <el-menu :default-active="leftNode[0].id" class="el-menu-vertical-demo">
                             <el-menu-item class="el-menu-vertical_title" v-for="(item,key) in leftNode" :key="key" :index="item.id">
@@ -136,8 +136,8 @@
              */
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
-                tabHeight = 39,//tab标签高度
-                gapHeight = 38,//间隙的高度
+                tabHeight = 0,//tab标签高度
+                gapHeight = 45,//间隙的高度
                 pageHeaderHeight = 64;//导航栏高度
             let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
 
@@ -569,7 +569,7 @@
         padding-bottom: 50px;
         flex-grow: 0;
         flex-shrink: 0;
-        width: 250px;
+        width: 300px;
         border-right: 1px solid #ccc;
     }
 
@@ -586,11 +586,12 @@
         /* border-left: 1px solid; */
     }
     .el-menu-vertical_title {
-        margin-left: 0px;
+        margin-left: 0;
         font-size: 20px;
+        color: #333333;
     }
     .el-menu-vertical-demo {
         background-color: #f0f2f5;
-        border: 0px;
+        border: 0;
     }
 </style>

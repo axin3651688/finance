@@ -1,17 +1,17 @@
 <template>
     <div>
         <div>
-            <el-tabs v-model="activeName"
-            @tab-click="handleTabClick">
-                <el-tab-pane label="风险批示" name="first" v-if="firstFlag">
+            <!--<el-tabs v-model="activeName"-->
+            <!--@tab-click="handleTabClick">-->
+                <div  name="first" v-if="firstFlag">
                     <div class="selectClass">
                         <RiskSelect v-on:changeOption="changeOption" :selectConfig.sync="selectConfig" />
                     </div>
                     <div>
                         <stable :tableData.sync="tableData" :columns.sync="columns" v-on:clickItemName="clickItemName" v-on:changeShowContent="changeShowContent"></stable>
                     </div>
-                </el-tab-pane>
-                <el-tab-pane label="汇总批示" name="second" v-if="secondFlag">
+                </div>
+                <div  name="second" v-if="secondFlag">
                     <div v-if="treeTableShow">
                         <treeTable border :data.sync="treeData" :columns.sync="columns" v-on:buttonHandler="buttonHandler"></treeTable>
                     </div>
@@ -21,7 +21,7 @@
                                 <!-- <div>
                                     <el-button @click="returnCurrentClick">返回</el-button>
                                 </div> -->
-                                <el-header class="container_header">
+                                <el-header class="container_header" style="margin-top: 20px">
                                     <div class="container_alert" v-if="isAlertShow">
                                         <span><i class="el-icon-warning"></i>查看页面，无法操作此页面！</span>
                                     </div>
@@ -37,8 +37,8 @@
                             </el-col>
                         </el-row>
                     </div>
-                </el-tab-pane>
-            </el-tabs>
+                </div>
+            <!--</el-tabs>-->
         </div>
         <div>
             <el-dialog
@@ -385,7 +385,6 @@ export default {
                                         resData = me.setOperationBtns(resData);
                                         me.tableData = resData;
                                     }else if (judgeParams.id == "lookInstruc"){
-                                        debugger;
                                         me.sortByPropty(res.data.data,"riskspcode");
                                         me.lookInstructionRes(res.data.data,judgeParams);
                                     }else if (judgeParams.queryAfter) {

@@ -294,7 +294,7 @@
                                 //0:反馈，1:查看，2:退回，3:提醒
 
                                 if (data.scode !== userCompany) {
-                                    if (data.status === '未反馈') {
+                                    if (data.status == '未反馈') {
                                         data.operation = '3-提醒';
                                     } else {
                                         data.operation = '1-查看';
@@ -303,13 +303,13 @@
                                 // todo 批示人和当前登录的人不是同一个人的时候，按钮部分只显示提醒或者是查看
                                 //down
                                 if (data.stouser !== userName) {
-                                    if (data.status === '未反馈') {
+                                    if (data.status == '未反馈') {
                                         data.operation = '3-提醒';
                                     } else {
                                         data.operation = '1-查看';
                                     }
                                 }else{
-                                    if (data.status === '未反馈') {
+                                    if (data.status == '未反馈') {
                                         data.operation = '0-反馈';
                                     } else {
                                         data.operation = '1-查看,2-退回';
@@ -601,14 +601,16 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: "退回成功",
+                            // message: res.data.msg,
+                            message: '退回成功',
                             type: "success"
                         });
                         this.getReportData();
 
                     } else {
                         _this.$message({
-                            message: "退回失败！请联系开发人员"
+                            message: res.data.msg
+                            // message: '退回失败',
                         })
                     }
                 });
@@ -625,7 +627,7 @@
                 riskBackAndNotice(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            message: "提醒成功",
+                            message: '提醒成功',
                             type: "success"
                         });
                     } else {

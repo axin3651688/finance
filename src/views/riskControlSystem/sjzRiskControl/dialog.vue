@@ -330,6 +330,7 @@ export default {
                 this.isBtn2 = true ;       // 提交 按钮的显示
                 this.isBtn3 = true ;       // 风险关闭 按钮的显示
                 this.isBtn4 = false;       // 新增按钮 的显示与隐藏
+                this.saveAndsubmit = false;// 保存+提交按钮的显示与隐藏
                 // this.sreporttypeRequest() ;
                 if(this.newThis.view_row.sissubmit == "已提交"){    // 已提交的可以风险关闭/ 未提交的不允许风险关闭
                     this.isBtn3 = true ;
@@ -841,6 +842,6 @@ export default {
 }
 #tree-option .el-tree-node__label{
     font-size: 15px;
-    font-family: "宋体";
+    font-family: "微软雅黑";
 }
 </style>

@@ -16,7 +16,7 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="指标名称" width="360" align="center"></el-table-column>
+            <el-table-column prop="sname" label="指标名称" width="360" align="left"></el-table-column>
             <el-table-column prop="sdescription" label="说明" align="left" :show-overflow-tooltip="showOverflowTooltip"></el-table-column>
             <el-table-column label="操作" width="160" align="center">
                 <template slot-scope="scope">
@@ -34,7 +34,7 @@
             :close-on-click-modal="false">
             <el-form ref="form" :rules="rules" :model="form" label-width="100px">
                 <el-form-item label="指标名称：" prop="scode">
-                    <el-select class="dialog_select" v-model="form.scode" placeholder="请选择指标" @change="changeClick">
+                    <el-select class="dialog_select" v-model="form.scode" filterable placeholder="请选择指标" @change="changeClick">
                         <el-option v-for="item in options" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>
                     </el-select>
                     <div class="el-form-item__error">{{ text }}</div>
@@ -110,6 +110,9 @@ export default {
                     }else{
                         me.disabled = false ;
                     }
+                } else if(res.data.code === 1001) {
+                    me.tableData = [] ;
+                    me.$message(res.data.msg) ;
                 } else {
                     me.$message.error(res.data.msg) ;
                 }

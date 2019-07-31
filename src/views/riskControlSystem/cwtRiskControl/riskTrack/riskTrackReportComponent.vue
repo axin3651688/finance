@@ -6,7 +6,7 @@
         >
             <div class="container-left">
                 <div class="container-left-inner">
-                    <h1 style="font-size: 28px;margin-bottom: 50px;">目&nbsp&nbsp录</h1>
+                    <h1 style="font-size: 28px;margin-bottom: 50px;color: rgb(48, 49, 51);">目&nbsp&nbsp录</h1>
                     <div
                             v-for="(value, key, index) in leftNode"
                             :key="key"
@@ -29,7 +29,7 @@
                             {{this.period}}
                             风险预警报告
                         </div>
-                        <span class="zs">总述</span>
+                        <div class="zs_div"><span class="zs">总述</span></div>
                         <p class="describe">
                             截止{{this.period}}份，经风险评估分析， {{companyname}} 在风险方面共存在 {{riskCount.allRiskCount}} 条。
                             <template v-if="riskCount.allRiskCount > 0">
@@ -247,8 +247,8 @@
             pageScrollSet() {
                 let offsetHeight = document.body.offsetHeight,//页面整体高度
                     buttonHeight = 40,//select框高度 加上中间的margin-bottom的值
-                    tabHeight = 39,//tab标签高度
-                    gapHeight = 54,//间隙的高度
+                    tabHeight = 0,//tab标签高度
+                    gapHeight = 45,//间隙的高度
                     pageHeaderHeight = 64;//导航栏高度
                 let tableHeight = offsetHeight - pageHeaderHeight - buttonHeight - tabHeight - gapHeight;
                 this.$refs.containerAll.$el.style.height = tableHeight + 'px';
@@ -394,18 +394,28 @@
     .report-title {
         padding: 20px;
         text-align: center;
-        font-family: 'Arial Negreta', 'Arial';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-style: normal;
         font-size: 24px;
         color: #303133;
     }
 
+    .zs_div{
+        width: 100%;
+        background: #ddd;
+        height: 42px;
+        display: flex;
+        justify-content: left;
+        align-items: center;
+    }
+
     .zs {
-        font-size: 24px;
-        text-align: left;
-        font-family: 'Arial Negreta', 'Arial';
-        font-weight: 700;
+        font-size: 22px;
+        /*text-align: left;*/
+        font-family: '微软雅黑';
+
+        /*font-weight: 700;*/
         font-style: normal;
         color: #303133;
     }
@@ -414,7 +424,7 @@
         margin-top: 10px;
         line-height: 40px;
         text-indent: 32px;
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 16px;
@@ -423,7 +433,7 @@
     }
 
     .container-right-loop-title {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-style: normal;
         font-size: 20px;
@@ -452,7 +462,7 @@
     }
 
     .left_1 {
-        font-family: 'Arial Negreta', 'Arial';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-size: 16px;
         color: #333333;
@@ -462,21 +472,21 @@
         margin-left: 20px;
         font-size: 14px;
         padding: 2px 10px;
-        font-family: 'Arial Normal', 'Arial';
+        font-family: '微软雅黑';
         border-radius: 10px;
         color: white;
     }
 
     .container-right-loop-center div {
-        font-size: 16px;
-        font-family: '微软雅黑 Bold', '微软雅黑';
-        font-weight: 700;
+        font-size: 18px;
+        font-family: '微软雅黑';
+        font-weight: 550;
         margin-bottom: 20px;
         margin-top: 20px;
     }
 
     .container-right-loop-center p {
-        font-family: '微软雅黑 Regular', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 400;
         font-size: 16px;
         line-height: 24px;
@@ -505,7 +515,7 @@
     }
 
     .schedule-title, .risk-num, .title-left {
-        font-family: '微软雅黑 Bold', '微软雅黑';
+        font-family: '微软雅黑';
         font-weight: 700;
         font-size: 16px;
     }

@@ -13,7 +13,7 @@
             >
                 <el-table-column
                         type="selection"
-                        :align="right"
+                        :align="align"
                         width="50">
                 </el-table-column>
                 <template v-for="(item,index) in columns">
@@ -100,6 +100,9 @@
         },
         data() {
             return {
+
+                align:'center',
+
                 // 默认显示第几页
                 currentPage: 1,
                 // 总条数，根据接口获取数据长度(注意：这里不能为空)

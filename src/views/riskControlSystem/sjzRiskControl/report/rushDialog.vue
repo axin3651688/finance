@@ -10,7 +10,7 @@
             <!-- 树形结构 展现公司、部门、人员的 -->
                 <el-tree
                 class="filter-tree"
-                :data="data"
+                :data="treeData"
                 :props="defaultProps"
                 default-expand-all
                 highlight-current
@@ -44,6 +44,17 @@ export default {
                 children: 'children',
                 label: 'label'
             }
+        }
+    },
+    computed: {
+        treeData() { 
+            let tmp ;
+            if(!Array.isArray(this.data)){
+                tmp = [this.data]
+            } else {
+                tmp = this.data ;
+            }
+            return tmp ;
         }
     },
     watch: {
