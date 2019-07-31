@@ -13,11 +13,11 @@
             "width": 200
         },
         {
-            "text": "上报人",
-            "value": "sreportuser"
+            "text": "批示人",
+            "value": "suser"
         },
         {
-            "text": "上报时间",
+            "text": "批示时间",
             "value": "sreporttime"
         },
         {
