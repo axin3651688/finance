@@ -97,7 +97,7 @@ export default {
                 stype: "HY",
                 target: me.value
             }
-            fcattarget_query_by_fcattarget(params).then(res => { debugger
+            fcattarget_query_by_fcattarget(params).then(res => { 
                 if(res.data.code === 200) {
                     let data = res.data.data ;                   
                     data.forEach((res,index) => {
