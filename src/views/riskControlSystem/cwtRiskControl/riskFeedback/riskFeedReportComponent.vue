@@ -440,8 +440,8 @@
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
-                            // message: res.data.msg,
-                            message: '反馈成功',
+                            message: res.data.msg,
+                            // message: '反馈成功',
                             type: "success"
                         });
                         _this.reportState = '';
