@@ -146,14 +146,14 @@
                 selectedColumns: [],
                 selectedTableType: {
                     type: 'noCurrentPage',
-                    height: 580
+                    height: 510
                 },
 
                 allTableData: [],
                 allColumns: [],
                 allTableType: {
                     type: 'currentPage',
-                    height: 550
+                    height: 450
                 },
                 dataFresh: false
             }

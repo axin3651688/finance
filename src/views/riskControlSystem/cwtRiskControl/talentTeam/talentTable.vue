@@ -6,6 +6,8 @@
                     stripe
                     border
                     :height="tableType.height"
+                    :row-style="{height:'38px'}"
+                    :cell-style="{padding:'0px'}"
                     :header-cell-style="headerRowStyle"
                     style="width: 100%"
             >
