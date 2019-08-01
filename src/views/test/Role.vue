@@ -171,6 +171,8 @@ import tools from "utils/tools";
 console.log(tools);
 //import ExTable from "utils/table";
 import Vue from "vue";
+// 引用vuex
+import { mapGetters, mapActions } from "vuex";
 export default {
 //     components: {
 //     ExTable
@@ -309,7 +311,8 @@ export default {
           template:"rights"
         }
       ],
-      heights:0
+      heights:0,
+      roleidClo: "" // roleid的复制
     };
   },
   mounted() { 
@@ -330,8 +333,12 @@ export default {
        this.authorizeButten = data[0].nper;
     }
   },
+  computed: {
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
+  },
   methods: {
-
+    ...mapActions(["GetSideMid"]) ,
     /**
      * @value 字符串的长度（可以是汉字）
      */
@@ -508,7 +515,35 @@ export default {
             }
           };
           var data = result.data.data;
-
+          // _this.user.menupermisson = [];
+          // _this.user.menupermisson = data ;
+          
+          // debugger
+          let yy = [] ;
+          data.forEach(element => {
+              yy.push ({
+                id: element.scode2 ,
+                nadd: element.nadd2,
+                ndel: element.ndel2,
+                nexp: element.nexp2,
+                nfill: element.nfill2,
+                nimp: element.nimp2,
+                nper: element.nper2,
+                nrep: element.nrep2,
+                nreview: element.nreview2,
+                nupdate: element.nupdate2,
+                nwarn: element.nwarn2,
+                roleid: element.roleid2,
+                scode: element.scode2,
+                text: element.menusname
+              })
+          });
+          _this.GetSideMid({ 
+            menupermisson2: []
+          }) ;
+          _this.GetSideMid({ 
+            menupermisson2: yy
+          }) ;
           if (Array.isArray(data) && data.length > 0) {
             data = tools.sortByKey(data, "scode");
             data = data.filter(function(item){ 
@@ -766,12 +801,13 @@ export default {
           data: pramer
         }).then(result => { 
           if (result.status == 200) {
-              _this.dialogRoleDarkVisible = false;
               if (result.data.code == 200) {
                 this.$message({
                   type: "success",
                   message: result.data.msg
                 });
+                _this.dialogRoleDarkVisible = false;
+                _this.findMenu(_this.roleidClo) ;
               }
             } else {
               tools.showMes(result.data.msg, "error");
@@ -965,6 +1001,7 @@ export default {
       this.opt = tools.opt[0];
       this.selectRoleId = row.roleid;
       //加载菜单列表
+      this.roleidClo = row.roleid ;
       this.findMenu(row.roleid);
     },
 
@@ -1071,8 +1108,12 @@ export default {
           pageSize: pageSize
         }
       }).then(result => { 
-        if (result.status == 200) {
+        if (result.status == 200) { 
             const data = result.data.data;
+            // 过滤掉超级管理员
+            data.datas = data.datas.filter(item => {
+              return item.roleid !== 1 ;
+            })
             _this.rolesData = data.datas;
             _this.allNum = data.total;
         }
