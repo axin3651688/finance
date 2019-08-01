@@ -64,15 +64,17 @@
         "type": "string",
         "fixed": true,
         "text": "项目",
-        "width":"260px"
+        "width":"360px"
       }, {
         "id": "je",
         "type": "decimal",
+        "width": "180",
         "text": "金额"
     }, {
         "id": "bz",
         "type": "decimal",
         "text": "比重（%）",
+        "width": "180",
         "conversion":"%"
 
     }

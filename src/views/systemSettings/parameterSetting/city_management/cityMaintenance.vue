@@ -13,9 +13,9 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="scode" label="企业编码" width="260" align="center"></el-table-column>
-            <el-table-column prop="sname" label="企业名称" width="360" align="left"></el-table-column>
-            <el-table-column label="操作" width="260" align="center">
+            <el-table-column prop="scode" label="企业编码" min-width="260" align="center"></el-table-column>
+            <el-table-column prop="sname" label="企业名称" min-width="360" align="left"></el-table-column>
+            <el-table-column label="操作" min-width="260" align="center" sortable>
                 <template slot-scope="scope">
                     <el-button class="deleteBtn" @click="modifyClick(scope)" icon="el-icon-edit-outline" type="warning" size="medium" plain>修改</el-button>
                     <el-button class="deleteBtn" @click="deleteClick(scope)" icon="el-icon-circle-close-outline" type="warning" size="medium" plain>删除</el-button>

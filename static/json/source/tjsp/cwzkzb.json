@@ -285,7 +285,7 @@
                     // "color":"black",
                     // "background-color":"#189271"
                     // "background-color":"#fff"
-                    "margin-bottom": "8px"
+                    "margin-bottom": "0px"
                 },
                 "handler":function(vue,btn){
                     // debugger
@@ -302,7 +302,7 @@
                     // "color":"black",
                     // "background-color":"#189271"
                     // "background-color":"#fff"
-                    "margin-bottom": "8px"
+                    "margin-bottom": "0px"
                 },
                 "handler":function(vue,btn){
                     debugger
