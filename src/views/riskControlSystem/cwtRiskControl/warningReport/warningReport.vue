@@ -114,13 +114,18 @@
                                 label="公司编码"
                                 width="150px"
                         >
+
                         </el-table-column>
                         <el-table-column
                                 prop="companyname"
                                 label="公司名称"
                         >
                             <template slot-scope="scope">
-                                <a @click="tableCompanyClock(scope.row)" style="color: #409eff;">{{ scope.row.companyname }}</a>
+                                <a
+                                        @click="tableCompanyClock(scope.row)"
+                                        style="color: #409eff;"
+                                >{{ scope.row.companyname }}
+                                </a>
                             </template>
 
                         </el-table-column>
@@ -233,15 +238,18 @@
              */
             companyClicked(companys) {
                 let _this = this;
-
                 let companyList = companys.split(',');
                 companyList.forEach((c)=>{
 
-                    let emptyC = {
-                        companycode:c.split('-')[1],
-                        companyname:c.split('-')[0]
-                    };
-                    _this.companyData.push(emptyC);
+                    if(c !== ''){
+                        let emptyC = {
+                            companycode:c.split('-')[1],
+                            companyname:c.split('-')[0]
+                        };
+                        _this.companyData.push(emptyC);
+                    }
+
+
                 });
                 _this.dialogVisible = true;
             },
