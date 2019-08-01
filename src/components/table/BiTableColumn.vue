@@ -94,7 +94,7 @@
     :prop="col.id"
     :label="col.text"
     :align="col.align|| 'right'"
-    :min-width="col.width"
+    :min-width="col.width || 200"
   >
     <template slot-scope="scope">
       <el-tooltip

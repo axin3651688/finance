@@ -48,7 +48,7 @@
             "id": "gsbm",
             "type": "string",
             "text": "公司编码",
-            "fixed": true,
+            // "fixed": true,
             "align": "left",
             "width": "200px"
         },
@@ -56,7 +56,7 @@
             "id": "gsmc",
             "type": "string",
             "text": "公司名称",
-            "fixed": true,
+            // "fixed": true,
             "align": "left",
             "width": "395px"
         },

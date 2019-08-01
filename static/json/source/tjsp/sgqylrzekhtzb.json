@@ -74,7 +74,7 @@
     "items": [{
         "xtype": "bi-table",
         "id": "sgqylrzekhtzb",
-        "stype": "table",
+        "stype": false,
         "divContent": true,
         "text": "市管企业利润总额考核调整表",
         "toolbar": [{
@@ -87,7 +87,7 @@
                 // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
@@ -103,7 +103,7 @@
                 // "background-color": "#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 vue.handleDownload(vue);
             }
