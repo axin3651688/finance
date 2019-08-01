@@ -10,7 +10,7 @@
 
     export default {
         name: "echartsComponent",
-        mixins:[cwtPublicJS],
+        mixins: [cwtPublicJS],
         components: {},
         props: {
             echartData: Object,
@@ -41,7 +41,7 @@
                         axisPointer: {            // 坐标轴指示器，坐标轴触发有效
                             type: 'shadow'        // 默认为直线，可选为：'line' | 'shadow'
                         },
-                        formatter(data){
+                        formatter(data) {
                             let showData = data[0].value;
 
                             if (showData && showData !== null) {
@@ -50,8 +50,8 @@
                                 let valueArr = str.split(".");
                                 if (valueArr.length === 1) {
                                     str = str + ".00";
-                                }else{
-                                    if(valueArr[1].length === 1){
+                                } else {
+                                    if (valueArr[1].length === 1) {
                                         valueArr[1] = valueArr[1] + '0';
                                         str = valueArr[0] + '.' + valueArr[1]
                                     }
@@ -93,13 +93,15 @@
                                     rotate: 0,  // 旋转角度
                                     color: '#000',
                                     fontSize: 16,
-
+                                    normal: {
+                                        formatter: '{c}\n'
+                                    },
                                     /**
                                      *
                                      * 这里的处理将柱状图上方显示的数值改成对应的index+ 1 用来显示排序，
                                      * 不过要在数据查询的时候添加了排序处理，不然就是乱的
                                      * */
-                                    formatter(data){
+                                    formatter(data) {
                                         let showData = data.value;
                                         if (showData && showData !== null) {
                                             showData = Math.round(showData * 100) / 100;
@@ -107,12 +109,20 @@
                                             let valueArr = str.split(".");
                                             if (valueArr.length === 1) {
                                                 str = str + ".00";
-                                            }else{
-                                                if(valueArr[1].length === 1){
+                                            } else {
+                                                if (valueArr[1].length === 1) {
                                                     valueArr[1] = valueArr[1] + '0';
                                                     str = valueArr[0] + '.' + valueArr[1]
                                                 }
                                             }
+                                            // return '<div>' + '<span style="padding-bottom: 10px">' + str + '</span>' + '</div>' ;
+
+                                            let _dataIndex = data.dataIndex;
+
+                                            if(_dataIndex % 2 === 0){
+                                                str = str + '\n';
+                                            }
+
                                             return str;
                                         } else if (showData === 0) {
                                             return '';
@@ -145,11 +155,11 @@
                 _this.echartOption.series.name = _echartData.sname;
 
                 let _unit = _echartData.sunit;
-                _this.echartOption.yAxis.name += _unit ? '（'+_unit+'）' : '（万元）';
+                _this.echartOption.yAxis.name += _unit ? '（' + _unit + '）' : '（万元）';
 
-                if(_echartData.sunit === '%'){
+                if (_echartData.sunit === '%') {
                     _this.echartOption.series.type = 'line';
-                }else{
+                } else {
                     _this.echartOption.series.type = 'bar';
                 }
 

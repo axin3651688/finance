@@ -436,7 +436,6 @@
                 //     });
                 //     return;
                 // }
-
                 updateInstruction(params).then(res => {
                     if (res.data.code === 200) {
                         _this.$message({
@@ -447,7 +446,7 @@
                         _this.reportState = '';
                         _this.personnelListShow = false;
 
-                        _this.$emit("reportFeedSuccess")
+                        _this.$emit("reportFeedSuccess", _this.writeData.risk_feed_content)
 
                     } else if (res.data.code === '0') {
                         _this.$message({
