@@ -25,8 +25,8 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="地区名称" width="360" align="left"></el-table-column>
-            <el-table-column prop="val" label="数值" width="260" align="right">
+            <el-table-column prop="sname" label="地区名称" min-width="360" align="left"></el-table-column>
+            <el-table-column prop="val" label="数值" min-width="360" align="right">
                 <template slot-scope="scope">
                     <vue-numeric id="inputId" :class="getClassColor(scope)" separator="," v-model="scope.row.fact_a" :minus="true" :precision="2"
                         :read-only="readonly"></vue-numeric>

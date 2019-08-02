@@ -18,6 +18,7 @@ export default {
             let objHead = {
                 id: "comsname",
                 type: "string",
+                minWidth: "300",
                 text: "公司"
             };
             manyColumns.push(objHead);
@@ -29,51 +30,51 @@ export default {
             };
             let monthObjs = [{
                     id: "01",
-                    text: "一月"
+                    text: "1月"
                 },
                 {
                     id: "02",
-                    text: "二月"
+                    text: "2月"
                 },
                 {
                     id: "03",
-                    text: "三月"
+                    text: "3月"
                 },
                 {
                     id: "04",
-                    text: "四月"
+                    text: "4月"
                 },
                 {
                     id: "05",
-                    text: "五月"
+                    text: "5月"
                 },
                 {
                     id: "06",
-                    text: "六月"
+                    text: "6月"
                 },
                 {
                     id: "07",
-                    text: "七月"
+                    text: "7月"
                 },
                 {
                     id: "08",
-                    text: "八月"
+                    text: "8月"
                 },
                 {
                     id: "09",
-                    text: "九月"
+                    text: "9月"
                 },
                 {
                     id: "10",
-                    text: "十月"
+                    text: "10月"
                 },
                 {
                     id: "11",
-                    text: "十一月"
+                    text: "11月"
                 },
                 {
                     id: "12",
-                    text: "十二月"
+                    text: "12月"
                 },
                 {
                     id: "Q1",
@@ -113,6 +114,7 @@ export default {
                         id: "",
                         type: "string",
                         text: "",
+                        minWidth: "200",
                         align: "right"
                     };
                     for (let j = 0; j < indicatorOptions.length; j++) {
@@ -122,10 +124,18 @@ export default {
                                 objTwo.id = 'm' + (item - 0) + '_' + it;
                                 objTwo.text = itTwo.sname;
                                 objTwo.type = 'number';
+                                //添加一个表头的宽度。
+                                // if (objTwo.text) {
+                                //     objTwo.width = (objTwo.text.length * 30) + 4;
+                                // }
                             } else {
                                 let itemNew = item.replace(item[0], item[0].toLowerCase());
                                 objTwo.id = itemNew + '_' + it;
                                 objTwo.text = itTwo.sname;
+                                //添加一个表头的宽度。
+                                // if (objTwo.text) {
+                                //     objTwo.width = (objTwo.text.length * 30) + 4;
+                                // }
                             }
                             break;
                         }

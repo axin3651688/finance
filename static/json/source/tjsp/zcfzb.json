@@ -32,7 +32,7 @@
             array = { nevel: i };
             data.splice(48, 0, array);
         }
-        debugger;
+        // debugger;
         // data.splice(72,0,array2); 
         data.forEach((res, index) => { res.row = index + 1 });
         let data_left = data.filter((res, index) => { return index < 72; });
@@ -149,7 +149,7 @@
         "id": "zcfzb",
         "text": "资产负债表",
         "queryDataAfter": function(data, $vue) {
-            debugger;
+            // debugger;
             return $vue.__queryDataAfter();
         },
         "toolbar": [{
@@ -229,7 +229,7 @@
             }
         },
         "onCellClick": function(row, column, cell, event, option) {
-            debugger
+            // debugger
             let cv = column.property + "",
                 len = cv.length;
             let text = row[cv];

@@ -16,6 +16,7 @@
         },
         {
             "text": "评级预警",
+            "htmlType": "colColor",
             "value": "grade",
             "width": 200
         }

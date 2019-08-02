@@ -104,7 +104,11 @@
 // 引用接口
 import {
     // 目录查询接口
-    selectAll
+    selectAll ,
+    // 标题查询接口
+    riskguidetitle_All,
+    // 标题添加接口
+    riskguidetitle_Add
 } from './riskInterface.js' ;
 // 导出文档js
 import riskGuidance from './import_riskGuidance_world.js'
@@ -185,11 +189,8 @@ export default {
             // 要及时关掉监听，不关掉的是一个坑，不信你试试，虽然前台显示的时候没有啥毛病，加一个alert你就知道了
             document.removeEventListener('click', this.foo) 
         },
-        addClick(){
-            
-        },
         /**
-         * 目录查询接口
+         * @function 目录查询接口
          */
         directoryRequest(){
             let me = this ;
@@ -198,7 +199,7 @@ export default {
                 titleId : 1,
                 sqlKey : "RiskGuide.selectCatalog"
             }
-            selectAll(params).then(res => { 
+            selectAll(params).then(res => {
                 if(res.data.code === 200) {
                     me.first = 0 ;
                     me.second= 0 ;
@@ -208,13 +209,15 @@ export default {
                     me.directory = data.filter(item => { return item.pid === 0 }) ;
                     me.directoryObj = me.directory[0] ;
                     me.contentRequest() ; // 内容查询方法
+                } else if(res.data.code === 1001) {
+                    me.$message(res.data.msg + '请添加标题内容') ;
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
             });
         },
         /**
-         * 内容查询接口
+         * @function 内容查询接口
          */
         contentRequest(){ 
             let me = this ;
@@ -222,7 +225,7 @@ export default {
                 titleId : 1 ,
 	            sqlKey: "RiskGuide.selectContent"
             }
-            selectAll(params).then(res => {  
+            selectAll(params).then(res => {
                 if(res.data.code === 200) {
                     let dd = res.data.data ;
                     dd.forEach(res2 => { res2.html = res2.scontent }) ;
@@ -238,7 +241,7 @@ export default {
             });
         },
         /**
-         * 内容的处理
+         * @function 内容的处理
          */
         contentsProcessing(cc){ //debugger
             let me = this ;

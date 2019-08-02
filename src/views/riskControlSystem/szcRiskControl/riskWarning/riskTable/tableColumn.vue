@@ -17,6 +17,7 @@
                     :prop="item.id"
                     header-align="center"
                     :label="item.text"
+                    :min-width="item.minWidth"
                     :width="item.width">
                     <template slot-scope="scope">
                         <span v-if="item.type == 'number'">

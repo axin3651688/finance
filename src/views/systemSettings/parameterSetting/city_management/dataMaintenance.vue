@@ -25,8 +25,8 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="指标名称" width="360" align="left"></el-table-column>
-            <el-table-column prop="val" label="数值" width="260" align="right">
+            <el-table-column prop="sname" label="指标名称" min-width="360" align="left"></el-table-column>
+            <el-table-column prop="val" label="数值" min-width="360" align="right">
                 <template slot-scope="scope">
                     <!-- <el-input class="data_input" placeholder="输入数值" :readonly="readonly" v-model="scope.row.val">
                         <template slot="append"><i class="el-icon-edit-outline"></i></template>

@@ -91,7 +91,6 @@ export default {
               },
               //格式化大刻度的数据。
               formatter:function(value,aa){
-                debugger;
                 value = parseInt(value);
                 return value;
               }

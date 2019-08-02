@@ -507,8 +507,8 @@ export default {
                         //风险名称。
                         objUpContentFXMC.content.push((objUpContentFXMC.content.length + 1 + "、") + lookItem.sriskname);
                         //风险评估。
-                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险发生概率：" + lookItem.nprobability);
-                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险影响程度：" + lookItem.ninfluence);
+                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险发生概率：" + (lookItem.nprobability || ""));
+                        objUpContentFXPG.content.push((objUpContentFXPG.content.length + 1 + "、") + "风险影响程度：" + (lookItem.ninfluence || ""));
                         //风险概述。
                         objUpContentFXGS.content.push((objUpContentFXGS.content.length + 1 + "、") + lookItem.description);
                         //采取措施。
