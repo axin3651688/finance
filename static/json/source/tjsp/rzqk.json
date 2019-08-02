@@ -81,6 +81,7 @@
             "id": "ll",
             "type": "decimal",
             "text": "利率（%）*",
+            "decimal_four": true,
             "conversion": "%"
         }, {
             "id": "zhcb",

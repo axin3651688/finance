@@ -75,6 +75,7 @@
                 "id": "B",
                 "type": "decimal",
                 "text": "利率（%）",
+                "decimal_four": true,
                 "conversion":"%"
               },
               {
