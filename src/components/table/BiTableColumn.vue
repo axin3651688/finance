@@ -269,7 +269,6 @@ export default {
        * name：sjz
        * 功能：点击父级，展现他所有的孩子。 
        */
-      debugger
       let me = this ;
       // let companyId = me.$store.getters.treeInfo.scode ;
       // let nlevel = me.$store.getters.treeInfo.nlevel ;

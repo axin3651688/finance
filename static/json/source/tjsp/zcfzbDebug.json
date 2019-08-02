@@ -11,7 +11,6 @@
         "tableBefore": true,
         "extendDrillPeriod": true,
         "tableBeforeFun": function($vue, params) {
-            debugger;
             let me = this;
             let period = $vue.$store.selectPeriod;
             let year = period.substring(0, 4);
@@ -25,7 +24,6 @@
             return html;
         },
         "queryDataBefore": function(params, config, $vue) {
-            debugger;
             let me = this;
             let selectPeriod = $vue.$store.selectPeriod;
             if (selectPeriod) {
@@ -42,7 +40,6 @@
             return params;
         },
         "queryDataAfter": function(data, $vue) {
-            // debugger;
             let arr = [];
             // let array = new Array();
             let array = {};
@@ -51,7 +48,6 @@
                 array = { nevel: i };
                 data.splice(48, 0, array);
             }
-            debugger;
             // data.splice(72,0,array2); 
             data.forEach((res, index) => { res.row = index + 1 });
             let data_left = data.filter((res, index) => { return index < 72; });
@@ -82,6 +78,7 @@
                 arr[index].level2 = res.nlevel;
             });
             // debugger
+            console.log(arr);
             return arr;
         },
         "config": {
@@ -121,8 +118,6 @@
                 "text": "行次",
                 "width": "50px"
             },
-
-
             {
                 "id": "B",
                 "type": "decimal",
@@ -137,7 +132,7 @@
             },
 
             {
-                "id": "id_",
+                "id": "id2",
                 "type": "string",
                 "hidden": true,
                 "text": "编码"
@@ -169,105 +164,9 @@
 
         "levelProperties": { text1: "level", text2: "level2" }, //加缩进 可选 table
         "cellStyle": function(row) {
-            // debugger 
             let datas = this.datas;
-            if (datas && datas.length > 0) {
-                let data = datas.filter(function(item) {
-                    return item.id == row.row.id || item.id == row.row.id_;
-
-                });
-                if (data.length == 0) {
-                    row.row.A = 0;
-                    row.row.B = 0;
-                    row.row.A_ = 0;
-                    row.row.B_ = 0;
-
-                } else if (data.length == 1) {
-                    if (data[0].id == row.row.id) {
-                        if (data[0].A) {
-                            row.row.A = data[0].A;
-                        } else {
-                            row.row.A = 0;
-                        }
-                        if (data[0].B) {
-                            row.row.B = data[0].B;
-                        } else {
-                            row.row.B = 0;
-                        }
-                        row.row.A_ = 0;
-                        row.row.B_ = 0;
-
-                    } else {
-                        if (data[0].A) {
-                            row.row.A_ = data[0].A;
-                        } else {
-                            row.row.A_ = 0;
-                        }
-                        if (data[0].B) {
-                            row.row.B_ = data[0].B;
-                        } else {
-                            row.row.B_ = 0;
-                        }
-                        row.row.A = 0;
-                        row.row.B = 0;
-
-                    }
-
-                } else {
-                    if (data[0].id == row.row.id) {
-                        if (data[0].A) {
-                            row.row.A = data[0].A;
-                        } else {
-                            row.row.A = 0;
-                        }
-                        if (data[0].B) {
-                            row.row.B = data[0].B;
-                        } else {
-                            row.row.B = 0;
-                        }
-                        if (data[1].A) {
-                            row.row.A_ = data[0].A;
-                        } else {
-                            row.row.A_ = 0;
-                        }
-                        if (data[1].B) {
-                            row.row.B_ = data[0].B;
-                        } else {
-                            row.row.B_ = 0;
-                        }
-
-                    } else {
-                        if (data[0].A) {
-                            row.row.A_ = data[0].A;
-                        } else {
-                            row.row.A_ = 0;
-                        }
-                        if (data[0].B) {
-                            row.row.B_ = data[0].B;
-                        } else {
-                            row.row.B_ = 0;
-                        }
-                        if (data[1].A) {
-                            row.row.A = data[0].A;
-                        } else {
-                            row.row.A = 0;
-                        }
-                        if (data[1].B) {
-                            row.row.B = data[0].B;
-                        } else {
-                            row.row.B = 0;
-                        }
-
-                    }
-
-                }
-
-            } else {
-                row.row.A = 0;
-                row.row.B = 0;
-                row.row.A_ = 0;
-                row.row.B_ = 0;
-            }
+            let record = [];
+            record = datas[row.rowIndex];
             let css = "padding: 4px 0;";
             let pro = row.column.property; //列id
             if (!pro) {
@@ -275,7 +174,6 @@
             }
             let levelProperties = this.levelProperties; //缩进列获取
             let textIndent = "";
-            let record = row.row;
             let levelPro = levelProperties[pro];
             if (levelPro && row.row[levelPro]) {
                 let level = row.row[levelPro] || 1;
@@ -296,12 +194,12 @@
                     return css + textIndent;
                 }
             } else if (pro.indexOf("text2") != -1) { //第二列项目
-                if ((record.A_ && record.A_ != 0) || (record.B_ && record.B_ != 0)) { //有数据时才显示蓝色，并且可以下钻
+                if ((record.A2 && record.A2 != 0) || (record.B2 && record.B2 != 0)) { //有数据时才显示蓝色，并且可以下钻
                     let drill = "text-decoration: none;color: #428bca;cursor: pointer;"; //可以下钻的科目的颜色的设置
                     css = css + "font-weight:bold;" + textIndent + drill;
                     record._drill = true; //下钻设置
                     return css;
-                } else if (record.id_ == "1210" || record.id_ == "1210100" || record.id_ == "1220" || record.id_ == "1310" || record.id_ == "1300100" || record.id_ == "1320100" || record.id_ == "1220100" || record.id_ == "1200100") {
+                } else if (!record.A2 && !record.B2 && (record.id2 == "1210" || record.id2 == "1210100" || record.id2 == "1220" || record.id2 == "1310" || record.id2 == "1300100" || record.id2 == "1320100" || record.id2 == "1220100" || record.id2 == "1200100")) {
                     let drill = "text-decoration: none;color: black;";
                     css = css + "font-weight:bold;" + textIndent + drill;
                     return css;
@@ -311,7 +209,6 @@
             } else {
                 return css + textIndent;
             }
-            // }    
         },
         "onCellClick": function(row, column, cell, event, option) {
             // debugger
@@ -336,7 +233,6 @@
                         "sourceApi": "/cnbi/json/source/tjsp/zcfzbdebug2.json",
                         "handler": ($vue, params) => { //自定义的回调
                             console.info(params);
-                            debugger;
                         }
                     }, { row: row, column: column, cell: cell, event: event }, { id: id, text: text });
 

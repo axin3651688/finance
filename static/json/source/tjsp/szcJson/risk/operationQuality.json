@@ -1,57 +1,57 @@
 {
     "code": 200,
-    "id": "operationQuality",
-    "text": "运营质量",
+    "id": "development",
+    "text": "运营能力",
     "columns": [{
             "id": "sname",
             "type": "string",
             "text": "指标名称",
             "align": "left",
-            "width": "180"
+            "action": "click",
+            "width": "200"
         },
         {
             "id": "a",
             "type": "string",
             "text": "优秀值",
-            "align": "center",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "b",
             "type": "string",
             "text": "良好值",
             "align": "center",
-            "htmlType": "text",
-            "width": "90"
+            "htmlType": "text"
         },
         {
             "id": "c",
             "type": "string",
-            "text": "平均值"
+            "text": "平均值",
+            "align": "center"
         },
         {
             "id": "d",
             "type": "string",
             "text": "较低值",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "e",
             "type": "string",
             "text": "较差值",
-            "align": "center",
-            "width": "90"
+            "align": "center"
         },
         {
             "id": "v",
             "type": "string",
             "text": "指标实际值",
-            "width": "180"
+            "align": "center"
         },
         {
             "id": "grade",
             "type": "string",
             "text": "评级",
+            "htmlType": "colColor",
             "align": "center"
         },
         {
@@ -79,13 +79,19 @@
                     "align": "center",
                     "width": "90",
                     "children": [{
-                            "id": "E2",
+                            "id": "E3",
                             "type": "string",
                             "text": "较差值",
                             "align": "center"
                         },
                         {
                             "id": "E1",
+                            "type": "string",
+                            "text": "较差值",
+                            "align": "center"
+                        },
+                        {
+                            "id": "E2",
                             "type": "string",
                             "text": "较差值",
                             "align": "center"
@@ -147,12 +153,14 @@
                     "children": [{
                             "id": "C2",
                             "type": "string",
-                            "text": "平均值"
+                            "text": "平均值",
+                            "align": "center"
                         },
                         {
                             "id": "C1",
                             "type": "string",
-                            "text": "平均值"
+                            "text": "平均值",
+                            "align": "center"
                         }
                     ]
                 },
@@ -164,12 +172,14 @@
                     "children": [{
                             "id": "D2",
                             "type": "string",
-                            "text": "较低值"
+                            "text": "较低值",
+                            "align": "center"
                         },
                         {
                             "id": "D1",
                             "type": "string",
-                            "text": "较低值"
+                            "text": "较低值",
+                            "align": "center"
                         }
                     ]
                 }
@@ -183,16 +193,17 @@
     },
     "manyRows": [{
             "xm": "区间",
-            "A1": "X>Y1",
+            "A1": "X>Y1(X<Y1)",
             "A2": "X=Y1",
-            "B1": "Y2<X<Y1",
+            "B1": "Y2<X<Y1(Y1<X<Y2)",
             "B2": "X=Y2",
-            "C1": "Y3<X<Y2",
+            "C1": "Y3<X<Y2(Y2<X<Y3)",
             "C2": "X=Y3",
-            "D1": "Y4<X<Y3",
+            "D1": "Y4<X<Y3(Y3<X<Y4)",
             "D2": "X=Y4",
-            "E1": "Y5<X<Y4",
-            "E2": "X=Y5"
+            "E1": "Y5<X<Y4(Y4<X<Y5)",
+            "E2": "X=Y5",
+            "E3": "X<Y5(X>Y5)"
         },
         {
             "xm": "分数",
@@ -205,7 +216,8 @@
             "D1": "4",
             "D2": "3",
             "E1": "2",
-            "E2": "1"
+            "E2": "1",
+            "E3": "0"
         }
     ]
 }

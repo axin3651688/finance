@@ -88,7 +88,7 @@
             }
         },
         created() {
-            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/development.json";
+            let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/operationQuality.json";
             let row;
             if(me.pComponentData){
                 row = me.pComponentData;

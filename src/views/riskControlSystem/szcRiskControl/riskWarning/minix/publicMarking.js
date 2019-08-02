@@ -121,7 +121,7 @@ export default {
         retainDecimalOfOne(datas, inItems) {
             datas.forEach(item => {
                 inItems.forEach(it => {
-                    item[it] = item[it] ? tools.currency(item[it], "", 1) : 0.0;
+                    item[it] = item[it] ? tools.currency(item[it], "", 2) : 0.00;
                 });
             });
         },
