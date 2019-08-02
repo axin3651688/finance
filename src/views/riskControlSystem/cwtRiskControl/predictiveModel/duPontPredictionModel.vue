@@ -95,7 +95,7 @@
                 <div class="svg-seventh">
                     <svg width="600px" height="32px">
                         <polyline
-                                points="1,16 1,31 1,16 100,16 100,1 100,16 178,16 178,31 178,16 356,16 356,31 356,16 533,16 533,31"
+                                points="1,16 1,31 1,16  178,16 178,31 178,16 356,16 356,31 356,16 370,16 370,1 370,16 533,16 533,31"
                                 fill="none" stroke="black"
                                 stroke-width="2"></polyline>
                     </svg>
