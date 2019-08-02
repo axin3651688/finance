@@ -49,7 +49,7 @@
                     <span
                             v-else-if="column.value === 'companyName'"
                     >
-                        {{scope.row[column.value]}}
+                        {{scope.row[column.value] }} 
                     </span>
                     <template v-else-if="column.value === 'operation' && scope.row[column.value]">
                         <template v-for="(it,indx) in scope.row[column.value]">
@@ -62,6 +62,9 @@
                             </el-button>
                         </template>
                     </template>
+                    <span v-else-if="column.htmlType && column.htmlType == 'colColor'" :style="styleHandler(scope.row)">
+                        {{scope.row[column.value]}}
+                    </span>
                     <span v-else>
                         {{scope.row[column.value]}}
                     </span>
@@ -166,7 +169,18 @@
             drillItemSname (scope) {
                 let me = this;
                 me.$emit("drillItemSname",scope);
-            }  
+            },
+            /**
+             * cell样式。
+             */
+            styleHandler (row) {
+                if(row && row.color){
+                    if(row.color.indexOf("#") != -1){
+                        return "color:" + row.color;
+                    }
+                    return "color:#" + row.color;
+                }
+            }
         }
     }
 </script>

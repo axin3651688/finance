@@ -442,7 +442,6 @@ export default {
         }
         datas[element] = val;
       });
-      
       if (datas.year && datas.month) {
         //判断是不是钻取的tab页的年月。管理驾驶舱的直接可以用
         let currentApi = this.api;
@@ -531,7 +530,6 @@ export default {
      */
     generateApiModelDatas(item, $childVue, changeDim) {
       try {
-        // debugger
         let params = this.getModuleParams(item, changeDim);
         if (!params) return;
         let config = item.config;

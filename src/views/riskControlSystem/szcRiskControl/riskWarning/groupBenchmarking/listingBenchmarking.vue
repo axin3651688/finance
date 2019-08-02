@@ -510,7 +510,7 @@
     //公司树表的样式。
     .tree_select_option {
         height:100%;
-        max-height:300px;
+        // max-height:300px;
         padding: 0;
     }
     // .tree_select {

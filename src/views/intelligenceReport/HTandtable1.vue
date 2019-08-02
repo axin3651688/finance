@@ -1247,12 +1247,27 @@ export default {
       }
       let me = this;
       // return
-      //融资的新增与减少的判断
+      //融资的新增与减少的判断 起始日期...
+      debugger;
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
+        //正则判断。
+        debugger;
+        if(changes && changes.length > 0){
+          let arrStr = ['sstartdate','senddate','srepaydate'];
+          if(arrStr.indexOf(changes[0][1]) != -1 && changes[0][3]){
+            let regDate = /^\d{4}(\/)\d{2}\1\d{2}$/;
+            if(regDate.test(changes[0][3]) != true){
+              me.$message({
+                message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
+                type:"warning"
+              });
+            }
+          }
+        }
       }
       if (changes && changes.length > 0) {
-        changes.forEach(it => {
+        changes.forEach(it => { 
           index = it[0];
           key = it[1];
           values = it[3];
@@ -2241,6 +2256,8 @@ export default {
         }
       }
       let arrTems = ['4','5','6'];
+      //这个变量是存储日期格式判断的字段的。
+      let dateStrs = ['sstartdate','senddate','srepaydate'],flag7 = false;
       this.tableData.forEach(item => {
         //isinside
         // a = item
@@ -2285,6 +2302,16 @@ export default {
           //融资的传递的参数的替换financingOptions
           if(that.templateId == "7" && key == "finance" && item){
             that.parseTypeOfFinance(key,item);
+          }else if(that.templateId == "7" && dateStrs.indexOf(key) != -1 && item){
+              let regDate = /^\d{4}(\/)\d{2}\1\d{2}$/;
+              if(regDate.test(item[key]) != true){
+                // that.$message({
+                //   message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
+                //   type:"warning"
+                // });
+                flag7 = true;
+                return;
+              }
           }
           //应收、预付、其他等表的转换。
           if(arrTems.indexOf(that.templateId) != -1 && item) {
@@ -2293,6 +2320,13 @@ export default {
           } 
         }
       });
+      if(this.templateId == 7 && flag7){
+        that.$message({
+          message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
+          type:"warning"
+        });
+        return;
+      }
       // if (this.templateId == 7) {
       //   this.tableData.forEach(item => {
       //     // if(item.senddate || item.srepaydate || item.sstartdate){

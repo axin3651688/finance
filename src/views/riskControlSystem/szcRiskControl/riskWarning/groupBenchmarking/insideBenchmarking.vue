@@ -91,7 +91,7 @@
                 this.updateData();
             },
             month(newValue, oldValue) {
-                this.updateTabOther();
+                this.updateTabOther(); 
                 this.updateData();
             }
         },
@@ -166,10 +166,15 @@
                 });
             },
             deepCopy (obj) { //深拷贝
+                debugger; 
                 let result = Array.isArray(obj) ? [] : {};
                 for (let key in obj) {
                     if (obj.hasOwnProperty(key)) {
-                        if (typeof obj[key] === 'object') {
+                        if(obj[key] == null){
+                            result[key] = null;
+                        }else if (obj[key] == undefined) {
+                            result[key] = undefined;
+                        }else if (typeof obj[key] === 'object') {
                             result[key] = this.deepCopy(obj[key]); //递归复制
                         } else {
                             result[key] = obj[key];

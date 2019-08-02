@@ -98,7 +98,6 @@ export default {
                  * 暂时干掉， 回头再调   zdk说的 2018-12-28 21:01:58
                  */
                 me.commonHandler(listener, params, tabTitleObj);
-
             });
 
         },
@@ -140,13 +139,12 @@ export default {
          * unshift()方法是向数组的开头添加一个或多个元素
          */
         addTab(params, listener, bb) {
-            // debugger;
             let module = this.$parent.$parent.$parent.$parent.items ? this.$parent.$parent.$parent.$parent : this.$parent.$parent.$parent.$parent.$parent.$parent;
             //判断指标分析的穿透
             if (!module.items) {
                 module = this.$parent.$parent.$parent.$parent.$parent.$parent.$parent;
             }
-            if(!module.items){
+            if (!module.items) {
                 module = this.$parent.$parent.$parent.$parent.$parent;
             }
             //let tab = this.$root.$children[0].$children[0].$children[1].$children[0].$children[0].$children[0];

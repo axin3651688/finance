@@ -121,4 +121,12 @@ export default {
     //     font-weight: 700;
     // }
 </style>
+<style lang="scss">
+    // .top-form-contents {
+        // .el-select-dropdown{
+        //     min-width: auto !important;
+        // }
+    // }
+</style>
+
 
