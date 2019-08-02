@@ -48,12 +48,13 @@
         {
             "id": "snljje2",
             "type": "decimal",
+            "width": "170px",
             "text": "上年累计金额"
         },  {
             "id": "text1",
             "type": "string",
             "text": "项目",
-            "width":"360px"
+            "width":"350px"
         },{
             "id":"id",
             "type":"number",
@@ -74,7 +75,7 @@
             "id": "text2",
             "type": "string",
             "text": "项目",
-            "width":"450px"
+            "width":"435px"
         }, {
             "id":"id_",
             "type":"number",

@@ -44,14 +44,14 @@
                     "id": "scode",
                     "text": "公司编码",
                     "type":"string",
-					"width":"180",
+					"width":"200",
 					"fixed":true
                 },
                 {
                     "id": "sname",
                     "text": "公司名称",
                     "type": "string",
-                    "width": "360",
+                    "width": "480",
                     "fixed": true 
                 },
                 {
@@ -63,14 +63,14 @@
                             "id" : "dys",
                             "type" : "decimal",
                             "text" : "本月数",
-                            "width": "150px",
+                            "width": "220px",
                             "align": "right"
                         },
                         {
                             "id" : "ljs",
                             "type" : "decimal",
                             "text" : "本年累计",
-                            "width": "150px",
+                            "width": "224px",
                             "align": "right"
                         }
                     ]
@@ -84,14 +84,14 @@
                             "id" : "dystq",
                             "type" : "decimal",
                             "text" : "本月数",
-                            "width": "150px",
+                            "width": "225px",
                             "align": "right"
                         },
                         {
                             "id" : "ljstq",
                             "type" : "decimal",
                             "text" : "上年累计",
-                            "width": "150px",
+                            "width": "225px",
                             "align": "right"
                         }
                     ]

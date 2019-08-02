@@ -17,8 +17,8 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="指标名称" width="360" align="center"></el-table-column>
-            <el-table-column prop="val" label="数值" width="260" align="right">
+            <el-table-column prop="sname" label="指标名称" min-width="360" align="center"></el-table-column>
+            <el-table-column prop="val" label="数值" min-width="360" align="right">
                 <template slot-scope="scope">
                     <span>{{ getValue(scope) }}</span>
                 </template>

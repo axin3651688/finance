@@ -19,6 +19,7 @@ const prame = {
             action2: 0,
             action3: 0,
             defaultOpen: 0,
+            menupermisson2: [] 
         },
         treeInfo: {
             cisdel: "N",

@@ -51,8 +51,7 @@
     export default {
         mixins: [cwtPublicJS],
         name: 'reportBack',
-        props: {
-        },
+        props: {},
         components: {
             treeTable,
             riskFeedReportComponent
@@ -82,7 +81,7 @@
         },
         data() {
             return {
-                tableHeight:500,
+                tableHeight: 500,
                 reportBackDetail: false,
                 treeData: [],
                 columns: [],
@@ -158,6 +157,7 @@
                 dialogState: '',
                 isPeriodNow: true,
 
+                fk_content: '',
 
             }
         },
@@ -307,7 +307,7 @@
                                     } else {
                                         data.operation = '1-查看';
                                     }
-                                }else{
+                                } else {
                                     if (data.status === '未反馈') {
                                         data.operation = '0-反馈';
                                     } else {
@@ -515,7 +515,7 @@
                             riskModel_riskdetaildata['riskcode'] = key;
 
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[0].content = item.riskname;
-                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = '1、风险发生概率：'+item.risk_pg.split(',')[1]+ '<br>2、风险影响程度：'+item.risk_pg.split(',')[0];
+                            riskModel_riskdetaildata_risk_pg_gs_cs_jy[1].content = '1、风险发生概率：' + item.risk_pg.split(',')[1] + '<br>2、风险影响程度：' + item.risk_pg.split(',')[0];
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[2].content = item.risk_gs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[3].content = item.risk_cs;
                             riskModel_riskdetaildata_risk_pg_gs_cs_jy[4].content = item.risk_jy;
@@ -583,10 +583,11 @@
             /**
              * 反馈成功以后页面刷新
              */
-            reportFeedSuccess() {
-
-                this.isPageReadOnly = true;
-                this.getReportData();
+            reportFeedSuccess(p) {
+                let _this = this;
+                _this.fk_content = p;
+                _this.isPageReadOnly = true;
+                _this.getReportData();
             },
 
             /**
@@ -702,7 +703,6 @@
                         }
                     ]
                 };
-
                 let _length = _data.length;
                 reportJSONData.children[0].content = _this.getInnerTextByClassName("describe");
                 _data.forEach((item, index) => {
@@ -757,6 +757,7 @@
              * @returns {*}
              */
             getRiskPs(data) {
+                let _this = this;
                 let tpl = [
                     {
                         "level": 2,
@@ -807,7 +808,7 @@
                         t.children[0].content = risk_ps.risk_ps_cl;
                         t.children[1].content = risk_ps.risk_ps_content;
                     } else {
-                        t.children[0].content = data.risk_feed_content;
+                        t.children[0].content = data.risk_feed_content || _this.fk_content;
                     }
                 });
                 return tpl;

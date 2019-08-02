@@ -63,13 +63,13 @@
                     "id" : "sndys",
                     "type" : "decimal",
                     "text" : "当月数",
-                    "width": "150px"
+                    "width": "230px"
                 },
                 {
                     "id" : "snljs",
                     "type" : "decimal",
                     "text" : "上年累计",
-                    "width": "150px"
+                    "width": "230px"
                 }
             ]
         },
@@ -84,14 +84,14 @@
             "type" : "string",
             "text" : "项目",
             "fixed": true,
-            "width": "320px"
+            "width": "460px"
         },
         {
             "id" : "row",
             "type" : "index",
             "text" : "行次",
             "align": "center",
-            "width": "60px"
+            "width": "100px"
         },
         {
             "id" : "",
@@ -102,13 +102,13 @@
                     "id" : "bqdys",
                     "type" : "decimal",
                     "text" : "本月数",
-                    "width": "150px"
+                    "width": "230px"
                 },
                 {
                     "id" : "bqljs",
                     "type" : "decimal",
                     "text" : "本年累计",
-                    "width": "150px"
+                    "width": "230px"
                 }
             ]
         }              

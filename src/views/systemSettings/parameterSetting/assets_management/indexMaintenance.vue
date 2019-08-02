@@ -16,9 +16,9 @@
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
-            <el-table-column prop="sname" label="指标名称" width="360" align="left"></el-table-column>
-            <el-table-column prop="sdescription" label="说明" align="left" :show-overflow-tooltip="showOverflowTooltip"></el-table-column>
-            <el-table-column label="操作" width="160" align="center">
+            <el-table-column prop="sname" label="指标名称" width="360" align="left" sortable></el-table-column>
+            <el-table-column prop="sdescription" label="说明" align="left" :show-overflow-tooltip="showOverflowTooltip" sortable></el-table-column>
+            <el-table-column label="操作" width="160" align="center" sortable>
                 <template slot-scope="scope">
                     <el-button class="deleteBtn" @click="deleteClick(scope)" icon="el-icon-circle-close-outline" type="warning" size="medium" plain>删除</el-button>
                 </template>

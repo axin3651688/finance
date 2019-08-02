@@ -64,6 +64,8 @@
 import BiTableColumn from "./table/BiTableColumn";
 import BiTableColumnTree from "./table/BiTableColumnTree";
 import EventMixins from "./mixins/EventMixins";
+// 引用vuex
+import { mapGetters, mapActions } from "vuex";
 export default {
   name: "BiTable",
   mixins: [EventMixins],
@@ -102,6 +104,10 @@ export default {
     };
   },
   watch: {},
+  computed: {
+        ...mapGetters(["year", "month", "company", "conversion"]),
+        ...mapGetters(["device", "user","showDims"])
+  },
   created() {
     /**
      * 页面原始高度：document.body.offsetHeight
@@ -146,8 +152,16 @@ export default {
      */
     showBtnOfExport () {
       // debugger;
-      let me = this,siderState = JSON.parse(localStorage.siderState),toolbars = this.item.toolbar,
-          menupermisson = this.$store.getters.user.menupermisson,menuItem;
+      let me = this,siderState = JSON.parse(localStorage.siderState),toolbars = this.item.toolbar,menuItem, menupermisson;
+          // menupermisson = this.$store.getters.user.menupermisson,menuItem;
+        // menupermisson =  this.user.menupermisson ; 
+        // let menupermisson = me.$store.state.prame.command.menupermisson2.length === 0? this.user.menupermisson : me.$store.state.prame.command.menupermisson2 ;
+        if(me.$store.state.prame.command.menupermisson2.length === 0){
+          menupermisson = this.user.menupermisson ;
+        }else{
+          menupermisson = me.$store.state.prame.command.menupermisson2 ;
+          menupermisson = JSON.parse(menupermisson) ;
+        }
       if(siderState && toolbars && toolbars.length > 0){
         menuItem = menupermisson.filter(item => {
           return item.id == siderState.code;
@@ -161,7 +175,7 @@ export default {
       });
       if(menuItem[0].nexp == 0){
         toolbars.forEach(item => {
-          if(item.text == "导出"){
+          if(item.text == "导出" || item.menusname == "导出"){
             item.showBtn = false;
           }else {
             item.showBtn = true;
