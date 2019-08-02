@@ -14,10 +14,10 @@
 <div class="input-refresh" ref="elememt">
     <el-form class="user-form-inline">
       <el-form-item class="left">
-        <template v-if="addButten === 1">
+        <!-- <template v-if="addButten === 1">
             <el-button  type="primary" plain @click="handleAdd('add')">添加角色</el-button>
         </template>
-        <el-button  type="success" plain @click="handleRefresh" icon="el-icon-refresh">刷新</el-button>
+        <el-button  type="success" plain @click="handleRefresh" icon="el-icon-refresh">刷新</el-button> -->
       </el-form-item>
       <!-- <el-form-item class="select">
         <el-button  type="primary" @click="handleSelect">选项</el-button>
