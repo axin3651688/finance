@@ -28,12 +28,12 @@
           <table class="table table-bordered table-striped" style="margin-top:5px;">
             <thead>
               <tr>
-                <td style="width:190px">
+                <td style="min-width:240px">
                   <i class="el-icon-info"></i>
                 </td>
-                <td style="width:280px">项 目</td>
-                <td colspan="2" style="width:400px">本期金额</td>
-                <td style="width:290px">调整后</td>
+                <td style="min-width:450px">项 目</td>
+                <td colspan="2" style="min-width:450px">本期金额</td>
+                <td style="min-width:450px">调整后</td>
               </tr>
             </thead>
             <tbody>
