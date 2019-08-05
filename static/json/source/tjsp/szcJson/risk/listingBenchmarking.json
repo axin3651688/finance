@@ -178,6 +178,7 @@
             ]
         }]
     }],
+    "fixedHeader": true,
     "displayRow": 3,
     "manyRows": [{
             "xm": "区间",

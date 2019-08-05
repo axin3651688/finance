@@ -93,7 +93,7 @@ export default {
                 let itemData = allDatas.filter(item => {
                   return item.text == a.name;
                 });
-                return a.name + ":"+ Math.decimalToLocalString(itemData[0].A/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(itemData[0].bl) +"%)";
+                return a.name + ":"+ Math.decimalToLocalString(itemData[0].A/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(itemData[0].bl || 0) +"%)";
                   // return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
               }
                 return a.name + ":" + Math.decimalToLocalString(a.value) + "("+ Math.decimalToLocalString(a.percent) +"%)";

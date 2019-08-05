@@ -704,6 +704,16 @@ export default {
                         break;
                     }
                 }
+                //排序。
+                datas.sort(function(a, b) {
+                    if (a.cyear > b.cyear) {
+                        return 1;
+                    } else if (a.cyear < b.cyear) {
+                        return -1;
+                    } else {
+                        return 0;
+                    }
+                });
                 let gaugeConfig = {
                     gaugeSname: "sindicatorname",
                     gaugeField: 'm' + month

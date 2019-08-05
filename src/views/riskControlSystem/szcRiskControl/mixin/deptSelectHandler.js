@@ -409,7 +409,6 @@ export default {
          * @param {*} data 
          */
         middleContentOfReport(lookData, objItems, data, optionsData, judgeParams) {
-            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.companyName;
@@ -666,7 +665,7 @@ export default {
                         cstrategySelect += ",";
                     }
                 }
-                jsonTwoBack.children[0].content = "风险策略为：" + cstrategySelect + "<br>";
+                jsonTwoBack.children[0].content = "风险策略为：" + cstrategySelect + "<br><p>";
                 jsonTwoBack.children[0].content += objItem.psnr || "";
             }
             jsonItem.children.push(jsonTwoBack);

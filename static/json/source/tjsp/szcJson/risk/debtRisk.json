@@ -81,19 +81,22 @@
                             "id": "E3",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "100"
                         },
                         {
                             "id": "E1",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "120"
                         },
                         {
                             "id": "E2",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         }
                     ]
                 },
@@ -114,13 +117,15 @@
                             "id": "A2",
                             "type": "string",
                             "text": "",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "A1",
                             "type": "string",
                             "text": "",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "100"
                         }
                     ]
                 },
@@ -135,13 +140,15 @@
                             "id": "B2",
                             "type": "string",
                             "text": "良好值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "B1",
                             "type": "string",
                             "text": "良好值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 },
@@ -153,13 +160,15 @@
                             "id": "C2",
                             "type": "string",
                             "text": "平均值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "C1",
                             "type": "string",
                             "text": "平均值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 },
@@ -172,13 +181,15 @@
                             "id": "D2",
                             "type": "string",
                             "text": "较低值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "D1",
                             "type": "string",
                             "text": "较低值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 }
@@ -192,17 +203,17 @@
     },
     "manyRows": [{
             "xm": "区间",
-            "A1": "X>Y1",
+            "A1": "X>Y1(X<Y1)",
             "A2": "X=Y1",
-            "B1": "Y2<X<Y1",
+            "B1": "Y2<X<Y1(Y1<X<Y2)",
             "B2": "X=Y2",
-            "C1": "Y3<X<Y2",
+            "C1": "Y3<X<Y2(Y2<X<Y3)",
             "C2": "X=Y3",
-            "D1": "Y4<X<Y3",
+            "D1": "Y4<X<Y3(Y3<X<Y4)",
             "D2": "X=Y4",
-            "E1": "Y5<X<Y4",
+            "E1": "Y5<X<Y4(Y4<X<Y5)",
             "E2": "X=Y5",
-            "E3": "X<Y5"
+            "E3": "X<Y5(X>Y5)"
         },
         {
             "xm": "分数",
