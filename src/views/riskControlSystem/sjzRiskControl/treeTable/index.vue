@@ -145,7 +145,7 @@
             }
         },
         created(){
-            this.heights = document.body.offsetHeight - 124 ;
+            this.heights = document.body.offsetHeight - 64 ;
         },
         mounted(){
             // 自适应高度
@@ -169,10 +169,10 @@
         methods: {
             // 自适应高度
             getClientHeight(){
-                this.heights = document.body.offsetHeight - 124 ;
+                this.heights = document.body.offsetHeight - 64 ;
                 const me = this ;
                 window.onresize = function temp(){ 
-                    me.heights = document.body.offsetHeight - 124 ;
+                    me.heights = document.body.offsetHeight - 64 ;
                 }
             },
             // 显示与隐藏
