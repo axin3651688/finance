@@ -1267,6 +1267,7 @@ export default {
         }
       }
       if (changes && changes.length > 0) {
+        debugger;
         changes.forEach(it => { 
           index = it[0];
           key = it[1];
@@ -1287,7 +1288,12 @@ export default {
           me.values = values;
           //融资的status可以传过去 空字符串 ""
           if (values == "" && key != "status" && key != "accountbanks" && key != "cusuppliername" && me.templateId != "7") {
-            values = 0;
+            let letterReg = /^[A-Z]{0,1}$/;
+            if(letterReg.test(key)){
+              value = 0;
+            }else {
+              values = "";
+            }
           }
           let arr = datas.filter(record => {
             return record.cusuppliername != null;
