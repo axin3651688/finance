@@ -738,31 +738,31 @@ export default {
       let currentRoleId = getters.user.role.id;
       let rightDatas = _this.rightDatas;
       let authData = _this.rightAllDatas;
-      let changeDatas = [];
-      if(authData && rightDatas && rightDatas.length>0 && authData.length>0){
-         for(let i = 0;i< rightDatas.length;i++){
-            let data = authData.filter(function(item){
-              if(rightDatas[i].id == item.id){              
-                  if(rightDatas[i].nadd2  != item.nadd2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].nupdate2  != item.nupdate2
-                   || rightDatas[i].nexp2  != item.nexp2 || rightDatas[i].nimp2  != item.nimp2 || rightDatas[i].nfill2  != item.nfill2 || rightDatas[i].nrep2  != item.nrep2
-                    || rightDatas[i].nper2  != item.nper2 || rightDatas[i].nwarn2  != item.nwarn2 || rightDatas[i].nreview2  != item.nreview2 || rightDatas[i].scode2  != item.scode2){
-                      return item;
+      let changeDatas = [{ "id": "1" }];
+      // if(authData && rightDatas && rightDatas.length>0 && authData.length>0){
+      //    for(let i = 0;i< rightDatas.length;i++){
+      //       let data = authData.filter(function(item){
+      //         if(rightDatas[i].id == item.id){              
+      //             if(rightDatas[i].nadd2  != item.nadd2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].ndel2  != item.ndel2 || rightDatas[i].nupdate2  != item.nupdate2
+      //              || rightDatas[i].nexp2  != item.nexp2 || rightDatas[i].nimp2  != item.nimp2 || rightDatas[i].nfill2  != item.nfill2 || rightDatas[i].nrep2  != item.nrep2
+      //               || rightDatas[i].nper2  != item.nper2 || rightDatas[i].nwarn2  != item.nwarn2 || rightDatas[i].nreview2  != item.nreview2 || rightDatas[i].scode2  != item.scode2){
+      //                 return item;
 
-                  }
-              }
+      //             }
+      //         }
 
-            });
-            if(data.length >0 ){
-                changeDatas.push(data);
-            }
-          //  for(let j = 0;j<authData.length;j++){
-          //     if(rightDatas[i].id == authData[j].id){
-          //        if()
-          //     }
-          //  }
+      //       });
+      //       if(data.length >0 ){
+      //           changeDatas.push(data);
+      //       }
+      //     //  for(let j = 0;j<authData.length;j++){
+      //     //     if(rightDatas[i].id == authData[j].id){
+      //     //        if()
+      //     //     }
+      //     //  }
 
-         }
-      }    
+      //    }
+      // }    
       if(changeDatas.length >0){
         let data = [];
         if(rightDatas.length>0){

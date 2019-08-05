@@ -17,10 +17,10 @@
                         </div>
                         <table class="table2" style="float:left;">
                             <tr class="tr0">
-                                <th class="heightx" style="height:98px;line-height: 98px;">资产状况</th>
+                                <th class="heightx" style="height:122px;line-height: 122px;">资产状况</th>
                             </tr>
                             <tr class="tr0">
-                                <th class="heightx" style="height:197px;line-height:197px;">效益状况</th>
+                                <th class="heightx" style="height:245px;line-height:245px;">效益状况</th>
                             </tr>
                         </table>
                         <table class="table" id="cityResults2">
@@ -83,21 +83,21 @@
                                 <td>{{ expx.lrtbljzz }}</td>
                             </tr>
                             <tr class="tr1">
-                                <th colspan="5" class="heights" style="width:750px;">成本费用利润率（%）</th>
+                                <th colspan="10" class="heights" style="width:750px;">成本费用利润率（%）</th>
                             </tr>
                             <tr class="tr2">
-                                <th style="width:150px">本月末</th>
-                                <th style="width:150px">环比增长（%）</th>
-                                <th style="width:150px">同比增长（%）</th>
-                                <th style="width:150px">本年累计</th>
-                                <th style="width:150px">同比增长（%）</th>
+                                <th colspan="2" style="width:150px">本月末</th>
+                                <th colspan="2" style="width:150px">环比增长（%）</th>
+                                <th colspan="2" style="width:150px">同比增长（%）</th>
+                                <th colspan="2" style="width:150px">本年累计</th>
+                                <th colspan="2" style="width:150px">同比增长（%）</th>
                             </tr>
                             <tr class="tr3">
-                                <td>{{ expx.cblbys }}</td>
-                                <td>{{ expx.cblrhbzz }}</td>
-                                <td>{{ expx.cblrtbzz }}</td>
-                                <td>{{ expx.cblj }}</td>
-                                <td>{{ expx.cblrtbljzz }}</td>
+                                <td colspan="2" >{{ expx.cblbys }}</td>
+                                <td colspan="2" >{{ expx.cblrhbzz }}</td>
+                                <td colspan="2" >{{ expx.cblrtbzz }}</td>
+                                <td colspan="2" >{{ expx.cblj }}</td>
+                                <td colspan="2" >{{ expx.cblrtbljzz }}</td>
                             </tr>
                         </table>
                     </div>                   
@@ -670,8 +670,8 @@ export default {
         color: #606266;
     }
     .heights {
-        height: 32px;
-        line-height: 32px;
+        height: 40px;
+        line-height: 40px;
         font-size: 14px;
     }
     .heightx {
@@ -685,17 +685,17 @@ export default {
         /* color: #909399 ; */
     }
     .tr2 th {
-        height: 32px;
-        line-height: 32px;
+        height: 40px;
+        line-height: 40px;
         font-size: 14px;
         color: #606266;
         /* color: #909399 ; */
     }
     .tr3 td {
-        height: 32px;
-        line-height: 32px;
+        height: 40px;
+        line-height: 40px;
         text-align: right;
-        padding-right: 3px;
+        padding-right: 10px;
     }
     .tr1,.tr2,.tr0 {
         background-color: rgb(240, 248, 255);

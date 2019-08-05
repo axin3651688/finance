@@ -151,8 +151,11 @@ export default {
      * @author szc 2019年4月10日13:38:14
      */
     showBtnOfExport () {
-      // debugger;
-      let me = this,siderState = JSON.parse(localStorage.siderState),toolbars = this.item.toolbar,menuItem, menupermisson;
+      debugger;
+      let me = this,
+          siderState = JSON.parse(localStorage.siderState),
+          toolbars = this.item.toolbar,menuItem, 
+          menupermisson;
           // menupermisson = this.$store.getters.user.menupermisson,menuItem;
         // menupermisson =  this.user.menupermisson ; 
         // let menupermisson = me.$store.state.prame.command.menupermisson2.length === 0? this.user.menupermisson : me.$store.state.prame.command.menupermisson2 ;
@@ -160,7 +163,9 @@ export default {
           menupermisson = this.user.menupermisson ;
         }else{
           menupermisson = me.$store.state.prame.command.menupermisson2 ;
-          menupermisson = JSON.parse(menupermisson) ;
+          if(!Array.isArray(menupermisson)){
+            menupermisson = JSON.parse(menupermisson) ;
+          }
         }
       if(siderState && toolbars && toolbars.length > 0){
         menuItem = menupermisson.filter(item => {
