@@ -61,6 +61,7 @@
                     } else {
                         datax.push(item);
                     }
+                    if (item.scode == '9') item.scode = '';
                 });
                 if (datax.length > 0) {
                     datax.forEach(item => {
@@ -80,8 +81,7 @@
                 "random": { "min": 100, "max": 100000 },
                 "type": 1,
                 "tableHeads": true,
-                "columns": [
-                    {
+                "columns": [{
                         "id": "szxssje",
                         "type": "decimal",
                         "width": "180px",
@@ -217,9 +217,9 @@
                     config.sql = config.sql2;
                 }
                 // 预警比例请求
-                let _sql = me.config.riskrangeSql ;
+                let _sql = me.config.riskrangeSql;
                 let user = $vue.$store.getters.user.user.userName;
-                _sql = _sql.replace(/:company/g,"'"+params.company+"'").replace(/:period/g,"'"+params.period+"'").replace(/:suser/g,"'"+user+"'") ;
+                _sql = _sql.replace(/:company/g, "'" + params.company + "'").replace(/:period/g, "'" + params.period + "'").replace(/:suser/g, "'" + user + "'");
                 let shuju = {
                     cubeId: 4,
                     sql: _sql
@@ -230,23 +230,24 @@
             },
             "queryDataAfter": function(data, $vue) {
                 debugger
-                let riskrangeData = $vue.riskrangeData ;
-                let first , second ;
-                if(riskrangeData.length == 0){
-                    first = 0 ; second = 0 ;
-                }else{
+                let riskrangeData = $vue.riskrangeData;
+                let first, second;
+                if (riskrangeData.length == 0) {
+                    first = 0;
+                    second = 0;
+                } else {
                     riskrangeData.forEach(qwe => {
-                        if(qwe.sratiotype == 1)first = qwe.fact_a ;
-                        if(qwe.sratiotype == 2)second = qwe.fact_a ;
+                        if (qwe.sratiotype == 1) first = qwe.fact_a;
+                        if (qwe.sratiotype == 2) second = qwe.fact_a;
                     })
                 }
                 // 循环
                 data.forEach(res => {
-                    if(first && first!=0 && res.zjl && res.zjl <= first)res.riskrange = "安全" ;
-                    if(second && second!=0 && res.zjl && res.zjl >= second)res.riskrange = "预警" ;
-                    if(first && first!=0 && second && second!=0 && res.zjl && res.zjl>first && res.zjl<second)res.riskrange = "提示" ;
-                    if(first == 0 && second == 0)res.riskrange = "" ;
-                    if(!res.zjl || res.zjl == 0)res.riskrange = "" ;
+                    if (first && first != 0 && res.zjl && res.zjl <= first) res.riskrange = "安全";
+                    if (second && second != 0 && res.zjl && res.zjl >= second) res.riskrange = "预警";
+                    if (first && first != 0 && second && second != 0 && res.zjl && res.zjl > first && res.zjl < second) res.riskrange = "提示";
+                    if (first == 0 && second == 0) res.riskrange = "";
+                    if (!res.zjl || res.zjl == 0) res.riskrange = "";
                 })
                 return data;
             },
@@ -485,7 +486,7 @@
             //         "icon": "≥"
             //     }
             // ],
-            "drillProperties":["riskrange","gsmc"],
+            "drillProperties": ["riskrange", "gsmc"],
             "__onRowClick": function(row, column, e, $this) {
                 debugger
                 let id = row.gsbm,
@@ -494,9 +495,9 @@
                     if (row.gsmc != "" && row.gsmc != undefined) {
                         if (this.config.sql == 9) { //一级公司下钻
                             let str = text;
-                            let regex = /\(|\)|（|）/g ;
+                            let regex = /\(|\)|（|）/g;
                             let is = regex.test(text);
-                            if(is){
+                            if (is) {
                                 $this.commonHandler({
                                     "type": "click", //事件类型
                                     "way": "addTab", //调用的公共方法
@@ -506,7 +507,7 @@
                                         debugger;
                                     }
                                 }, { row: row, column: column, e: e }, { id: id, text: text });
-                            }else{
+                            } else {
                                 $this.commonHandler({
                                     "type": "click", //事件类型
                                     "way": "addTab", //调用的公共方法
@@ -531,23 +532,23 @@
                     }
                 }
             },
-            "levelProperties":{scode:"_level"},//加缩进 可选 table
+            "levelProperties": { scode: "_level" }, //加缩进 可选 table
             "cellStyle": function(row, obj) {
                 debugger
 
                 let css = "padding: 4px 0;";
-                
+
                 let pro = row.column.property;
                 if (!pro) {
                     return css;
                 }
 
-                let levelProperties = this.levelProperties;//缩进列获取
-                let textIndent ="";
+                let levelProperties = this.levelProperties; //缩进列获取
+                let textIndent = "";
                 let levelPro = levelProperties[pro];
                 if (levelPro && row.row[levelPro]) {
                     let level = row.row[levelPro] || 1;
-                    textIndent = "text-indent: " + (level*20) + "px" ; 
+                    textIndent = "text-indent: " + (level * 20) + "px";
                 }
 
                 let record = row.row;
@@ -565,7 +566,7 @@
                         let drill = "text-decoration: none;color: red;font-weight: bold;cursor: pointer;text-align: center;";
                         css = css + "font-weight:bold;" + textIndent + drill;
                         return css;
-                    } 
+                    }
                     // else if (pro == "gsmc" && record.gsmc != "总计") {
                     //     let drill = "text-decoration: none;color: #428bca;font-weight: bold;cursor: pointer;";
                     //     css = css + "font-weight:bold;" + textIndent + drill;

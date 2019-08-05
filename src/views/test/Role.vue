@@ -411,6 +411,7 @@ export default {
      * 
      */
     handleSelectionChange(rowIndex,changeDatas){
+      debugger;
       let _this = this;
       let row = rowIndex.row;
       if(row._isChecked){
