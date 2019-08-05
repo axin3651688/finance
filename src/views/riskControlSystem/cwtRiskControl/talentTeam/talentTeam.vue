@@ -283,7 +283,7 @@
                             _this.selectedTableData = res.data.data.ratio;
                             _this.allTableData = res.data.data.detail.list;
 
-                            _this.allTableType.lastPage = res.data.data.detail.lastPage;
+                            _this.allTableType.lastPage = res.data.data.detail.pages;
 
                         } else {
                             _this.selectedTableData = res.data.data.ratio;

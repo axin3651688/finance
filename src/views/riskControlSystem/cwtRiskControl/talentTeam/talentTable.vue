@@ -39,7 +39,7 @@
                 </template>
             </el-table>
 
-            <div class="tabListPage">
+            <div class="tabListPage" v-if="tableType.type === 'currentPage'">
                 <el-pagination
                         background
                         @size-change="handleSizeChange"
