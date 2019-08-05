@@ -409,12 +409,25 @@ export default {
          * @param {*} data 
          */
         middleContentOfReport(lookData, objItems, data, optionsData, judgeParams) {
+            debugger;
             let me = this,
                 storeParams = me.$store.getters,
                 company = storeParams.companyName;
             if (judgeParams && judgeParams.scope) {
                 company = judgeParams.scope.row.sname;
             }
+            //重置导出的json格式
+            // me.jsonBeanData = {
+            //     level: 0,
+            //     leaf: 0,
+            //     text: "",
+            //     children: [{
+            //         text: "总述",
+            //         level: 1,
+            //         leaf: 1,
+            //         content: ""
+            //     }]
+            // };
             let numCh = {
                 1: '一、',
                 2: '二、',
@@ -443,6 +456,14 @@ export default {
                     }
                 };
                 jsonItem.text = item.riskspname;
+                //二级装好多的三级用的。
+                let jsonTwoChildren = {
+                    level: 2,
+                    leaf: 0,
+                    type: "text",
+                    content: "<strong>",
+                    children: []
+                };
                 for (let j = 0; j < lookData.length; j++) {
                     let jsonTwo = {
                         level: 2,
@@ -529,16 +550,22 @@ export default {
                         objItem.contentUp.content.push(contentLast);
                         //风险的条数。
                         objItem.riskCount++;
-                        //导出格式从第二个开始的统一格式。
-                        me.jsonFormatOfTwo(jsonItem, [objUpContentFXMC, objUpContentFXPG, objUpContentFXGS, objUpContentCQCS, objUpContentYDJY]);
+                        //二层格式的转换。
+                        me.jsonFormatOfThree(jsonTwoChildren, [objUpContentFXMC, objUpContentFXPG, objUpContentFXGS, objUpContentCQCS, objUpContentYDJY]);
+                        // //导出格式从第二个开始的统一格式。
+                        // me.jsonFormatOfTwo(jsonItem, [objUpContentFXMC, objUpContentFXPG, objUpContentFXGS, objUpContentCQCS, objUpContentYDJY]);
                         //领导批示内容。
-                        if (i == objItems.length - 1 && j == lookData.length - 1) {
-                            if (objItems[i].instructionid == 1) {
-                                me.instructionsContent(jsonItem, objItems[i], optionsData);
-                            }
-                        }
+                        // if (i == objItems.length - 1 && j == lookData.length - 1) {
+                        //     if (objItems[i].instructionid == 1) {
+                        //         me.instructionsContent(jsonItem, objItems[i], optionsData);
+                        //     }
+                        // }
                     }
                 }
+                me.jsonFormatOfTwo(jsonItem, jsonTwoChildren);
+                // jsonItem.children.push(jsonTwoChildren);
+                //导出格式从第二个开始的统一格式。
+                // me.jsonFormatOfTwo(jsonItem, [objUpContentFXMC, objUpContentFXPG, objUpContentFXGS, objUpContentCQCS, objUpContentYDJY]);
                 data.push(objItem);
             }
             return data;
@@ -546,7 +573,14 @@ export default {
         /**
          * 从第二个开始的格式。
          */
-        jsonFormatOfTwo(jsonItem, itemArr) {
+        jsonFormatOfTwo(jsonItem, jsonTwoChildren) {
+            // debugger;
+            let me = this,
+                jsonBeanData = me.jsonBeanData;
+            jsonItem.children.push(jsonTwoChildren);
+            jsonBeanData.children.push(jsonItem);
+        },
+        jsonFormatOfTwo_old(jsonItem, itemArr) {
             let me = this,
                 jsonBeanData = me.jsonBeanData;
             itemArr.forEach(item => {
@@ -575,6 +609,28 @@ export default {
                 jsonItem.children.push(jsonTwoBack);
             });
             jsonBeanData.children.push(jsonItem);
+        },
+        /**
+         * 第三层数据结构。
+         */
+        jsonFormatOfThree(jsonTwoBack, itemArr) {
+            itemArr.forEach(item => {
+                jsonTwoBack.content = jsonTwoBack.content + item.title;
+                let childItemOut = {
+                    level: 3,
+                    leaf: 1,
+                    type: "text",
+                    content: ""
+                }
+                for (let i = 0; i < item.content.length; i++) {
+                    let itemChild = item.content[i];
+                    if (i != item.content.length - 1) {
+                        itemChild += "<br>"
+                    }
+                    childItemOut.content = childItemOut.content + itemChild;
+                }
+                jsonTwoBack.children.push(childItemOut);
+            });
         },
         /**
          * 领导批示内容。

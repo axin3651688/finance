@@ -82,13 +82,13 @@
             "id": "fzze",
             "type": "decimal",
             "width": "180px",
-            "text": "负债总额期末数"
+            "text": "负债总额"
         },
         {
             "id": "zcfzl",
             "type": "decimal",
             "width": "160px",
-            "text": "资产负债率期末数"
+            "text": "资产负债率"
         },
         {
             "id": "",

@@ -141,6 +141,7 @@ export default {
             referenceShow:false,//参照显示与否。
             firstFlag:true,
             secondFlag:true,
+            //导出数据格式
             jsonBeanData:{
                 level:0,
                 leaf:0,
@@ -153,7 +154,7 @@ export default {
                         content: ""
                     }
                 ]
-            }//导出数据格式
+            }
         }
     },
     /**
