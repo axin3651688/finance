@@ -8,7 +8,9 @@
         <el-header class="guidance_header">
             <el-button class="header_btn" type="warning" plain size="mini" @click="modifyClick"><i class="el-icon-edit-outline tubiao"></i>修 改</el-button>
             <el-button class="header_btn" type="primary" plain size="mini" @click="importClick"><i class="iconfont icon-daochu tubiao"></i>导 出</el-button>
-            <el-button class="header_btn" type="primary" plain size="mini"><i class="iconfont icon-daochu tubiao"></i>预 览</el-button>
+            <el-button class="header_btn" type="primary" plain size="mini" @click.native="previewClick">
+                <router-link to="riskGuidancePreview" target="_blank"><i class="iconfont icon-daochu tubiao"></i>预 览</router-link>
+            </el-button>
         </el-header>
         <!-- 内容部分 -->
         <el-container class="guidance_container">
@@ -424,7 +426,7 @@ export default {
         -o-transition: All 0.4s ease-in-out;
     }
     .col_class:hover, .col_classA:hover {
-        color: teal ;
+        /* color: teal ; */
         /* background-color:antiquewhite; */
         /* transform: scale(1.2);
         transform: translate(0, -10px);
