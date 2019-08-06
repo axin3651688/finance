@@ -196,7 +196,6 @@
              * 指定的人员的下达。只有一个批示，ly说的。2019年6月12日15:36:37
              */
             personSureBtnClicked (nodes) {
-                debugger;
                 let me = this,instructionsRpt = me.$store.instructionsRpt,allData = me.reportData.allData;
                 if(!instructionsRpt){
                     me.$message({
@@ -314,6 +313,15 @@
              * 风险批示之后的处理。
              * @author szc 2019年5月29日14:15:01
              */
+            afterInstructionRpt_old(){
+                this.$emit("eventHandler");
+                this.instructionRelease = false;
+                this.personnelListShow = !this.personnelListShow;
+                this.reportConventional = false;
+                this.$nextTick(()=>{
+                    this.reportConventional = true;
+                })
+            },
             afterInstructionRpt (afterParams) {
                 let me = this,middleData = me.middleData;
                 let itemMiddle = middleData[middleData.length - 1];
@@ -347,6 +355,7 @@
                 me.$nextTick(()=>{
                     me.reportConventional = true;
                 })
+                this.$emit("eventHandler");
             },
             afterInstructionRpt_old (afterParams) {
                 let me = this,middleData = me.middleData;

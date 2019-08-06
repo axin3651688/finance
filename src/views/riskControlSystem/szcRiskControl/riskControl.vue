@@ -33,7 +33,7 @@
                                         <el-button type="primary" plain @click="returnCurrentClick">返回</el-button>       
                                     </div>                                
                                 </el-header>
-                                <reportContent :reportData="reportData"></reportContent>
+                                <reportContent :reportData="reportData" v-on:eventHandler="eventHandlerReport"></reportContent>
                             </el-col>
                         </el-row>
                     </div>
@@ -373,6 +373,9 @@ export default {
                         if(res.data.code == 200){
                             let resData = res.data.data[0];
                             me.paramsSqlOfGlobal(params,resData);
+                            //请求参数放到this对象上，便于使用。
+                            me.requestParams = params;
+                            me.requestJudgeParams = judgeParams;
                             findThirdPartData(params).then(res => {
                                 if(res.data.code == 200) {
                                     if(judgeParams.id == "treeTable"){
@@ -787,6 +790,18 @@ export default {
             jsonBeanData.text = title;
             let headerReport = document.getElementById("risk_report_header"),headerContent = headerReport.innerText;
             jsonBeanData.children[0].content = headerContent;
+        },
+        /**
+         * 事件处理。
+         */
+        eventHandlerReport () {
+            let me = this,params = this.requestParams,judgeParams = this.requestJudgeParams;
+            findThirdPartData(params).then(res => {
+                if(res.data.code == 200) {
+                    me.sortByPropty(res.data.data,"riskspcode");
+                    me.lookInstructionRes(res.data.data,judgeParams);
+                }
+            });
         }
     }
 };
