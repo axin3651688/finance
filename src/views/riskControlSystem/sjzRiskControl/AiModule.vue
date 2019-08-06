@@ -5,7 +5,7 @@
 -->
     <div id="riskReport">
         <!-- 按钮 -->
-        <el-button-group>
+        <!-- <el-button-group>
             <el-button 
             v-if="item.toolbar && item.toolbar.length>0"
             v-show="!isShow"
@@ -18,7 +18,7 @@
             :icon="btn.icon">
                 {{ btn.text }}
             </el-button>
-        </el-button-group>
+        </el-button-group> -->
         <!-- 树表组件 -->
         <tree-table 
         v-show="!isShow"
