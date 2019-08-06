@@ -8,11 +8,15 @@
         <el-header class="guidance_header">
             <el-button class="header_btn" type="warning" plain size="mini" @click="modifyClick"><i class="el-icon-edit-outline tubiao"></i>修 改</el-button>
             <el-button class="header_btn" type="primary" plain size="mini" @click="importClick"><i class="iconfont icon-daochu tubiao"></i>导 出</el-button>
+            <el-button class="header_btn" type="primary" plain size="mini"><i class="iconfont icon-daochu tubiao"></i>预 览</el-button>
         </el-header>
         <!-- 内容部分 -->
         <el-container class="guidance_container">
             <!-- 目录部分 -->
             <el-aside class="guidance_aside container_aside col_A">
+                <div class="guidance_title">
+                    <span>{{ riskTitle }}</span>
+                </div>
                 <div v-if="directory.length > 0" class="col_A">
                     <el-menu :default-active="directory[0].index" class="el-menu-vertical-demo asideA col_A">
                         <el-menu-item 
@@ -28,7 +32,7 @@
                         </el-menu-item>
                     </el-menu>
                 </div>
-                <div class="aside_title_message" v-else>暂无数据显示！</div>
+                <div class="aside_title_message" v-else>暂无目录数据显示！</div>
             </el-aside>
             <!-- 正文部分 -->
             <el-main class="guidance_main">
@@ -105,10 +109,14 @@
 import {
     // 目录查询接口
     selectAll ,
-    // 标题查询接口
-    riskguidetitle_All,
-    // 标题添加接口
-    riskguidetitle_Add
+    // 指引制度标题查询接口
+    riskguidetitle_All ,
+    // 指引制度标题添加接口
+    riskguidetitle_Add ,
+    // 指引制度标题删除接口
+    riskguidetitle_Delete ,
+    // 指引制度标题修改接口
+    riskguidetitle_Updata
 } from './riskInterface.js' ;
 // 导出文档js
 import riskGuidance from './import_riskGuidance_world.js'
@@ -134,6 +142,9 @@ export default {
             third: 0 ,                          // 第三层次内容的index
             menuVisible: false ,                // 右键点击按钮的弹出框 默认为关闭状态   
             directoryObj: {} ,                  // 目录点击的信息存放
+            /* */
+            riskTitle: "" ,
+            readonlyTitle: false 
         }
     },
     created(){
@@ -150,6 +161,8 @@ export default {
         // ----
         // 设置表格高度（自适应）
         this.setTableScollHeight() ;
+        // 标题查询
+        this.riskguidetitle_All_request() ;
         // 目录查询接口
         this.directoryRequest() ;
     },
@@ -170,7 +183,7 @@ export default {
          * 右键点击功能
          */
         contentRightClick(item, index){
-            debugger
+            // debugger
             // this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
             // this.menuVisible = true // 显示模态窗口，跳出自定义菜单栏
             // var menu = document.querySelector('#menu')
@@ -190,6 +203,37 @@ export default {
             document.removeEventListener('click', this.foo) 
         },
         /**
+         * @function 标题查询接口
+         */
+        riskguidetitle_All_request(){
+            const me = this ;
+            riskguidetitle_All().then(res => {
+                if(res.data.code === 200){  
+                    me.riskTitle = res.data.data[0].sname ;
+                }else if(res.data.code === 1001){
+                    me.riskguidetitle_Add_request() ;
+                }else {
+                    me.$message.error(res.data.msg) ;
+                }
+            })
+        },
+        /**
+         * @function 标题添加接口
+         */
+        riskguidetitle_Add_request(){
+            const me = this ;
+            let params = [{
+                id: 0 ,
+                pid: 0,
+                sname: "风险指引制度"
+            }]
+            riskguidetitle_Add(params).then(res => {
+                if(res.data.code === 200){
+                    me.riskguidetitle_All_request() ;
+                }
+            })
+        },
+        /**
          * @function 目录查询接口
          */
         directoryRequest(){
@@ -199,7 +243,7 @@ export default {
                 titleId : 1,
                 sqlKey : "RiskGuide.selectCatalog"
             }
-            selectAll(params).then(res => {
+            selectAll(params).then(res => { 
                 if(res.data.code === 200) {
                     me.first = 0 ;
                     me.second= 0 ;
@@ -210,7 +254,11 @@ export default {
                     me.directoryObj = me.directory[0] ;
                     me.contentRequest() ; // 内容查询方法
                 } else if(res.data.code === 1001) {
-                    me.$message(res.data.msg + '请添加标题内容') ;
+                    me.$message(res.data.msg + '请添加目录') ;
+                    me.content_A = [] ;
+                    me.content_B = [] ;
+                    me.content_C = [] ;
+                    me.directory = [] ;
                 } else {
                     me.$message.error(res.data.msg) ;
                 }   
@@ -243,7 +291,7 @@ export default {
         /**
          * @function 内容的处理
          */
-        contentsProcessing(cc){ //debugger
+        contentsProcessing(cc){ 
             let me = this ;
             let aa, bb, $index ;
             me.content_A = [] ;
@@ -252,7 +300,10 @@ export default {
             // 第一层次内容
             me.content_A = cc.filter(item2 => { return item2.nlevel === 1 }) ;
             // me.content_A[0].chartpath = 'https://ss3.bdstatic.com/70cFv8Sh_Q1YnxGkpoWK1HF6hhy/it/u=85690711,3884201894&fm=27&gp=0.jpg' ;
-
+            if(me.content_A.length === 1 && !me.content_A[0].scontent){
+                me.content_A.length = [] ;
+                return ;
+            }
             if(me.me.content_A.length === 0)return false ;
             // 第二层次内容
             aa = cc.filter(item3 => { return item3.nlevel === 2 }) ;
@@ -384,10 +435,12 @@ export default {
         background-color: rgb(186, 218, 247);
     }
     .first {
-        color: teal;
+        /* color: teal; */
+        background: rgb(218, 255, 202);
     }
     .second {
-        color: teal;
+        /* color: teal; */
+        background: rgb(218, 255, 202);
     }
 
 
