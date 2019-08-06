@@ -423,7 +423,7 @@ export default {
         -moz-transition: All 0.4s ease-in-out;
         -o-transition: All 0.4s ease-in-out;
     }
-    .col_class:hover {
+    .col_class:hover, .col_classA:hover {
         color: teal ;
         /* background-color:antiquewhite; */
         /* transform: scale(1.2);
