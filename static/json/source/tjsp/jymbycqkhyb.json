@@ -12,11 +12,11 @@
         option.closeTabTaget(newyear, option);
     },
     "changeMonthBefore": function(newmonth, option) {
-        debugger
+        // debugger
         option.closeTabTaget(newmonth, option);
     },
     "__queryDataAfter": function(data, $vue) { //数据的后置处理
-        debugger
+        // debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
@@ -277,7 +277,7 @@
                 // "background-color":"#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
@@ -293,7 +293,7 @@
                 // "background-color":"#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 vue.handleDownload(vue);
             }

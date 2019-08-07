@@ -15,14 +15,14 @@
 			"weight": 24,
             "show":true,
             "queryDataBefore":function(params, config, $vue){
-                debugger
+                // debugger
                 let len = $vue.items.length;
 				let id = $vue.items[len-1].id;
                 params.dimitem = id ; 
                 return params; 
             },
             "config":{
-                "sql":"WITH T1 AS( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE, NLEVEL FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE='1' CONNECT BY PRIOR SCODE = SPCODE) , T2 AS ( SELECT ROOT_SCODE, SCODE, NLEVEL FROM T1 WHERE ROOT_SCODE IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE ) ), t3 as ( select root_scode, sum(case when DIM_PERIOD=:period then FACT_A else 0 end) as dys, sum(case when DIM_PERIOD=:period then FACT_b else 0 end) as ljs, sum(case when DIM_PERIOD=:comparePeriod then FACT_A else 0 end) as dystq, sum(case when DIM_PERIOD=:comparePeriod then FACT_b else 0 end) as ljstq from t2 a left join ( select dim_company,DIM_PERIOD,fact_a, fact_b from DW_FACTBASICSITUATION where DIM_PERIOD in (:period,:comparePeriod) and DIM_ITEM=:dimitem ) b on a.scode=b.DIM_COMPANY group by root_scode order by ROOT_SCODE ) select root_scode scode,root_scode gsbm,sname,spcode as pid, dys, ljs, dystq, ljstq from t3 left join (select scode,sname,spcode from dw_dimcompany ) t4 on t3.root_scode = t4.scode order by root_scode",
+                "sql":"WITH T1 AS( SELECT CONNECT_BY_ROOT SCODE AS ROOT_SCODE, SCODE, NLEVEL FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE='1' CONNECT BY PRIOR SCODE = SPCODE) , T2 AS ( SELECT ROOT_SCODE, SCODE, NLEVEL FROM T1 WHERE ROOT_SCODE IN ( SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE ) ), t3 as ( select root_scode, sum(case when DIM_PERIOD=:period then FACT_A else 0 end) as dys, sum(case when DIM_PERIOD=:period then FACT_b else 0 end) as ljs, sum(case when DIM_PERIOD=:comparePeriod then FACT_A else 0 end) as dystq, sum(case when DIM_PERIOD=:comparePeriod then FACT_b else 0 end) as ljstq from t2 a left join ( select dim_company,DIM_PERIOD,fact_a, fact_b from DW_FACTBASICSITUATION where DIM_PERIOD in (:period,:comparePeriod) and DIM_ITEM=:dimitem ) b on a.scode=b.DIM_COMPANY group by root_scode order by ROOT_SCODE ) select root_scode scode,root_scode gsbm,sname,spcode as spcode, dys, ljs, dystq, ljstq from t3 left join (select scode,sname,spcode from dw_dimcompany ) t4 on t3.root_scode = t4.scode order by root_scode",
 				"_cube": {
 					"subject": "1005",
 					"cubeId": 4,
@@ -51,7 +51,7 @@
                     "id": "sname",
                     "text": "公司名称",
                     "type": "string",
-                    "width": "480",
+                    "width": "497",
                     "fixed": true 
                 },
                 {

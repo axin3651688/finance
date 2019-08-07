@@ -77,6 +77,7 @@ import treeTable from "@v/yskxx/treeTable";
 import { findThirdPartData, findDesignSource } from "~api/interface";
 // 导出
 import EventMixins from "@c/mixins/EventMixins.js";
+import tools from "utils/tools";
 export default {
     components: {
         treeTable
@@ -347,77 +348,28 @@ export default {
         /**
          * @event 2.1树表的类型处理
          */
-        array(datas){
-            let data = datas;
-            let cc = this.rows ;
-            let arr = [];
-            let index = 0;
-            let flag = false;
-            //找到父亲,可能存在好多个父节点，但是一般是一个，暂时只做一个处理。
-            let root, rootItem, demoItem;
-            let rootArr = [];
-            if (data && data.length > 0) {
-                demoItem = data[0];
-                if (demoItem.pid) {
-                    for (let i = 1; i < data.length - 1; i++) {
-                        let eveItem = data[i];
-                        //公司gsbm，数据sql查出来是这样的字段，所以暂时用这个，后面在改
-                        if (eveItem.gsbm == demoItem.pid) {
-                            demoItem = eveItem;
-                        }
+        array(data){
+            const setting = {
+                data: {
+                    simpleData: {
+                        enable: true,
+                        idKey: "scode",
+                        pIdKey: "spcode"
+                    },
+                        key: {
+                        name: "scode",
+                        children: "children"
                     }
-                    rootItem = demoItem;
-                } else {
-                    rootItem = demoItem;
                 }
-            }
-            //找到多个父节点
-            for (let i = 0; i < data.length; i++) {
-                // if(i == data.length)return rows ;
-                if (!data[i].pid) {
-                    rootArr.push(data[i]);
-                }
-            }
-            if (rootArr && rootArr.length > 1) {
-                for (let i = 0; i < rootArr.length; i++) {
-                    let it = rootArr[i];
-                    this.tranformData(data, it);
-                }
-                // this.item.rows = rootArr;
-                this.rows = rootArr;
-            } else {
-                if (rootItem) {
-                    this.tranformData(data, rootItem);
-                }
-                // this.item.rows = rootItem;
-                this.rows = rootItem;
-            }
-        },
-        /**
-         * @event 2.2树表的类型处理
-         */
-        tranformData(data, rootItem){
-            let me = this;
-            let children = [];
-            let dataArr = [];
-            rootItem.children = children;
-            for (let i = 0; i < data.length; i++) {
-                let it = data[i];
-                if (it.gsbm === rootItem.gsbm) {
-                    continue;
-                }
-                //满足条件的就塞进去，不满足的塞到另一个新数组中
-                if (rootItem.gsbm == it.pid) {
-                    rootItem.children.push(it);
-                } else {
-                    dataArr.push(it);
-                }
-            }
-            if (rootItem.children && rootItem.children.length > 0) {
-                for (let i = 0; i < rootItem.children.length; i++) {
-                    let tt = rootItem.children[i];
-                    me.tranformData(dataArr, tt);
-                }
+            };
+            if (Array.isArray(data) && data.length > 0) {
+                data = tools.sortByKey(data, "scode");
+                data = data.filter(function(item) {
+                    item.id = item.scode;
+                    item.label = "(" + item.scode + ") " + item.sname;
+                    return item;
+                });
+                this.rows = tools.transformToeTreeNodes(setting, data);
             }
         },
         /**

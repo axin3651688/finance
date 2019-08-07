@@ -28,9 +28,12 @@
         stripe
         :data="data"
         :height="heights" 
-        :row-style="showTr"
         :cell-style="cellStyle"
         @row-click="onRowClick"
+        :row-key="rowKey"
+        :default-expand-all="defaultExpandAll"
+        :expand-row-keys="expandRowKeys"
+        :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
         class="tree_table"
         id="publicTable"
         >
@@ -50,12 +53,12 @@
                     </template>
                 </el-table-column>
                 <template slot-scope="scope">
-                    <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
+                    <!-- <span v-if="spaceIconShow(index)" v-for="(space, levelIndex) in scope.row._level" class="ms-tree-space"></span>
                     <span class="button is-outlined is-primary is-small" v-if="toggleIconShow(index,scope.row)" @click="toggle(scope.$index)">
                         <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i>
                         <i v-if="scope.row._expanded" class="iconfont icon-minus-square" aria-hidden="true"></i>
                     </span>
-                    <span v-else-if="index===0" class="ms-tree-space"></span>
+                    <span v-else-if="index===0" class="ms-tree-space"></span> -->
                     <el-tooltip v-if="!items.showOverflowTooltip" :content="getCellValues(scope,items)" placement="right" effect="light">
                         <span>{{ getCellValues(scope,items) }}</span>
                     </el-tooltip>
@@ -64,7 +67,7 @@
             </el-table-column>
         </el-table>
         <!-- 分页功能  pagination: 在json中配置为true（或者有这个参数不为''|0 的） 说明具有分页功能-->
-        <el-pagination
+        <!-- <el-pagination
         v-if="item.pagination && item.show && item.xtype=='elementTree'"
         @size-change="handleSizeChange"
         @current-change="handleCurrentChange"
@@ -73,7 +76,7 @@
         :page-size="pageSize"
         layout="total, sizes, prev, pager, next, jumper"
         :total="data.length">
-        </el-pagination>
+        </el-pagination> -->
     </div>
 </template>
 <script>
@@ -90,7 +93,9 @@ export default {
             heights: 0 ,
             titleText: "" ,
             currentPage: 1,
-            pagesize: 100
+            pagesize: 100,
+            expandRowKeys: [],
+            rowKey: "id"
         }
     },
     created(){
@@ -111,32 +116,42 @@ export default {
     },
     computed: {
         // 格式化数据源
-        data: function () { //debugger
-            let me = this
-            let parent,level ;
-            if (me.treeStructure) {
-                let data = Utils.treeToArray(me.dataSource, null, null, me.defaultExpandAll)
-                console.log("data",data) ;
+        // data: function () { //debugger
+            // let me = this
+            // let parent,level ;
+            // if (me.treeStructure) {
+                // let data = Utils.treeToArray(me.dataSource, null, null, me.defaultExpandAll)
+                // console.log("data",data) ;
                 // 判断是否自动展开
-                data = Utils.automaticallyOpen(data, me, null) ;
+                // data = Utils.automaticallyOpen(data, me, null) ;
                 // data = Utils.getLocalStorage(data, me) ;
-                return data ;
-            }
-            return me.dataSource ;
-        }
-        // 格式化数据源
-        // data: function () { debugger
-        //     let tmp;
-        //     let parent,level ;
-        //     if (!Array.isArray(this.dataSource)) {
-        //         tmp = [this.dataSource]
-        //     } else {
-        //         tmp = this.dataSource
-        //     }
-        //     const func = this.evalFunc || treeToArray;
-        //     const args = this.evalArgs ? Array.concat([tmp, this.defaultExpandAll], this.evalArgs) : [tmp, this.defaultExpandAll];
-        //     return func.apply(null, args)
+                // return data ;
+            // }
+            // return me.dataSource ;
         // }
+        // 格式化数据源
+        data: function () { debugger
+            let tmp;
+            let cc = this.item ;
+            if (!Array.isArray(this.dataSource)) {
+                tmp = [this.dataSource]
+            } else {
+                tmp = this.dataSource
+            }
+            let me = this ;
+            let isTrue = tmp.some(res => { return res.id === "1001" })
+            if(isTrue){
+                me.expandRowKeys = [] ;
+                tmp.forEach(res => { me.expandRowKeys.push(res.id) }) ;
+            } else {
+                me.expandRowKeys = [] ;
+                if(!cc.id === "zjjzqk")me.tree_tableData(tmp, me.expandRowKeys, me) ;
+            }
+            return tmp ;
+            // const func = this.evalFunc || treeToArray;
+            // const args = this.evalArgs ? Array.concat([tmp, this.defaultExpandAll], this.evalArgs) : [tmp, this.defaultExpandAll];
+            // return func.apply(null, args)
+        }
     },
     methods: {
         // 设置表格高度（自适应）
@@ -147,42 +162,49 @@ export default {
                 me.heights = Utils.setTableScollHeight(me.item, document.body.offsetHeight) ;
             };
         },
+        // 二级及以下全部展开
+        tree_tableData(tmp, expandRowKeys, me){
+            tmp.forEach(res => {
+                if(!res.nleaf)expandRowKeys.push(res.id) ;
+                if(res.children && res.children.length > 0)me.tree_tableData(res.children, expandRowKeys, me );
+            })
+        },
         //pagesize改变时触发 ---- 分页功能
-        handleSizeChange: function(size) {
-            this.pagesize = size;
-        },
+        // handleSizeChange: function(size) {
+        //     this.pagesize = size;
+        // },
         //currentPage改变时会触发 --- 分页功能
-        handleCurrentChange: function(currentPage) {
-            this.currentPage = currentPage;
-        },
+        // handleCurrentChange: function(currentPage) {
+        //     this.currentPage = currentPage;
+        // },
         // 显示行
-        showTr: function (row, index) { 
-            let show = (row.row._parent ? (row.row._parent._expanded && row.row._parent._show) : true)
-            row.row._show = show
-            return show ? '' : 'display:none;'
-        },
+        // showTr: function (row, index) { 
+        //     let show = (row.row._parent ? (row.row._parent._expanded && row.row._parent._show) : true)
+        //     row.row._show = show
+        //     return show ? '' : 'display:none;'
+        // },
         // 显示层级关系的空格和图标
-        spaceIconShow (index) {
-            let me = this ;
-            if (me.treeStructure && index === 0) {
-                return true ;
-            }
-            return false ;
-        },
+        // spaceIconShow (index) {
+        //     let me = this ;
+        //     if (me.treeStructure && index === 0) {
+        //         return true ;
+        //     }
+        //     return false ;
+        // },
         // 点击展开和关闭的时候，图标的切换
-        toggleIconShow (index, record) { 
-            let me = this
-            if (me.treeStructure && index === 0 && record.children && record.children.length > 0) {
-                return true
-            }
-            return false
-        },
+        // toggleIconShow (index, record) { 
+        //     let me = this
+        //     if (me.treeStructure && index === 0 && record.children && record.children.length > 0) {
+        //         return true
+        //     }
+        //     return false
+        // },
         // 展开下级 click事件
-        toggle: function (trIndex) { 
-            let me = this
-            let record = me.data[trIndex]
-            record._expanded = !record._expanded
-        },
+        // toggle: function (trIndex) { 
+        //     let me = this
+        //     let record = me.data[trIndex]
+        //     record._expanded = !record._expanded
+        // },
         // 数据处理（千分位、两位小数）
         getCellValues(value,vax){ 
             let num ;
@@ -202,7 +224,7 @@ export default {
             if (this.item.cellStyle && typeof this.item.cellStyle == "function") {
                 return this.item.cellStyle(row, this);
             }
-            return Utils.levelProperties(this.item, row);
+            // return Utils.levelProperties(this.item, row);
         },
         // 当某一行被点击时会触发该事件
         onRowClick(row, e, column) {

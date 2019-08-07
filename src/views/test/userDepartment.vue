@@ -29,7 +29,7 @@
             <ul id="menu" class="menu">
                 <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li>
                 <li class="menu__item" v-show="stype != 0" @click="modifyClick"><i class="el-icon-edit-outline modify"></i>修改</li>
-                <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-circle-close-outline delete"></i>删除</li>
+                <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-delete delete"></i>删除</li>
                 <li class="menu__item" v-show="stype != 0" @click="riskClick"><i class="el-icon-news risk"></i>风险授权</li>
             </ul>
         </div>
@@ -41,8 +41,8 @@
         width="30%"
         :show-close="false"
         :close-on-click-modal="false">
-            <el-alert v-if="stype==2" title="修改时，部门编码不可以修改" type="warning" :closable="false" show-icon></el-alert>
-            <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+            <el-alert v-if="stype==2 && stype != 4" title="修改时，部门编码不可以修改" type="warning" :closable="false" show-icon></el-alert>
+            <el-form v-show="stype !== 4" ref="form" :rules="rules" :model="form" label-width="80px">
                 <el-form-item label="父级节点">
                     <el-input v-model="form.spcode" readonly></el-input>
                 </el-form-item>
@@ -56,6 +56,18 @@
                     <el-input type="textarea" maxlength="1000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
                 </el-form-item>
             </el-form>
+            <div v-show="stype === 4" style="width: 100%; max-height: 308px; overflow: auto;">
+                <el-tree
+                :data="treeData"
+                show-checkbox
+                node-key="id"
+                accordion
+                @check-change="checkChange"
+                :default-checked-keys="checkedKeys"
+                :props="defaultProps"
+                ref="tree">
+                </el-tree>
+            </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="determineClick('form')">确 定</el-button>
                 <el-button @click="cancelClikc('form')">取 消</el-button>
@@ -66,6 +78,7 @@
 <script>
 // 引入部门添加、删除、修改接口
 import {department_add, department_delete, department_update} from "~api/cube.js" ;
+import tools from "utils/tools";
 export default {
     props: {
         text: String,       // 公司文字
@@ -110,6 +123,7 @@ export default {
             stype: 0 ,                  // 状态：0代表公司；1代表添加；2代表修改；3代表删除；4代表授权
             dialogVisible: false,       // 菜单按钮弹框 默认为隐藏
             title: "",                  // 弹框的title标题
+            titleClo: "",
             nodeValue: {},              // 节点的信息
             readonly: false ,           // 只读属性
             department: {} ,            // 添加修改的参数
@@ -123,6 +137,12 @@ export default {
                 scode: "",          // 部门编码
                 sname: "",          // 部门名称
                 sdesc: ""           // 部门职责 
+            },
+            treeData: [] , 
+            checkedKeys: [],        // 默认勾选的节点的 key 的数组
+            defaultProps: {
+                children: 'children',
+                label: 'label'
             },
             // 验证
             rules: {
@@ -142,6 +162,12 @@ export default {
         }
     },
     methods: {
+        /**
+         * 风险授权 复选框选择
+         */
+        checkChange(data, check, obj){
+            debugger
+        },
         /**
          * 对树形数据的处理 都放在一个数组里 即把children里的数组数据拿出来
          */
@@ -165,6 +191,7 @@ export default {
         handleContextMenu(MouseEvent, node, nodeTarget, el) {
             // debugger
             let len ;
+            this.titleClo = node.sname ;
             if(node!=undefined)this.stype = 100;
             this.nodeValue = node ;
             this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
@@ -267,7 +294,10 @@ export default {
          */
         riskClick(MouseEvent){
             this.stype = 4 ;
-            this.$message('暂无此功能！')
+            this.title = "【"+this.titleClo+"】风险授权" ;
+            this.dialogVisible = true ;
+            this.srisktypeRequest() ;// 风险类型查询
+            // this.$message('暂无此功能！')
         },
         /**
          * @description 5. 鼠标右键 菜单 弹框 确认按钮
@@ -285,6 +315,40 @@ export default {
         cancelClikc(vax){
             this.dialogVisible = false ;
             this.$refs[vax].resetFields();
+        },
+        // 风险类型查询接口方法
+        srisktypeRequest(){
+            const me = this ;
+            this.axios.get('/zjb/risktype/query_all').then(res => {
+                // debugger
+                let data = res.data.data ;
+                const setting = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "scode",
+                            pIdKey: "spcode"
+                        },
+                            key: {
+                            name: "scode",
+                            children: "children"
+                        }
+                    }
+                };
+                if (Array.isArray(data) && data.length > 0) {
+                    data = tools.sortByKey(data, "scode");
+                    data = data.filter(function(item) {
+                        item.id = item.scode;
+                        item.label = "(" + item.scode + ") " + item.sname;
+                        return item;
+                    });
+                    me.treeData = tools.transformToeTreeNodes(setting, data);
+                    // 默认全选
+                    me.treeData.forEach(element => {
+                        me.checkedKeys.push(element.id) ;
+                    })
+                }
+            })
         },
         // 添加确认
         addClick_new(val){
