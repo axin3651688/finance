@@ -53,42 +53,42 @@
                 <div class="svg-first">
                     <svg width="500px" height="32px">
                         <polyline points="1,16 1,31 1,16 131,16 131,1 131,16 361,16 361,31"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
                 <div class="svg-second">
                     <svg width="600px" height="32px">
                         <polyline points="1,16 1,31 1,16 270,16 270,1 270,16 541,16 541,31"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
                 <div class="svg-third">
                     <svg width="600px" height="32px">
                         <polyline points="1,16 1,31 1,16 176,16 176,1 176,16 361,16 361,31"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
                 <div class="svg-fourth">
                     <svg width="600px" height="32px">
                         <polyline points="1,16 1,31 1,1 1,16  361,16 361,31"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
                 <div class="svg-fifth">
                     <svg width="600px" height="32px">
                         <polyline points="1,16 1,31 1,1 1,16 270,16 270,31 270,16 541,16 541,31"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
                 <div class="svg-sixth">
                     <svg width="600px" height="32px">
                         <polyline points="1,16 1,31 1,16 270,16 270,31 270,1"
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>
@@ -96,7 +96,7 @@
                     <svg width="600px" height="32px">
                         <polyline
                                 points="1,16 1,31 1,16  178,16 178,31 178,16 356,16 356,31 356,16 370,16 370,1 370,16 533,16 533,31"
-                                fill="none" stroke="black"
+                                fill="none" stroke="#006B37"
                                 stroke-width="2"></polyline>
                     </svg>
                 </div>
@@ -104,7 +104,7 @@
                     <svg width="600px" height="32px">
                         <polyline
                                 points="1,16 1,31 1,16 178,16 178,31 178,16 290,16 290,1 290,16 355,16 355,31 355,16 535,16 535,31"
-                                fill="none" stroke="black"
+                                fill="none" stroke="#006B37"
                                 stroke-width="2"></polyline>
                     </svg>
                 </div>
