@@ -37,6 +37,11 @@
 //     -webkit-box-shadow: inset 0 0 1px rgba(69, 226, 64, 0.3);
 //     background-color: #9fd467;
 // }
+
+#riskGuidanceSystem {
+    color: #303133 ;
+    font-family: "Helvetica Neue",Helvetica,"PingFang SC","Hiragino Sans GB","Microsoft YaHei","微软雅黑",Arial,sans-serif;
+}
 /**
  * riskGuidanceSystem 引用
  */
@@ -76,6 +81,7 @@
     width: 300px ;
     border: 2px solid #dcdfe6 ;
     overflow: auto;   
+    padding: 20px;
     color: #606266;   
 }
 .guidance_aside .asideA {
@@ -85,8 +91,8 @@
 }
 .guidance_aside .asideA .asideA_item {
     font-size: 18px;
-    font-family: '宋体';
-    font-weight: 600 ;
+    // font-family: '宋体';
+    font-weight: 400 ;
 }
 .aside_title_message {
     text-align: center;
@@ -167,7 +173,8 @@
     padding: 10px;
     font-size: 18px;
     // background-color: #409EFF ;
-    background-color: #B3C0D1;
+    // background-color: #B3C0D1;
+    background: linear-gradient(81deg, #9fd467 0%, #2db060 100%);
     color: #fff;
     border-bottom: 1px solid #dcdfe6 ;
 }
@@ -258,7 +265,8 @@
     height: 39px ;
     text-align: right ;
     // background-color: #409EFF ;
-    background-color: #B3C0D1;
+    // background-color: #B3C0D1;
+    background: linear-gradient(81deg, #9fd467 0%, #2db060 100%);
     border-bottom: 1px solid #dcdfe6 ;
 }
 /* 头部按钮的样式 */
@@ -381,7 +389,7 @@
     overflow: auto;
     color: #606266;
     // writing-mode:vertical-lr;
-    font-family: '宋体' ;
+    // font-family: '宋体' ;
 }
 /* 输入 */
 .directoryDialog_A_6-2-2 {
@@ -400,7 +408,7 @@
     border: 1px solid #dcdfe6;
     font-size: 14px;
     border-radius: 4px;
-    font-family: '宋体';
+    // font-family: '宋体';
     margin: 10px 0 10px 0;
 }
 /**
@@ -410,6 +418,17 @@
 
 
 
+.guidance_title {
+    width: 100%; 
+    height: 56px;
+    text-align: center;
+    background-color:#f0f2f5 ;
+}
+.guidance_title span {
+    text-decoration: none;
+    line-height: 56px;
+    font-size: 20px;
+}
 
 
 

@@ -19,7 +19,7 @@
                         :style="{color: cellData.value.replace(/,/g, '') * 1 >= 0 ? 'black' : '#e1251b'}"
                         :cellid="cellData.nid"
                         @blur="inputBlurEvent"
-                        @keyup.enter.native="inputBlurEvent"
+                        @keyup.enter="inputBlurEvent"
                 >
             </div>
         </div>
@@ -114,3 +114,45 @@
     }
 
 </style>
+
+
+
+<!--<style>
+    .model-public-cell-single-cell-all {
+        width: 170px;
+    }
+
+    .model-public-cell-single-cell-top-ccell, .model-public-ccell-single-cell-bottom {
+
+    }
+
+    .model-public-cell-single-cell-top-ccell {
+        padding: 8px;
+        text-align: left;
+        font-weight: 700;
+        /*background-color: #61BFEC;*/
+    }
+
+    .model-public-ccell-single-cell-bottom {
+        padding: 8px;
+        text-align: left;
+        border-radius: 10px;
+        border: 2px solid #2DB060;
+        /*background-color: #BCE9F8;*/
+    }
+
+
+
+    .model-public-ccell-single-cell-bottom input {
+        background-color: #F0F2F5 ;
+        height: 22px;
+        text-align: center;
+        font-size: 19px;
+        color: #000c17 ;
+        border: 0;
+        padding: 0;
+        width: 100%;
+    }
+
+</style>-->
+

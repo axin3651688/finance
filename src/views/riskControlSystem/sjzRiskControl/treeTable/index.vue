@@ -8,34 +8,37 @@
 <template>
     <el-table 
     :data="formatData" 
-    :row-style="showRow" 
     v-bind="$attrs" 
     :cell-style="cellStyle"
     :height="heights"
+    row-key="id"
+    :default-expand-all="defaultExpandAll"
+    :expand-row-keys="expandRowKeys"
+    :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     stripe 
     border>
-        <el-table-column v-if="columns.length===0" width="150">
+        <!-- <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                 <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-          <i v-else class="el-icon-minus"></i>
-        </span>
+                    <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+                    <i v-else class="el-icon-minus"></i>
+                </span>
                 {{scope.$index}}
             </template>
-        </el-table-column>
+        </el-table-column> -->
         <!-- sjz 序号 -->
         <el-table-column v-if="item.index" type="index" lable="序号"></el-table-column>
         <el-table-column v-else v-for="(column, index) in columns" :key="column.id" :prop="column.id" :label="column.text" :width="column.width" :align="column.align">
             <template slot-scope="scope">
-                <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
+                <!-- <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span> -->
                 <!-- 图标 -->
-                <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
+                <!-- <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)"> -->
                     <!-- <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                     <i v-else class="el-icon-minus"></i> -->
-                    <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i>
-                    <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i>
-                </span>
+                    <!-- <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i> -->
+                    <!-- <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i> -->
+                <!-- </span> -->
                 {{scope.row[column.id]}}
                 <!-- <span v-if="column.value === 'feedState'">{{scope.row[column.id]}}</span> -->
                 <!-- sjz 按钮 -->
@@ -141,7 +144,9 @@
         },
         data(){
             return {
-                heights: 0
+                heights: 0 ,
+                expandRowKeys: [],
+                defaultExpandAll: false,
             }
         },
         created(){
@@ -153,17 +158,28 @@
         },
         computed: {
             // 格式化数据源
-            formatData: function () { 
+            formatData: function () {  debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
                 } else {
                     tmp = this.data
                 }
-                const func = this.evalFunc || treeToArray;
-                const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
-                const lyuo = func.apply(null, args) ;
-                return mini.getOpenbyDefault(lyuo ) //默认全部展开
+                let me = this ;
+                let isTrue = tmp.some(res => { return res.id === "1001" })
+                if(isTrue){
+                    me.expandRowKeys = [] ;
+                    tmp.forEach(res => { me.expandRowKeys.push(res.id) }) ;
+                } else {
+                    me.expandRowKeys = [] ;
+                    me.tree_tableData(tmp, me.expandRowKeys, me) ;
+                }
+                
+                // const func = this.evalFunc || treeToArray;
+                // const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
+                // const lyuo = func.apply(null, args) ;
+                return tmp ;
+                // return mini.getOpenbyDefault(lyuo ) //默认全部展开
             }
         },
         methods: {
@@ -175,21 +191,28 @@
                     me.heights = document.body.offsetHeight - 64 ;
                 }
             },
+            // 二级及以下全部展开
+            tree_tableData(tmp, expandRowKeys, me){
+                tmp.forEach(res => {
+                    if(!res.nleaf)expandRowKeys.push(res.id) ;
+                    if(res.children && res.children.length > 0)me.tree_tableData(res.children, expandRowKeys, me );
+                })
+            },
             // 显示与隐藏
-            showRow: function (row) {
-                const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
-                row.row._show = show;
-                return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
-            },
+            // showRow: function (row) { 
+            //     const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
+            //     row.row._show = show;
+            //     return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
+            // },
             // 切换下级是否展开
-            toggleExpanded: function (trIndex) {
-                const record = this.formatData[trIndex];
-                record._expanded = !record._expanded
-            },
+            // toggleExpanded: function (trIndex) {
+            //     const record = this.formatData[trIndex];
+            //     record._expanded = !record._expanded
+            // },
             // 图标显示
-            iconShow(index, record) {
-                return (index === 0 && record.children && record.children.length > 0)
-            },
+            // iconShow(index, record) {
+            //     return (index === 0 && record.children && record.children.length > 0)
+            // },
             /**
              * 点击操作列按钮触发，由于按钮功能不一致，所以写在json里面，自由发挥！
              */

@@ -7,7 +7,7 @@
     "showDims": ["year","month","company","conversion"],
         // 切换公司时做处理（合并显示，单体隐藏）
     "changeCompanyBefore":function(newcompany,option){
-        debugger
+        // debugger
         this.showSet(this.items); 
         option.closeTabTaget(newcompany,option);
     },
@@ -19,7 +19,7 @@
         option.closeTabTaget(newmonth,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
-        debugger
+        // debugger
         
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -244,8 +244,8 @@
                     // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
+                    // debugger
+                    // console.log(vue);
                     let $vue = vue.item.$vue;
                     $vue.closeTabTaget({}, $vue);
                     vue.item.updateView("company");
@@ -260,8 +260,8 @@
                     // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
+                    // debugger
+                    // console.log(vue);
                     vue.handleDownload(vue);
                 }
             }]

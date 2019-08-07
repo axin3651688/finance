@@ -83,3 +83,41 @@
     }
 
 </style>
+
+
+
+<!--
+<style>
+    .model-public-cell-single-cell-all {
+        width: 170px;
+    }
+
+    .model-public-cell-single-cell-top, .model-public-cell-single-cell-bottom {
+        padding: 8px;
+        text-align: left;
+    }
+
+    .model-public-cell-single-cell-top {
+        font-weight: 700;
+        /*background-color: #098692;*/
+    }
+
+    .model-public-cell-single-cell-bottom {
+        border-radius: 10px;
+        border: 2px solid #2DB060;
+        background-color: #BCE9F8;
+    }
+
+    .model-public-cell-single-cell-bottom input {
+        background-color: #BCE9F8 ;
+        height: 22px;
+        text-align: center;
+        font-size: 19px;
+        color: #000c17 ;
+        border: 0;
+        padding: 0;
+        width: 100%;
+        cursor: pointer;
+    }
+
+</style>-->

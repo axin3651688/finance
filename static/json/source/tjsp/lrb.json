@@ -147,7 +147,7 @@
                 // "background-color":"#fff"
             },
             "handler":function(vue,btn){
-                debugger
+                // debugger
                 console.log(vue);
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
@@ -164,7 +164,7 @@
                 // "background-color":"#fff"
             },
             "handler":function(vue,btn){
-                debugger
+                // debugger
                 console.log(vue);
                 vue.handleDownload(vue);
             }
@@ -172,7 +172,7 @@
     ],
         
         "onCellClick":function(row, column, cell, event,vue){//单元格点击事件
-            debugger
+            // debugger
             let id = row.scode, text = row.sname;
             let datas = this.datas;
                 let data = datas.filter(function(item){
@@ -203,7 +203,7 @@
         "levelProperties":{sname:"nlevel"},//加缩进 可选 table
         "drillProperties":["sname"],//有钻取，给蓝色 可选 table
         "cellStyle":function(row){
-            debugger           
+            // debugger           
             let datas = this.datas;
             let record = datas[row.rowIndex];
             let css = "padding: 4px 0;";

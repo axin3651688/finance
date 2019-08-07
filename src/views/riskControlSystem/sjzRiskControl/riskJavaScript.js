@@ -336,14 +336,14 @@ export default {
      * @name 【风险报告页面引用】
      * @param {*} data 
      */
-    getOpenbyDefault(data) {
+    getOpenbyDefault(data) { debugger
         let isTrue = false;
-        data.forEach(quo2 => { if (quo2.scode === "1001") isTrue = true; });
-        if (isTrue) {
-            data.forEach(quo2 => { if (quo2.scode === "1001") { quo2._expanded = true } else { quo2._expanded = false } });
-        } else {
-            data.forEach(quo2 => { quo2._expanded = true; });
-        }
+        // data.forEach(quo2 => { if (quo2.scode === "1001") isTrue = true; });
+        // if (isTrue) {
+        //     data.forEach(quo2 => { if (quo2.scode === "1001") { quo2._expanded = true } else { quo2._expanded = false } });
+        // } else {
+        //     data.forEach(quo2 => { quo2._expanded = true; });
+        // }
         return data;
     },
     /**

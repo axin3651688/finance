@@ -18,7 +18,7 @@
             "type": "string",
             "fixed": true,
             "width": "160",
-            "id": "scode"
+            "id": "gsbm"
         },
         {
             "text": "公司名称",
@@ -349,7 +349,7 @@
                 }
             },
             "rowClick": function({row, event, column}, $this){
-                debugger
+                // debugger
                 let pool = {
                     id: row.gsbm,
                     text: row.gsmc,

@@ -485,10 +485,13 @@ export default {
                 this.isShow = false ,
                 this.isShow2= true ,
                 this.addHeights.height = "150px" ;
+                // 添加时输入框为空
+                this.formLabelAlign.addname = "" ;
                 this.dialogFormVisible2_A = true ;
             } else {                // 修改
                 this.number = 1 ;
                 this.formLabelAlign.name = scope.row.sname ;
+                this.formLabelAlign.modifyname = "" ;
                 this.scope2 = scope ;
                 this.title = "名称修改" ;
                 this.isShow = true ,
@@ -517,15 +520,18 @@ export default {
         /**
          * 删除按钮（目录）
          */
-        removeClick(scope) {
+        removeClick(scope) { 
             const me = this ;
             let params = [scope.row.id] ;
             // 判断是否有内容存在，如果存在则不能删除
-            let aa = me.tableData2.filter(res => { return !res.id }) ;
-            if(aa.length > 0){
-                me.$message({ type: 'info', message: '存在内容，无法删除！' }); 
-                return false ;     
-            }
+            let aa = me.newThis.content ;
+            let bb = aa.filter(res => { return res.catalogname === scope.row.sname }) ;
+            if(bb.length > 0){
+                if(bb.length === 1 && !bb[0].scontent === null){
+                    me.$message({ type: 'info', message: '存在内容，无法删除！' }); 
+                    return ;
+                }
+            }                       
             me.$confirm('此操作将删除该目录, 是否继续?', '提示', {
                 confirmButtonText: '确定',
                 cancelButtonText: '取消',
