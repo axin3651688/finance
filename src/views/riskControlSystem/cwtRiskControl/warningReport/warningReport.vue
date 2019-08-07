@@ -237,7 +237,9 @@
              * @param companys
              */
             companyClicked(companys) {
+                debugger;
                 let _this = this;
+                _this.companyData = [];
                 let companyList = companys.split(',');
                 companyList.forEach((c)=>{
 
