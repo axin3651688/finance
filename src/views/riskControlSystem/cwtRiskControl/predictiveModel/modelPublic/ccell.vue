@@ -58,7 +58,6 @@
                 this.bottom = this.setNumberToStander(a);
             },
             inputBlurEvent(params) {
-                debugger;
                 let _this = this;
                 // let _value = params.currentTarget.value;
                 let _value = _this.bottom;
