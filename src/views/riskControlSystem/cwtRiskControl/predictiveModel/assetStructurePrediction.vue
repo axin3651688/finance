@@ -55,7 +55,7 @@
                     <svg width="150px" height="720px">
                         <polyline points="1,1 71,1 36,1 36,91 1,91 36,91 36,181 1,181, 36,181 36,271,
                         1,271 36,271 36,361 1,361 36,361 36,451 1,451 "
-                                  fill="none" stroke="black"
+                                  fill="none" stroke="#006B37"
                                   stroke-width="2"></polyline>
                     </svg>
                 </div>

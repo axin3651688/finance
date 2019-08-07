@@ -79,7 +79,7 @@
                         <svg width="150px" height="360px">
                             <polyline
                                     points="1,1 36,1 36,91 1,91 36,91 36,135 71,135 36,135 36,181 1,181, 36,181 36,271 1,271 "
-                                    fill="none" stroke="black"
+                                    fill="none" stroke="#006B37"
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
@@ -87,7 +87,7 @@
                     <div class="svg-second-data1">
                         <svg width="150px" height="180px">
                             <polyline points="1,1 36,1 36,46 71,46 36,46 36,91 1,91"
-                                      fill="none" stroke="black"
+                                      fill="none" stroke="#006B37"
                                       stroke-width="2"></polyline>
                         </svg>
                     </div>
@@ -139,7 +139,7 @@
                         <svg width="150px" height="360px">
                             <polyline
                                     points="1,1 36,1 36,91 1,91 36,91 36,135 71,135 36,135 36,181 1,181, 36,181 36,271 1,271 "
-                                    fill="none" stroke="black"
+                                    fill="none" stroke="#006B37"
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
@@ -147,7 +147,7 @@
                     <div class="svg-second-data2">
                         <svg width="150px" height="200px">
                             <polyline points="1,1 36,1  36,91 1,91 71,91 36,91 36,181 1,181 "
-                                      fill="none" stroke="black"
+                                      fill="none" stroke="#006B37"
                                       stroke-width="2"></polyline>
                         </svg>
                     </div>
@@ -208,7 +208,7 @@
                         <svg width="150px" height="360px">
                             <polyline
                                     points="1,1 36,1 36,91 1,91 71,91 36,91  36,181 1,181"
-                                    fill="none" stroke="black"
+                                    fill="none" stroke="#006B37"
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
@@ -283,7 +283,7 @@
                             <polyline
                                     points="1,1 36,1 36,91 1,91 36,91 36,181 1,181, 36,181 36,226 71,226 36,226 36,271,
                                             1,271 36,271 36,361 1,361 36,361 36,451 1,451"
-                                    fill="none" stroke="black"
+                                    fill="none" stroke="#006B37"
                                     stroke-width="2"></polyline>
                         </svg>
                     </div>
