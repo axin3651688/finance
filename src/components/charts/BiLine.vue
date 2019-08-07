@@ -91,10 +91,9 @@ export default {
           {
             type: "value",
             axisLabel : {
-                textStyle: {
-                    fontSize: 10
-                    
-                }
+              textStyle: {
+                fontSize: 10
+              }
             }
             // ,
             // formatter: function(a,b,c){
@@ -109,6 +108,9 @@ export default {
                     fontSize: 10
                     
                 }
+            },
+            splitLine:{
+              show:false
             }
           }
         ],

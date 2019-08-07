@@ -24,6 +24,7 @@
             <el-button @click="saveData" class="button" v-show="showSaveButton">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
             <el-button @click="editData" class="button" v-if="showEditButton">{{ editBtnContent }}</el-button>
+            <el-button @click="examineData" class="button" v-if="showExamineButton">审核</el-button>
           </div>
           <div class="right">
             <el-button v-if="bulkButton" @click="bulkReporting">
@@ -124,7 +125,8 @@ import {
     queryUserByCompany,
     sendFillMessage,
     saveReport,
-    queryStateOfTable
+    queryStateOfTable,
+    checkDwFactTargetAssess
 } from "@/api/fill.js";
 import EventMixins from "./mixins/szcFillBtnOpe";
 // import BiModule from "@v/BiModule.vue";
@@ -139,6 +141,8 @@ export default {
   },
   data() {
     return {
+      //审核按钮。
+      showExamineButton:false,
       editBtnContent:"修改",
       editFlag:false,
       renderFlag:true,
@@ -603,6 +607,27 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    examineData(){
+      debugger;
+      let me = this,stp = me.$store.getters,company = stp.company,period = me.parsePeriod();
+      let params = {
+        company:company,
+        period:period
+      };
+      checkDwFactTargetAssess(params).then(res => {
+        if(res.data.code == 200){
+          me.$message({
+            message:res.data.msg? res.data.msg:"数据正确！",
+            type:"success"
+          });
+        }else{
+          me.$message.error(res.data.msg? res.data.msg:"数据审核出错！");
+        }
+      });
+    },
+    /**
+     * 修改按钮。
+     */
     editData (){
       let me = this;
       if(me.editFlag){
@@ -2559,13 +2584,15 @@ export default {
     hideMonthByTableId () {
       let me = this,showDims = me.showDims;
       if(me.templateId == "10"){
-          me.showEditButton = true;
-          showDims.company = true,
-          showDims.year = true,
-          showDims.month = false,
-          showDims.conversion = false;
+        me.showEditButton = true;
+        me.showExamineButton = true;
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = false,
+        showDims.conversion = false;
       }else {
         me.showEditButton = false;
+        me.showExamineButton = false;
         showDims.company = true,
         showDims.year = true,
         showDims.month = true,
