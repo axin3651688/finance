@@ -236,7 +236,9 @@
                 columns:[],
                 ManyTableData:[],//多表头数据
                 manyColumns:[],//多表头列配置
-                resData:{},
+                resData:{
+                    fixedHeader:true
+                },
                 renderFlag:true//重新渲染的标识。
             }
         },
@@ -429,6 +431,7 @@
              * 渲染查询table的数据。
              */
             renderTableOfDatas (datas) {
+                debugger;
                 let me = this;
                 me.ManyTableData = datas;
             },
