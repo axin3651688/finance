@@ -19,7 +19,7 @@
                         :style="{color: cellData.value.replace(/,/g, '') * 1 >= 0 ? 'black' : '#e1251b'}"
                         :cellid="cellData.nid"
                         @blur="inputBlurEvent"
-                        @keyup.enter.native="inputBlurEvent"
+                        @keyup.enter="inputBlurEvent"
                 >
             </div>
         </div>
@@ -58,6 +58,7 @@
                 this.bottom = this.setNumberToStander(a);
             },
             inputBlurEvent(params) {
+                debugger;
                 let _this = this;
                 // let _value = params.currentTarget.value;
                 let _value = _this.bottom;
