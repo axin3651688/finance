@@ -116,6 +116,7 @@
              * tab页的切换。
              */
             tabClick (tab, event) {
+                debugger;
                 let me = this,url = me.$router.currentRoute.name;
                 let tabItem = me.createTabName(url);
                 if(tabItem.text == tab.label){
