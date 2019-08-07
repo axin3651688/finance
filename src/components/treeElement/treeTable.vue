@@ -108,7 +108,7 @@ export default {
          * @event 2.1树表的类型处理
          */
         array(data){
-            debugger;
+            // debugger;
             const setting = {
                 data: {
                     simpleData: {
