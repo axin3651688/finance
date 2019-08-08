@@ -100,7 +100,7 @@
             "type": "string",
             "text": "客商",
             "fixed":true,
-            "width":"300px"
+            "width":"360px"
           },
           {
             "id": "balance",

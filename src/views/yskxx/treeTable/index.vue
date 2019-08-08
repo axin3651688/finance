@@ -97,7 +97,8 @@
         },
         data(){
             return {
-                heights: 700
+                heights: 700,
+                expandRowKeys: []
             }
         },
         created(){
@@ -109,7 +110,7 @@
         },
         computed: {
             // 格式化数据源
-            formatData: function () {
+            formatData: function () { debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
