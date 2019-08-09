@@ -672,6 +672,20 @@ export default {
                 storeParams = me.$store.getters,
                 year = storeParams.year,
                 month = storeParams.month;
+            let tableDatas = me.deepCopy(datas);
+            for (let j = 0; j < tableDatas.length; j++) {
+                let item = tableDatas[j];
+                for (let key in item) {
+                    if (key.indexOf('m') != -1 && typeof(item[key]) == 'number') {
+                        item[key] = Math.decimalToLocalString(item[key]);
+                    }
+                }
+                if (year == item.cyear) {
+                    item.wd = "本期";
+                } else if (item.cyear == (year - 1)) {
+                    item.wd = "上年同期";
+                }
+            }
             let obj = {},
                 drillContent = {
                     gaugeConfig: {
@@ -680,23 +694,23 @@ export default {
                     lineConfig: {
                         options: {}
                     },
-                    allData: datas
+                    allData: tableDatas
                 };
             if (datas && datas.length > 0) {
-                for (let j = 0; j < datas.length; j++) {
-                    let item = datas[j];
-                    //月份的数据格式化。
-                    for (let key in item) {
-                        if (key.indexOf('m') != -1 && typeof(item[key]) == 'number') {
-                            item[key] = Math.decimalToLocalString(item[key]);
-                        }
-                    }
-                    if (year == item.cyear) {
-                        item.wd = "本期";
-                    } else if (item.cyear == (year - 1)) {
-                        item.wd = "上年同期";
-                    }
-                }
+                // for (let j = 0; j < datas.length; j++) {
+                //     let item = datas[j];
+                //     //月份的数据格式化。
+                //     // for (let key in item) {
+                //     //     if (key.indexOf('m') != -1 && typeof(item[key]) == 'number') {
+                //     //         item[key] = Math.decimalToLocalString(item[key]);
+                //     //     }
+                //     // }
+                //     // if (year == item.cyear) {
+                //     //     item.wd = "本期";
+                //     // } else if (item.cyear == (year - 1)) {
+                //     //     item.wd = "上年同期";
+                //     // }
+                // }
                 for (let i = 0; i < datas.length; i++) {
                     let item = datas[i];
                     if (year == item.cyear) {
@@ -707,9 +721,9 @@ export default {
                 //排序。
                 datas.sort(function(a, b) {
                     if (a.cyear > b.cyear) {
-                        return 1;
-                    } else if (a.cyear < b.cyear) {
                         return -1;
+                    } else if (a.cyear < b.cyear) {
+                        return 1;
                     } else {
                         return 0;
                     }
@@ -742,7 +756,14 @@ export default {
                     text: '趋势图'
                 },
                 tooltip: {
-                    trigger: 'axis'
+                    trigger: 'axis',
+                    formatter: function(a, b, c) {
+                        let toolText = a[0].name + ":<br>";
+                        a.forEach(item => {
+                            toolText += item.seriesName + ":" + Math.decimalToLocalString(item.data) + "<br/>";
+                        });
+                        return toolText;
+                    }
                 },
                 legend: {
                     data: ['本期数', '上年同期']
@@ -761,18 +782,18 @@ export default {
                 series: [{
                         name: '本期数',
                         type: 'line',
-                        data: arrItem.bq || [11, 11, 15, 13, 12, 13, 10, 11, 11, 15, 13, 12],
-                        // markPoint: {
-                        //     data: [
-                        //         { type: 'max', name: '最大值' },
-                        //         { type: 'min', name: '最小值' }
-                        //     ]
-                        // },
-                        // markLine: {
-                        //     data: [
-                        //         { type: 'average', name: '平均值' }
-                        //     ]
-                        // }
+                        data: arrItem.bq || [11, 11, 15, 13, 12, 13, 10, 11, 11, 15, 13, 12]
+                            // markPoint: {
+                            //     data: [
+                            //         { type: 'max', name: '最大值' },
+                            //         { type: 'min', name: '最小值' }
+                            //     ]
+                            // },
+                            // markLine: {
+                            //     data: [
+                            //         { type: 'average', name: '平均值' }
+                            //     ]
+                            // }
                     },
                     {
                         name: '上年同期',

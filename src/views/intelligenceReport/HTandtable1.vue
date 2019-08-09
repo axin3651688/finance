@@ -608,7 +608,6 @@ export default {
   },
   methods: {
     examineData(){
-      debugger;
       let me = this,stp = me.$store.getters,company = stp.company,period = me.parsePeriod();
       let params = {
         company:company,
@@ -1273,11 +1272,9 @@ export default {
       let me = this;
       // return
       //融资的新增与减少的判断 起始日期...
-      debugger;
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
         //正则判断。
-        debugger;
         if(changes && changes.length > 0){
           let arrStr = ['sstartdate','senddate','srepaydate'];
           if(arrStr.indexOf(changes[0][1]) != -1 && changes[0][3]){
@@ -1292,7 +1289,6 @@ export default {
         }
       }
       if (changes && changes.length > 0) {
-        debugger;
         changes.forEach(it => { 
           index = it[0];
           key = it[1];
