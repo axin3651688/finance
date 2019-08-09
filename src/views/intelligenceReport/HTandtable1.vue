@@ -1659,6 +1659,8 @@ export default {
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
           cellMeta.readOnly = true;
+        }else if((row == 13 || row == 14) && columns >= 1){
+          cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
         }
@@ -2331,7 +2333,7 @@ export default {
             that.parseTypeOfFinance(key,item);
           }else if(that.templateId == "7" && dateStrs.indexOf(key) != -1 && item){
               let regDate = /^\d{4}(\/)\d{2}\1\d{2}$/;
-              if(regDate.test(item[key]) != true){
+              if(item[key] != "" && regDate.test(item[key]) != true){
                 // that.$message({
                 //   message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
                 //   type:"warning"

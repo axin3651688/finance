@@ -5,7 +5,8 @@
     "columns": [{
             "text": "公司名称",
             "value": "sname",
-            "align": "left"
+            "align": "left",
+            "width": 500
         },
         {
             "text": "批示状态",

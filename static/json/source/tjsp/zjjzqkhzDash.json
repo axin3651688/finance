@@ -78,21 +78,21 @@
                     "id": "gkm"
                 },
                 {
-                    "text": "货币金额",
+                    "text": "货币金额(元)",
                     "type": "decimal",
                     "align": "right",
                     "width": "180",
                     "id": "hbzj"
                 },
                 {
-                    "text": "其中：银行存款",
+                    "text": "其中：银行存款(元)",
                     "type": "decimal",
                     "align": "right",
                     "width": "180",
                     "id": "yhck"
                 },
                 {
-                    "text": "集中金额",
+                    "text": "集中金额(元)",
                     "type": "decimal",
                     "align": "right",
                     "width": "180",
