@@ -211,7 +211,7 @@
                 return params;
             },
             "queryDataAfter": function(datas, $this){
-                // debugger
+                debugger
                 let first = $this.objer2.proportion[0].value ;
                 let second= $this.objer2.proportion[1].value ;
                 datas.forEach(element => { 

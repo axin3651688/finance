@@ -362,6 +362,7 @@ export default {
                     }
                 }
             };
+            debugger
             if (Array.isArray(data) && data.length > 0) {
                 data = tools.sortByKey(data, "scode");
                 data = data.filter(function(item) {

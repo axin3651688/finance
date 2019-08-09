@@ -394,7 +394,7 @@ export default {
                 this.$emit('getValue',this.valueId)
                 this.defaultExpandedKey = []
                 this.isFocus = false 
-                this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+                this.$refs.sub2.$children[1].$children[1].blur() // 下拉框隐藏
             }
         },
         // 清除下拉选【风险类型】的
