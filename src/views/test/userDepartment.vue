@@ -53,7 +53,7 @@
                     <el-input v-model="form.sname"></el-input>
                 </el-form-item>
                 <el-form-item label="部门职责">
-                    <el-input type="textarea" maxlength="1000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
+                    <el-input type="textarea" maxlength="5000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
                 </el-form-item>
             </el-form>
             <div v-show="stype === 4" style="width: 100%; max-height: 308px; overflow: auto;">

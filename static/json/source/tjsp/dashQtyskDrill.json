@@ -65,13 +65,13 @@
                         "background-color": "#189271"
                     },
                     "handler": function(vue, btn) {
-                        debugger
+                        // debugger
                         console.log(vue);
                         vue.handleDownload(vue);
                     }
                 }],
                 "queryDataBefore": function(params, config, $vue) {
-                    debugger;
+                    // debugger;
                     let me = this;
                     let selectPeriod = $vue.$store.selectPeriod;
                     if (selectPeriod) {
@@ -88,7 +88,7 @@
                     return params;
                 },
                 "queryDataAfter": function(data, $vue) {
-                    debugger
+                    // debugger
                     let datas = [];
                     let datax = [];
                     data.forEach(item => {
@@ -227,7 +227,7 @@
                 "show": false,
                 "tableBefore": true,
                 "showFun": function($store) {
-                    debugger
+                    // debugger
                     if ($store.getters.treeInfo.leaf || $store.getters.treeInfo.nisleaf) {
                         return false;
                     } else {
@@ -267,7 +267,7 @@
                     return params;
                 },
                 "queryDataAfter": function(data, $vue) {
-                    debugger
+                    // debugger
                     let me = this;
                     let riskrangeData = $vue.riskrangeData;
                     let first, second;
@@ -335,7 +335,7 @@
                             "type": "string",
                             "width": "160px",
                             "fixed": true,
-                            "id": "scode"
+                            "id": "gsbm"
                         },
                         {
                             "text": "公司名称",
