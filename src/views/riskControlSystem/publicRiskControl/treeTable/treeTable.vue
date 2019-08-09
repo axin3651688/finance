@@ -11,6 +11,7 @@
             :header-cell-style="headerRowStyle"
             class="public_class"
             row-key="scode"
+            stripe
             :expand-row-keys="expandRowKeys"
             :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >

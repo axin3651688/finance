@@ -608,7 +608,6 @@ export default {
   },
   methods: {
     examineData(){
-      debugger;
       let me = this,stp = me.$store.getters,company = stp.company,period = me.parsePeriod();
       let params = {
         company:company,
@@ -1273,11 +1272,9 @@ export default {
       let me = this;
       // return
       //融资的新增与减少的判断 起始日期...
-      debugger;
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
         //正则判断。
-        debugger;
         if(changes && changes.length > 0){
           let arrStr = ['sstartdate','senddate','srepaydate'];
           if(arrStr.indexOf(changes[0][1]) != -1 && changes[0][3]){
@@ -1292,7 +1289,6 @@ export default {
         }
       }
       if (changes && changes.length > 0) {
-        debugger;
         changes.forEach(it => { 
           index = it[0];
           key = it[1];
@@ -1662,6 +1658,8 @@ export default {
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
+          cellMeta.readOnly = true;
+        }else if((row == 13 || row == 14) && columns >= 1){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -2335,7 +2333,7 @@ export default {
             that.parseTypeOfFinance(key,item);
           }else if(that.templateId == "7" && dateStrs.indexOf(key) != -1 && item){
               let regDate = /^\d{4}(\/)\d{2}\1\d{2}$/;
-              if(regDate.test(item[key]) != true){
+              if(item[key] != "" && regDate.test(item[key]) != true){
                 // that.$message({
                 //   message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
                 //   type:"warning"

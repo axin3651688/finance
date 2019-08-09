@@ -330,7 +330,7 @@ const router = new Router({
                     name: 'BiTreemap',
                     component: () =>
                         import ('@c/charts/BiTreemap'),
-                },
+                }
             ]
         },
         {
@@ -544,7 +544,6 @@ const router = new Router({
             component: () =>
                 // import('@v/layout/login/Login'),
                 // import('@v/layout/login/LoginNew'),
-                // import ('@v/layout/login/szcLogin.vue')
                 import ('@v/layout/login/LoginNew'),
         },
         {
@@ -553,13 +552,7 @@ const router = new Router({
             component: () =>
                 import ('@v/common/404')
         },
-        // 测试 风险指引制度 预览页面
-        {
-            path: '/riskGuidancePreview',
-            name: 'riskGuidancePreview',
-            component: () => 
-                import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem/riskGuidancePreview.vue')
-        }
+
     ]
 })
 
