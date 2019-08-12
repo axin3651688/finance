@@ -55,8 +55,18 @@
                             :value="item.scode">
                             </el-option>
                         </el-select>
+                        <el-button style="float:right;margin-right:20px;" @click="exportExcle">
+                            导出
+                        </el-button>
                     </div>
                 </el-col>
+                <!-- <el-col :span="2">
+                    <div>
+                        <el-button>
+                            导出
+                        </el-button>
+                    </div>
+                </el-col> -->
             </el-row>
             <el-row class="div_form">
                 <el-col :span="10">
@@ -310,6 +320,33 @@
         mounted() {},
         methods: {
             ...mapActions(["ShowDims"]),
+            exportExcle () {
+                debugger;
+                let me = this;
+                import('@/excel/SZCExport2ExcelTable').then(excel => {
+                    //制造一个columns格式传过去。
+                    let rootColmuns = [],columns = me.manyColumns;
+                    let firstItem = columns[0];
+                    columns = columns.filter((item,index) => {
+                        return index != 0;
+                    });
+                    columns.push(firstItem);
+                    this.parseColmns(columns,rootColmuns);
+                    excel.export_table_to_excel("publicTable","上市对标",rootColmuns);
+                })
+            },
+            parseColmns (columns,rootColmuns) {
+                let me = this;
+                for(let i = 0;i < columns.length;i ++){
+                    if(columns[i].children && columns[i].children.length > 0){
+                        me.parseColmns(columns[i].children,rootColmuns);
+                    }else {
+                        if(!columns[i].hidden){
+                            rootColmuns.push(columns[i]);
+                        }
+                    }
+                }
+            },
             /**
              * 公司树节点点击事件。
              */

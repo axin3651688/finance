@@ -11,6 +11,7 @@
                 :header-row-style="headerRowStyle"
                 :cell-style="cellStyle"
                 class="risk_table"
+                id="publicTable"
                 style="width: 100%">
                     <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
                 </el-table>
