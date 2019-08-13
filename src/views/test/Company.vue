@@ -58,7 +58,8 @@
         ></el-tree> -->
       </el-col>
       <!--公司表单-->
-      <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="16" style="overflow: auto">
+      <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="16">
+        <div :style="contentStyleObj2" style="backgroundColor: #ffffff;">
         <el-form
           :rules="rules"
           ref="form"
@@ -66,7 +67,7 @@
           :disabled="forbidden"
           :inline="true"
           label-width="140px"
-          style="backgroundColor: #ffffff; width: 1045px;"
+          style="width: 1045px;"
           class="comForm"
         >
           <el-form-item label="公司编码" prop="scode">
@@ -86,7 +87,7 @@
           </el-form-item> -->
 
           <el-form-item label="上级公司编码" prop="spcode">
-            <el-input class="elform" v-model="form.spcode" readonly></el-input>
+            <el-input class="elform" v-model="form.spcode" readonly placeholder="自动编辑"></el-input>
           </el-form-item>
 
           <el-form-item label="公司属性" prop="stype">
@@ -129,42 +130,6 @@
             </el-input>
             <el-alert type="warning" title="填写-1代表托管" show-icon :closable="false"></el-alert>
           </el-form-item> -->
-          
-          <el-form-item label="内部行业" prop="sindcode">
-            <el-select class="elform" v-model="form.sindcode" placeholder="请选择行业">
-              <el-option
-                v-for=" (item,index) in sindcodes "
-                :key="index"
-                :label="item.sname"
-                :value="item.scode"
-              ></el-option>
-            </el-select>
-            <el-alert
-              class="elform"
-              type="warning"
-              title="合并公司无法选择内部行业"
-              show-icon
-              :closable="false"
-            ></el-alert>
-          </el-form-item>    
-
-          <el-form-item label="公司规模" prop="sindsrange">
-            <el-select class="elform" v-model="form.sindsrange" placeholder="请选择规模类型">
-              <el-option
-                v-for=" (item,index) in sindcoded "
-                :key="index"
-                :label="item.sname"
-                :value="item.scode"
-              ></el-option>
-            </el-select>
-            <el-alert
-              class="elform"
-              type="warning"
-              title="新增公司时 公司规模默认为 小型企业 可修改"
-              show-icon
-              :closable="false"
-            ></el-alert>
-          </el-form-item>
 
           <el-form-item label="企业法人" prop="scorporation">
             <el-input class="elform" v-model="form.scorporation" placeholder="输入姓名"></el-input>
@@ -194,7 +159,7 @@
               ></el-option>
             </el-select> -->
             <treeselect
-              class=" elform3"
+              class=" elform"
               v-model="form.sindcodedetail"
               :options="sindcodee"
               :disabled="disabled2"
@@ -205,13 +170,49 @@
               </label>
             </treeselect>
             <el-alert
-              class="elform3"
+              class="elform"
               type="warning"
               title="新增公司时 此行业默认为 综合行业 可修改"
               show-icon
               :closable="false"
             ></el-alert>
+          </el-form-item> 
+
+          <el-form-item label="公司规模" prop="sindsrange">
+            <el-select class="elform" v-model="form.sindsrange" placeholder="请选择规模类型">
+              <el-option
+                v-for=" (item,index) in sindcoded "
+                :key="index"
+                :label="item.sname"
+                :value="item.scode"
+              ></el-option>
+            </el-select>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="新增公司时 公司规模默认为 小型企业 可修改"
+              show-icon
+              :closable="false"
+            ></el-alert>
           </el-form-item>
+
+          <el-form-item v-show="isShow" label="内部行业" prop="sindcode">
+            <el-select class="elform3" v-model="form.sindcode" placeholder="请选择行业">
+              <el-option
+                v-for=" (item,index) in sindcodes "
+                :key="index"
+                :label="item.sname"
+                :value="item.scode"
+              ></el-option>
+            </el-select>
+            <el-alert
+              class="elform3"
+              type="warning"
+              title="合并公司无法选择内部行业"
+              show-icon
+              :closable="false"
+            ></el-alert>
+          </el-form-item> 
 
           <el-form-item label="EAS账套编码" prop="ssrccode">
             <el-input class="elform3" v-model="form.ssrccode" @change="EASChange" placeholder="请填写EAS账套编码">
@@ -254,6 +255,7 @@
             <!-- <el-button >取消</el-button> -->
           </el-form-item>
         </el-form>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -291,6 +293,10 @@ export default {
         height: 500,
         overflow: "auto"
       },
+      contentStyleObj2: {
+        height: 500,
+        overflow: "auto"
+      },
       filterText: "",
       // rootNode: "1001",
       props: {
@@ -302,6 +308,8 @@ export default {
       easDisabled: true ,
       // 国资委行业是否禁用
       disabled2: false ,
+      // 内部行业的隐藏与显示（单体显示，合并不显示）
+      isShow: true ,
       treedata: [],
       //默认展开节点
       expandKeys: [],
@@ -536,11 +544,15 @@ export default {
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
         124}px`;
+      this.contentStyleObj2.height = `${document.documentElement.clientHeight -
+        84}px`;
       // 然后监听window的resize事件．在浏览器窗口变化时高度．
       const that = this;
       window.onresize = function temp() {
         that.contentStyleObj.height = `${document.documentElement.clientHeight -
           124}px`;
+        that.contentStyleObj2.height = `${document.documentElement.clientHeight -
+          84}px`;
       };
     },
     EASChange(value){
@@ -760,7 +772,7 @@ export default {
           });
         });
     },
-    save(formName) { debugger
+    save(formName) { //debugger
       var _this = this;
       //console.log("表单变化：", this.activeForm);
       //比对变化
@@ -940,7 +952,13 @@ export default {
      * @param node tree 节点对象
      * @param el 节点组件本身
      *  */
-    handClick(snode, node, el) { //debugger
+    handClick(snode, node, el) { debugger
+      // 0 表示合并公司 / 1 表示单体公司 / R 差额公司 
+      if(snode.stype === "0") {
+        this.isShow = false ;
+      } else {
+        this.isShow = true ;
+      }
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);
@@ -1137,7 +1155,7 @@ export default {
 .comForm {
   /* background-color: beige; */
   width: 501px;
-  padding-top: 20px;
+  padding-top: 40px;
   /* overflow: auto; */
 }
 </style>
