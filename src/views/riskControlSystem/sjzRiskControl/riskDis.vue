@@ -77,6 +77,10 @@
                 :show-overflow-tooltip="element.showOverflow"
                 :align="element.align"                 
                 >
+                    <template slot-scope="scope">
+                        <div v-if="element.id === 'gradename'" :style="getStyleBgcolor(scope.row, element)">{{ scope.row[element.id] }}</div>
+                        <div v-else>{{ scope.row[element.id] }}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
@@ -281,18 +285,29 @@ export default {
         cellClassName({row, column, rowIndex, columnIndex}){
             // debugger
             if(column.property == "gradename"){
-                if(row.gradename == "中等风险"){
-                    return "gradename_yellow" ;
-                }else if(row.gradename == "重大风险"){
-                    return "gradename_orange" ;
-                }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
-                    return "gradename_red" ;
-                }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
-                    return "gradename_green" ;
-                }else {
-                    return "gradename_blue" ;
-                }               
+                // if(row.gradename == "中等风险"){
+                //     return "gradename_yellow" ;
+                // }else if(row.gradename == "重大风险"){
+                //     return "gradename_orange" ;
+                // }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
+                //     return "gradename_red" ;
+                // }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
+                //     return "gradename_green" ;
+                // }else {
+                //     return "gradename_blue" ;
+                // }  
+                return "gradename_bgcolor"             
             }   
+        },
+        getStyleBgcolor(scopeRow, element){
+            return {
+                background: scopeRow.gradecolor ,
+                color: "#ffffff" ,
+                width: "90px" ,
+                borderRadius: "11px" ,
+                margin: "0 auto" ,
+                opacity : 1  
+            }
         },
         // 日期的显示控制
         showDimsControl(){
