@@ -57,6 +57,7 @@
                 </el-form-item>
             </el-form>
             <div v-show="stype === 4" style="width: 100%; max-height: 308px; overflow: auto;">
+                <el-checkbox :label="checkText" @change="checkboxChange" border style="margin: 0 0 10px 20px;"></el-checkbox>
                 <el-tree
                 :data="treeData"
                 show-checkbox
@@ -65,6 +66,7 @@
                 @check-change="checkChange"
                 :default-checked-keys="checkedKeys"
                 :props="defaultProps"
+                :check-strictly="true"
                 ref="tree">
                 </el-tree>
             </div>
@@ -117,13 +119,14 @@ export default {
         // };
         return {
             filterText: "",
+            checkText: "全部勾选" ,
             defaultExpandAll: true,     // 是否默认全部展开 false：否/ true：是
             menuVisible: false,         // 右键点击的弹框
             dataSource: [],             // 树表的数据
             stype: 0 ,                  // 状态：0代表公司；1代表添加；2代表修改；3代表删除；4代表授权
             dialogVisible: false,       // 菜单按钮弹框 默认为隐藏
             title: "",                  // 弹框的title标题
-            titleClo: "",
+            titleClo: {},
             nodeValue: {},              // 节点的信息
             readonly: false ,           // 只读属性
             department: {} ,            // 添加修改的参数
@@ -139,6 +142,8 @@ export default {
                 sdesc: ""           // 部门职责 
             },
             treeData: [] , 
+            treeArray: [] ,
+            treeArray2: [] ,
             checkedKeys: [],        // 默认勾选的节点的 key 的数组
             defaultProps: {
                 children: 'children',
@@ -162,11 +167,85 @@ export default {
         }
     },
     methods: {
+        treeTableData(data, treeArray){
+            let me = this ;
+            data.forEach(res => {
+                treeArray.push(res) ;
+                if(res.children && res.children.length > 0)me.treeTableData(res.children, treeArray) ;
+            }) ;
+            return treeArray ;
+        },
+        parentNodesChange(node,check){
+            // debugger
+            const tree = this.treeSourceData;
+            if(check){
+                this.$refs.tree.setChecked(node.id,true,true)
+                if(node.spcode !== node.scode){
+                    let pnode = tree.filter(ele=>{
+                        return ele.scode === node.spcode
+                    })
+                    if(pnode && pnode[0]){
+                        this.$refs.tree.setChecked(pnode[0].id,true,true)
+                    }
+                }
+            }else{
+
+            }
+
+        //     if(node.parent){
+        //   for(let key in node){
+        //     if(key == "parent"){
+        //       node[key].checked = true;
+        //       this.parentNodesChange(node[key]);
+        //     }
+        //   }
+        // }  
+        },
         /**
          * 风险授权 复选框选择
          */
         checkChange(data, check, obj){
-            debugger
+            // this.parentNodesChange(data,check);
+            // if(data.spcode === "00" && check){
+            //     let dd  = this.$refs.tree.getCheckedNodes() ;
+            //     let cc = this.treeTableData(dd, this.treeArray) ;
+            //     this.$refs.tree.setCheckedNodes(cc) ;
+            // } else if(data.spcode === "00" && !check){
+            //     this.treeArray = this.treeArray.filter(res => {
+            //         if(res.spcode === data.scode || res.scode === data.scode){}else{return res} ;
+            //     }) ;
+            //     this.$refs.tree.setCheckedNodes(this.treeArray) ;
+            // } 
+            // return false ;
+            // let dd = this.$refs.tree.getCheckedNodes() ;
+            // if(dd.length === 1 && dd[0].children && dd[0].children.length > 0){
+
+            // } 
+            // let cc = this.treeData.filter(res => {
+            //     dd.forEach(item => {
+
+            //     })
+            // })
+            // return
+            // let kk = dd.concat(cc);
+            // this.$refs.tree.setCheckedNodes(kk)
+            
+        },
+        /**
+         * 全部勾选/全部反选
+         */
+        checkboxChange(check, obj){
+
+            let me = this ;
+            if(check) {
+                me.checkText = "全部反选"
+                //全选
+                me.$refs.tree.setCheckedNodes(me.treeTableData(me.treeData, me.treeArray2)) ;
+            } else {
+                me.checkText = "全部勾选"
+                //取消选中
+                me.$refs.tree.setCheckedKeys([]);
+            }
         },
         /**
          * 对树形数据的处理 都放在一个数组里 即把children里的数组数据拿出来
@@ -191,7 +270,7 @@ export default {
         handleContextMenu(MouseEvent, node, nodeTarget, el) {
             // debugger
             let len ;
-            this.titleClo = node.sname ;
+            this.titleClo = node ;
             if(node!=undefined)this.stype = 100;
             this.nodeValue = node ;
             this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
@@ -294,7 +373,7 @@ export default {
          */
         riskClick(MouseEvent){
             this.stype = 4 ;
-            this.title = "【"+this.titleClo+"】风险授权" ;
+            this.title = "【"+this.titleClo.sname+"】风险授权" ;
             this.dialogVisible = true ;
             this.srisktypeRequest() ;// 风险类型查询
             // this.$message('暂无此功能！')
@@ -305,7 +384,15 @@ export default {
         determineClick(vax){
             if(this.stype == 1){    // 添加状态
                 this.addClick_new(vax) ;
-            }else{
+            }else if(this.stype == 4 ) {
+                let data  = this.$refs.tree.getCheckedNodes() ;
+                if( data.length === 0) {
+                    this.$message('暂无选择风险类型!') ;
+                } else {
+                    // 确认请求
+                    this.risktype_grant_request(data) ;
+                }
+            } else {
                 this.modifyClick_new(vax) ;  
             }
         },
@@ -318,10 +405,20 @@ export default {
         },
         // 风险类型查询接口方法
         srisktypeRequest(){
+            // debugger
             const me = this ;
-            this.axios.get('/zjb/risktype/query_all').then(res => {
+            let companyId = me.$store.state.prame.command ;
+            // let departId = me.$store.state.user.user.dept[0] ;
+            let departId = me.titleClo ;
+            me.axios.get('/zjb/risktype_grant/grantRiskType?company='+ companyId.company + '&depart=' + departId.id).then(res => {
                 // debugger
                 let data = res.data.data ;
+                me.checkedKeys = [] ;
+                data.forEach(item => {
+                    if(item.checked === 'Y') {
+                        me.checkedKeys.push(item.scode) ;
+                    }
+                }) ;
                 const setting = {
                     data: {
                         simpleData: {
@@ -340,13 +437,35 @@ export default {
                     data = data.filter(function(item) {
                         item.id = item.scode;
                         item.label = "(" + item.scode + ") " + item.sname;
+                        // if(item.spcode === "00")item.disabled = true ;
                         return item;
                     });
+                    me.treeSourceData = data;
                     me.treeData = tools.transformToeTreeNodes(setting, data);
-                    // 默认全选
-                    me.treeData.forEach(element => {
-                        me.checkedKeys.push(element.id) ;
-                    })
+                }
+            })
+        },
+        // 风险授权接口方法
+        risktype_grant_request(data){ 
+            const me = this ;
+            let params = [] ;
+            data.forEach(item => { 
+                params.push({
+                    id: "",
+                    sdepartment: me.titleClo.id ,
+                    scomcode: me.$store.state.prame.command.company ,
+                    srisktype: item.id 
+                })
+            })
+            // return 
+            me.axios.post('/zjb/risktype_grant/riskGrant', params).then(res => {
+                // debugger
+                if(res.data.code === 200) {
+                    me.$message({ type: "success", message: res.data.msg }) ;
+                    me.srisktypeRequest() ;
+                } else {    
+                    me.$message.error(res.data.msg) ;
+
                 }
             })
         },
