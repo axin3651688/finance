@@ -46,7 +46,7 @@ export default {
         // 高度自适应
         this.getClientHeight() ;
         // 季度
-        this.getQuarter() ;
+        // this.getQuarter() ;
         // 导航栏显现
         this.getShowDims() ;
     },
@@ -66,11 +66,11 @@ export default {
     },
     methods: {
         // 季度出现
-        getQuarter(){
-            let me = this ;
-            let monthConfig = { quarterCount:4, yearEnd:1 };
-            me.$store.monthConfig = monthConfig;
-        },
+        // getQuarter(){
+        //     let me = this ;
+        //     let monthConfig = { quarterCount:4, yearEnd:1 };
+        //     me.$store.monthConfig = monthConfig;
+        // },
         // 导航栏显现
         getShowDims(){
             let dims = this.showDims ;
