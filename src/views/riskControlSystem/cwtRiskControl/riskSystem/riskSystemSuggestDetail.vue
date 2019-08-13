@@ -4,8 +4,8 @@
             <div class="suggest-detail">
                 <span class="suggest-detail-date">{{item.proposedDate}}</span>
                 <span class="suggest-detail-user">{{item.proposedUser}}</span>
-                <el-button class="el-button-btn" size="small" type="primary" @click="suggestChange(item)">修改</el-button>
-                <el-button class="el-button-btn" size="small" type="primary" @click="suggestDelete(item)">删除</el-button>
+                <el-button class="el-button-btn" :disabled="item.user !== thisUser" size="small" type="primary" @click="suggestChange(item)">修改</el-button>
+                <el-button class="el-button-btn" :disabled="item.user !== thisUser" size="small" type="primary" @click="suggestDelete(item)">删除</el-button>
             </div>
             <div>
                 <el-input
@@ -71,7 +71,8 @@
             return {
                 dialogVisible: false,
                 dialogCloseByClockOther: true,
-                newSuggestContent: ''
+                newSuggestContent: '',
+                thisUser: this.$store.getters.user.user.userName
             }
         },
         created() {
