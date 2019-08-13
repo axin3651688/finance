@@ -133,6 +133,7 @@
         :visible.sync="dialogAddUserVisible"
         width="901.5px"
         max-height="60%"
+        top="8vh"
         :close-on-click-modal="false"
         :show-close="true"
         @before-close="cancelClick"
@@ -274,6 +275,15 @@
             <el-form-item label="邮箱" prop="semail">
               <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
             </el-form-item>
+
+            <el-form-item label="出生日期" prop="date">
+              <el-date-picker v-model="addUserForm.date" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
+            </el-form-item>
+
+            <el-form-item label="家庭住址" prop="family">
+              <el-input v-model="addUserForm.family" placeholder="请填写家庭住址" style="width:300px"></el-input>
+            </el-form-item>
+
             <!-- 新增用户的 -->
             <el-form-item label="政治面貌" prop="landscape">
               <el-select v-model="addUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
@@ -313,6 +323,7 @@
         title="修改用户"
         :visible.sync="dialogEditUserVisible"
         width="901.5px"
+        top="8vh"
         max-height="60%"
         @close="closeDilog('editUserForm')"
       >
@@ -431,6 +442,15 @@
           <el-form-item label="邮箱" prop="semail">
             <el-input v-model="editUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
           </el-form-item>
+
+          <el-form-item label="出生日期" prop="date">
+            <el-date-picker v-model="editUserForm.date" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
+          </el-form-item>
+
+          <el-form-item label="家庭住址" prop="family">
+            <el-input v-model="editUserForm.family" placeholder="请填写家庭住址" style="width:300px"></el-input>
+          </el-form-item>
+
           <el-form-item label="政治面貌" prop="landscape">
             <el-select v-model="editUserForm.landscape" placeholder="请选择政治面貌" style="width:300px">
               <el-option v-for="item in landscapes" :key="item.scode" :label="item.sname" :value="item.scode"></el-option>             
