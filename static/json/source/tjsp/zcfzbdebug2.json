@@ -86,7 +86,7 @@
             {
                 "id": "qmye",
                 "type": "decimal",
-                "width": "160",
+                "width": "200px",
                 "align": "right",
                 "text": "期末余额"
             },
@@ -97,7 +97,7 @@
                 "children": [{
                         "id": "zje",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "增减额"
                     },
@@ -118,14 +118,14 @@
                 "children": [{
                         "id": "sntq",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "上年同期"
                     },
                     {
                         "id": "tbzje",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "同比增减额"
                     }, {
@@ -145,14 +145,14 @@
                 "children": [{
                         "id": "bnys",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "本年预算"
                     },
                     {
                         "id": "cye",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "差异额"
                     },

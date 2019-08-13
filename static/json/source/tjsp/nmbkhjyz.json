@@ -70,19 +70,19 @@
                     "type": "decimal",
                     "text": "上年实际完成",
                     "align": "right",
-                    "width": "180px"
+                    "width": "200px"
                 },
                 {
                     "id": "yemb",
                     "type": "decimal",
                     "align": "right",
                     "text": "本年目标考核值",
-                    "width": "180px"
+                    "width": "200px"
                 },
                 {
                     "id": "yetbzjl",
                     "type": "decimal",
-                    "text": "同年增减额",
+                    "text": "同比增减率%",
                     "align": "right",
                     "width": "150px"
                 }
@@ -97,14 +97,14 @@
                     "type": "decimal",
                     "text": "上年实际完成",
                     "align": "right",
-                    "width": "180px"
+                    "width": "200px"
                 },
                 {
                     "id": "lrmb",
                     "type": "decimal",
                     "text": "本年目标考核值",
                     "align": "right",
-                    "width": "180px"
+                    "width": "200px"
                 },
                 {
                     "id": "lrtbzjl",

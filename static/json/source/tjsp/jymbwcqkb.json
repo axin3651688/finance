@@ -57,13 +57,13 @@
             "children":[{
                 "id": "m1",
                 "type": "decimal",
-                "width":"180px",
+                "width":"200px",
                 "align": "right",
                 "text": "当年年考核目标建议值"
             },{
                 "id": "m2",
                 "type": "decimal",
-                "width":"150px",
+                "width":"200px",
                 "align": "right",
                 "text": "累计完成"
             },{
@@ -83,14 +83,14 @@
                         "type":"decimal",
                         "text":"上年同期完成",
                         "align": "right",
-                        "width":"150px"
+                        "width":"200px"
                     },
                     {
                         "id": "m5",
                         "type":"decimal",
                         "text":"增减额",
                         "align": "right",
-                        "width":"150px"
+                        "width":"200px"
                     },
                     {
                         "id": "m6",
@@ -110,13 +110,13 @@
             "children":[{
                 "id": "m11",
                 "type": "decimal",
-                "width":"180px",
+                "width":"200px",
                 "align": "right",
                 "text": "当年年考核目标建议值"
             },{
                 "id": "m12",
                 "type": "decimal",
-                "width":"150px",
+                "width":"200px",
                 "align": "right",
                 "text": "累计完成"
             },{
@@ -136,14 +136,14 @@
                         "type":"decimal",
                         "text":"上年同期完成",
                         "align": "right",
-                        "width":"150px"
+                        "width":"200px"
                     },
                     {
                         "id": "m15",
                         "type":"decimal",
                         "text":"增减额",
                         "align": "right",
-                        "width":"150px"
+                        "width":"200px"
                     },
                     {
                         "id": "m16",
