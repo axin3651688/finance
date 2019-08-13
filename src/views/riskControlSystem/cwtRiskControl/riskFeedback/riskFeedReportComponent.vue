@@ -369,10 +369,10 @@
                     });
                     return;
                 }
-                this.personnelListShow = !this.personnelListShow;
                 // this.personnelListShow = !this.personnelListShow;
-                // let _stoUser = this.reportData['stouser'];
-                // this.personSureBtnClicked(null, _stoUser);
+                // this.personnelListShow = !this.personnelListShow;
+                let _stoUser = this.reportData['stouser'];
+                this.personSureBtnClicked(null, _stoUser);
             },
 
 
@@ -643,5 +643,10 @@
         font-size: 16px;
         color: #333333;
         font-weight: 700;
+    }
+
+
+    .el-textarea.is-disabled .el-textarea__inner{
+        color: #333333;
     }
 </style>

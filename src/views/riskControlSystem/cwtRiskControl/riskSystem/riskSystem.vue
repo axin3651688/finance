@@ -71,7 +71,10 @@
 
                 <risk-system-suggest-detail
                         :riskSystemSuggestDetailData.sync="riskSuggestDetail.riskSystemSuggestDetailData"
+                        :suggestDetailChange="suggestDetailChange"
                         v-if="riskSuggestDetail.show"
+                        @pageClose="pageClose"
+                        @addSuccess="addSuccess"
 
                 >
                 </risk-system-suggest-detail>
@@ -197,8 +200,10 @@
                 systemAddFresh: false,
 
                 //要删除的数组
-                deleteSyatemList: []
+                deleteSyatemList: [],
 
+
+                suggestDetailChange: false
 
             }
         },
@@ -228,6 +233,19 @@
                 this.riskSuggestDetail.show = false;
                 this.riskSuggestAdd.show = false;
 
+
+                this.riskSystemData= {
+                    show: true,
+                        riskSystemSingleData: {
+                        title: '',
+                            issuedNumber: '',
+                            writtenDate: '',
+                            releaseDate: '',
+                            files: ''
+                    }
+                };
+
+
                 this.dialogTitle = '添加风险制度';
 
                 this.systemAddFresh = !this.systemAddFresh;
@@ -238,7 +256,6 @@
              * 制度修改
              */
             systemChange() {
-                debugger;
                 if (this.deleteSyatemList.length === 0) {
                     this.$message({
                         message: '请选择要修改的制度',
@@ -269,6 +286,7 @@
              * @param scope
              */
             suggestClicled(scope) {
+                let _this = this;
                 this.dialogVisible = true;
                 this.riskSuggestDetail.show = true;
                 this.riskSystemData.show = false;
@@ -279,7 +297,7 @@
                 this.dialogTitle = '关于【' + _title + '】的相关建议';
 
 
-                this.riskSuggestDetail.riskSystemSuggestDetailData = []
+                this.riskSuggestDetail.riskSystemSuggestDetailData = [];
 
                 let params = {
                     infoId: scope.row.nid
@@ -288,6 +306,9 @@
                 riskSystemSuggestDetailQuery(params).then(res => {
                     if (res.data.code === 200) {
                         this.riskSuggestDetail.riskSystemSuggestDetailData = res.data.data;
+
+                        _this.suggestDetailChange = !_this.suggestDetailChange;
+
                     }
                 });
 
@@ -357,7 +378,11 @@
                             type: 'error'
                         });
                     }
-                })
+                });
+
+
+                this.systemAdd(null, 'change');
+
             },
 
             /**
