@@ -43,7 +43,7 @@ export function exportRiskWorld(exportData) {
  */
 export function importInitExcel(params) {
     return request({
-        url: '/zjb/excel_input',
+        url: '/zjb/template_excel/excel_input',
         method: 'post',
         // data: QS.stringify(params)
         data: params
