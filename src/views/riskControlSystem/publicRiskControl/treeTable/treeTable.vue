@@ -6,19 +6,22 @@
 <template>
     <el-table
             :data="formatData"
-            :row-style="showRow"
             v-bind="$attrs"
             :height="tableHeight"
             :header-cell-style="headerRowStyle"
             class="public_class"
+            row-key="scode"
+            stripe
+            :expand-row-keys="expandRowKeys"
+            :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
     >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
                 <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
-                <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
+                <!-- <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
                     <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                     <i v-else class="el-icon-minus"></i>
-                </span>
+                </span> -->
                 {{scope.$index}}
             </template>
         </el-table-column>
@@ -36,10 +39,10 @@
                         class="ms-tree-space"
                         :key="space">
                     </span>
-                    <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
+                    <!-- <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
                         <i v-if="!scope.row._expanded" class="iconfont icon-plus-square"></i>
                         <i v-else class="iconfont icon-minus-square"></i>
-                    </span>
+                    </span> -->
                     <span
                         v-if="column.optType === 'click' && scope.row[column.fieldValue] && scope.row[column.fieldValue] > 0"
                         @click="drillItemSname(scope)"
@@ -100,6 +103,11 @@
                 default: false
             }
         },
+        data(){
+            return {
+                expandRowKeys: []
+            }
+        },
         created(){
             /**
              * 计算表格高度
@@ -113,21 +121,38 @@
         },
         computed: {
             // 格式化数据源
-            formatData: function () {
+            formatData: function () { debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
                 } else {
                     tmp = this.data
                 }
-                const func = this.evalFunc || treeToArray;
-                const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
+                let me = this ;
+                let isTrue = tmp.some(res => { return res.scode === "1001" })
+                if(isTrue){
+                    me.expandRowKeys = [] ;
+                    tmp.forEach(res => { me.expandRowKeys.push(res.scode) }) ;
+                } else {
+                    me.expandRowKeys = [] ;
+                    me.tree_tableData(tmp, me.expandRowKeys, me) ;
+                }
+                return tmp ;
+                // const func = this.evalFunc || treeToArray;
+                // const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
                 // return func.apply(null, args)
-                const lyuo = func.apply(null, args) ;
-                return mini.getOpenbyDefault(lyuo ) //默认全部展开
+                // const lyuo = func.apply(null, args) ;
+                // return mini.getOpenbyDefault(lyuo ) //默认全部展开
             }
         },
         methods: {
+            // 二级及以下全部展开
+            tree_tableData(tmp, expandRowKeys, me){
+                tmp.forEach(res => {
+                    if(!res.nleaf)expandRowKeys.push(res.scode) ;
+                    if(res.children && res.children.length > 0)me.tree_tableData(res.children, expandRowKeys, me );
+                })
+            },
             /**
              * 行样式
              */
@@ -139,21 +164,21 @@
                     return "";
                 }
             },
-            showRow: function (row) {
-                const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
-                row.row._show = show;
-                return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
-            },
+            // showRow: function (row) {
+            //     const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
+            //     row.row._show = show;
+            //     return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
+            // },
             // 切换下级是否展开
-            toggleExpanded: function (trIndex) {
-                const record = this.formatData[trIndex];
-                record._expanded = !record._expanded
-            },
+            // toggleExpanded: function (trIndex) {
+            //     const record = this.formatData[trIndex];
+            //     record._expanded = !record._expanded
+            // },
             // 图标显示
 
-            iconShow(index, record) {
-                return (index === 0 && record.children && record.children.length > 0)
-            },
+            // iconShow(index, record) {
+            //     return (index === 0 && record.children && record.children.length > 0)
+            // },
             /**
              * 按钮点击事件 所有的
              * @author szc 2019年5月14日11:20:27

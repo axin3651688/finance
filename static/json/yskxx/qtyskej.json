@@ -18,7 +18,7 @@
             "type": "string",
             "fixed": true,
             "width": "160",
-            "id": "scode"
+            "id": "gsbm"
         },
         {
             "text": "公司名称",
@@ -37,14 +37,14 @@
         {
             "text": "余额",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "id": "ye"
         },
         {
             "text": "与年初相比增减额",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "id": "zje"
         },
@@ -70,28 +70,28 @@
             "children": [{
                     "text": "1年以内",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "oneYear"
                 },
                 {
                     "text": "1-2年",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "twoYear"
                 },
                 {
                     "text": "2-3年",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "threeYear"
                 },
                 {
                     "text": "3年以上",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "allYear"
                 }
@@ -100,7 +100,7 @@
         {
             "text": "正常金额",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "id": "zcje"
         },
@@ -111,14 +111,14 @@
             "children": [{
                     "text": "向系统外出借资金",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "fff1"
                 },
                 {
                     "text": "成本费用挂账",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "fff2"
                 },
@@ -139,21 +139,21 @@
                 {
                     "text": "长期挂账、未及时清理",
                     "type": "decimal",
-                    "width": "180px",
+                    "width": "200px",
                     "align": "right",
                     "id": "fff5"
                 },
                 {
                     "text": "核算不规范",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "fff6"
                 },
                 {
                     "text": "其他",
                     "type": "decimal",
-                    "width": "160",
+                    "width": "200px",
                     "align": "right",
                     "id": "fff7"
                 }
@@ -162,28 +162,28 @@
         {
             "text": "可收回金额",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "id": "www1"
         },
         {
             "text": "其中：当年可收回金额",
             "type": "decimal",
-            "width": "180px",
+            "width": "200px",
             "align": "right",
             "id": "www2"
         },
         {
             "text": "逾期账款",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "id": "www3"
         },
         {
             "text": "已形成实质性损失金额",
             "type": "decimal",
-            "width": "180px",
+            "width": "200px",
             "align": "right",
             "id": "www4"
         }

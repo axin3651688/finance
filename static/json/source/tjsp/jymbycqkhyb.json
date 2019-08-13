@@ -12,11 +12,11 @@
         option.closeTabTaget(newyear, option);
     },
     "changeMonthBefore": function(newmonth, option) {
-        debugger
+        // debugger
         option.closeTabTaget(newmonth, option);
     },
     "__queryDataAfter": function(data, $vue) { //数据的后置处理
-        debugger
+        // debugger
         let me = this;
         me.items[0].updateView = $vue.updateView;
         me.items[0].$vue = $vue;
@@ -60,7 +60,7 @@
                     "id": "qyzjycwc",
                     "type": "decimal",
                     "text": "预测完成",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "",
@@ -70,7 +70,7 @@
                             "id": "qyzjzje",
                             "type": "decimal",
                             "text": "增减额",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "qyzjzjl",
@@ -104,13 +104,13 @@
                     "id": "yysrjyz",
                     "type": "decimal",
                     "text": "当年年考核目标建议值",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "yysrycwc",
                     "type": "decimal",
                     "text": "预测完成",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "yysrwcmb",
@@ -127,13 +127,13 @@
                             "id": "yysrsntq",
                             "type": "decimal",
                             "text": "上年同期完成",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "yysrzje",
                             "type": "decimal",
                             "text": "增减额",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "yysrzjl",
@@ -154,13 +154,13 @@
                     "id": "lrzejyz",
                     "type": "decimal",
                     "text": "当年年考核目标建议值",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "lrzeycwc",
                     "type": "decimal",
                     "text": "预测完成",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "lrzewcmb",
@@ -177,13 +177,13 @@
                             "id": "lrzesntq",
                             "type": "decimal",
                             "text": "上年同期完成",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "lrzezje",
                             "type": "decimal",
                             "text": "增减额",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "lrzezjl",
@@ -204,7 +204,7 @@
                     "id": "zczeycwc",
                     "type": "decimal",
                     "text": "预测完成",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "",
@@ -214,7 +214,7 @@
                             "id": "zczezje",
                             "type": "decimal",
                             "text": "增减额",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "zczezjl",
@@ -235,7 +235,7 @@
                     "id": "fzzjycwc",
                     "type": "decimal",
                     "text": "预测完成",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "",
@@ -245,7 +245,7 @@
                             "id": "fzzjzje",
                             "type": "decimal",
                             "text": "增减额",
-                            "width": "170px"
+                            "width": "200px"
                         },
                         {
                             "id": "fzzjzjl",
@@ -277,7 +277,7 @@
                 // "background-color":"#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 let $vue = vue.item.$vue;
                 $vue.closeTabTaget({}, $vue);
@@ -293,7 +293,7 @@
                 // "background-color":"#fff"
             },
             "handler": function(vue, btn) {
-                debugger
+                // debugger
                 console.log(vue);
                 vue.handleDownload(vue);
             }

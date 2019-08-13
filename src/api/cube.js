@@ -209,12 +209,14 @@ export function deleteRiskdistinguish(data) {
 }
 /**4.
  * name: sjz
- * 说明：风险识别的【风险类型下拉】接口 /risktype/query_all
+ * 说明：风险识别的【风险类型下拉】接口 /risktype/query_all(弃用) || /risktype/queryBycompanyAndDepart
  */
-export function risktype() {
+export function risktype(data) {
     return request({
-        url: '/zjb/risktype/query_all',
-        method: 'get'
+        // url: '/zjb/risktype/query_all',
+        url: '/zjb/risktype/queryBycompanyAndDepart',
+        method: 'get',
+        params: data
     })
 }
 /**5.

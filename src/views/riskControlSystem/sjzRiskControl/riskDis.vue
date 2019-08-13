@@ -50,7 +50,7 @@
         <!-- 批量下达弹出框 -->
         <bulk-ordersers ref="mychild" v-if="riskRelease" :newThis="me" :data="comtree2"></bulk-ordersers>
         <!-- 表格 -->
-        <div class="table">
+        <!-- <div class="table"> -->
             <el-table
             class="table-call"
             id="publicTable"
@@ -77,6 +77,10 @@
                 :show-overflow-tooltip="element.showOverflow"
                 :align="element.align"                 
                 >
+                    <template slot-scope="scope">
+                        <div v-if="element.id === 'gradename'" :style="getStyleBgcolor(scope.row, element)">{{ scope.row[element.id] }}</div>
+                        <div v-else>{{ scope.row[element.id] }}</div>
+                    </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
@@ -85,7 +89,7 @@
                     </template>
                 </el-table-column>
             </el-table>
-        </div>
+        <!-- </div> -->
         <!-- 弹出框 -->
         <el-dialog title="风险评估与识别" :visible.sync="dialogFormVisible" :before-close="handleClose" :close-on-click-modal="false" :width="widths" style="marginTop: -15vh;">
             <div style="height:2px;border:1px solid #606266;marginTop: -20px;marginBottom:10px"></div>
@@ -170,7 +174,7 @@ export default {
     mixins: [ EventMixins ],
     data(){
         return {
-            heights: 0,         // 表格的高度
+            heights: 350,         // 表格的高度
             widths: "960px",    // 弹出框的宽度
             elementui: [],           // 文字
             tableLength: 0,          // 共多少条数据
@@ -222,20 +226,26 @@ export default {
         // this.uploadData.company = $params.company ;
         // this.uploadData.period = this.getPeriod($params) ;
         // 点进节点时默认计算的高度
-        this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
+        this.heights = document.documentElement.offsetHeight - 20 - 42 - 64  + "px";
         // 弹出框===如果屏幕 <= 1200px 宽度自动变更为 540px；如果 >1200px 宽度为默认宽度 960px
         if(document.body.offsetWidth <= 1200 )this.widths = "540px" ;
     },
     mounted(){
+        // debugger
+        // let cc = document.getElementsByClassName('el-table__body-wrapper')[0] ;
+        // cc.style.height = cc.clientHeight + "px" ;   
         // this.globalparam_request() ;    // 全局参数设置请求
         this.showDimsControl(); // 日期的控制显示
-        this.setClientHeight(); // 自适应高度
+        this.$nextTick(()=>{
+            this.setClientHeight(); // 自适应高度
+        })
+        
         this.axiosJson();       // 获取表格json的信息
         this.axiosRequest();    // 获取【风险矩阵】的json信息
         this.table1Request();   // 获取【参照按钮-发生概率】的json信息
         this.tab1e2Request();   // 获取【参照按钮-影响程度】的json信息
         // this.htmlContent();     // 获取表格信息生成文字
-        
+           
     },
     watch: {
         // 切换年触发
@@ -275,18 +285,29 @@ export default {
         cellClassName({row, column, rowIndex, columnIndex}){
             // debugger
             if(column.property == "gradename"){
-                if(row.gradename == "中等风险"){
-                    return "gradename_yellow" ;
-                }else if(row.gradename == "重大风险"){
-                    return "gradename_orange" ;
-                }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
-                    return "gradename_red" ;
-                }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
-                    return "gradename_green" ;
-                }else {
-                    return "gradename_blue" ;
-                }               
+                // if(row.gradename == "中等风险"){
+                //     return "gradename_yellow" ;
+                // }else if(row.gradename == "重大风险"){
+                //     return "gradename_orange" ;
+                // }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
+                //     return "gradename_red" ;
+                // }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
+                //     return "gradename_green" ;
+                // }else {
+                //     return "gradename_blue" ;
+                // }  
+                return "gradename_bgcolor"             
             }   
+        },
+        getStyleBgcolor(scopeRow, element){
+            return {
+                background: scopeRow.gradecolor ,
+                color: "#ffffff" ,
+                width: "90px" ,
+                borderRadius: "11px" ,
+                margin: "0 auto" ,
+                opacity : 1  
+            }
         },
         // 日期的显示控制
         showDimsControl(){
@@ -297,10 +318,12 @@ export default {
         },
         // 自适应高度
         setClientHeight(){
-            this.heights = document.documentElement.offsetHeight - 20 - 42 -64;
             const me = this ;
+            setTimeout(()=>{
+                me.heights = document.documentElement.offsetHeight - 20 - 42 -64;
+            },200)           
             window.onresize = function temp(){ 
-                me.heights = document.body.offsetHeight - 20 - 42 -64 ;
+                me.heights = document.documentElement.offsetHeight - 20 - 42 -64 ;
                 if(document.body.offsetWidth <= 1200 ){
                     me.widths = "540px"; 
                 }else{
@@ -907,6 +930,9 @@ export default {
 }
 </style>
 <style>
+.el-scrollbar__thumb {
+    display: none ;
+}
 .el-table--border th, .el-table__fixed-right-patch{
     background-color: rgb(240, 248, 255);
 }
@@ -924,6 +950,9 @@ export default {
 /* .el-dialog__wrapper{
     overflow: hidden;
 } */
+.table-call .el-table__body-wrapper {
+    height: 100%;
+}
 .table-call .gradename_red .cell {
     color: #fff ;
     background-color: rgb(219, 43, 8);

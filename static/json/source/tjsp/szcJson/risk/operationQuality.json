@@ -82,19 +82,22 @@
                             "id": "E3",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "100"
                         },
                         {
                             "id": "E1",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "120"
                         },
                         {
                             "id": "E2",
                             "type": "string",
                             "text": "较差值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         }
                     ]
                 },
@@ -115,13 +118,15 @@
                             "id": "A2",
                             "type": "string",
                             "text": "",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "A1",
                             "type": "string",
                             "text": "",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "100"
                         }
                     ]
                 },
@@ -136,13 +141,15 @@
                             "id": "B2",
                             "type": "string",
                             "text": "良好值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "B1",
                             "type": "string",
                             "text": "良好值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 },
@@ -154,13 +161,15 @@
                             "id": "C2",
                             "type": "string",
                             "text": "平均值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "C1",
                             "type": "string",
                             "text": "平均值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 },
@@ -173,13 +182,15 @@
                             "id": "D2",
                             "type": "string",
                             "text": "较低值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "60"
                         },
                         {
                             "id": "D1",
                             "type": "string",
                             "text": "较低值",
-                            "align": "center"
+                            "align": "center",
+                            "minWidth": "110"
                         }
                     ]
                 }

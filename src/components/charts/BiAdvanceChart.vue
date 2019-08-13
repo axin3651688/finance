@@ -82,21 +82,21 @@ export default {
             let allDatas = me.item.datas,gg = options;
             let aa = options,unitObj = options.unitObj || {};
             if(unitObj && unitObj.mult && !isNaN(unitObj.mult) && unitObj.unitName ){
-                if( ["户","个"].indexOf(unitObj.unitName) != -1 ){
-                  //户数自动截取掉小数点后面的
-                  let value = Math.decimalToLocalString(a.value/unitObj.mult);
-                  value = value.substring(0,value.indexOf("."));
-                  // return a.name + ":" + Math.numberToLocalString(a.value/unitObj.mult,null,null,0) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";  //龚总方法没加
-                  return a.name + ":" + value + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
-                }
-                //判断是哪一个，集中度还是非集中度。
-                let itemData = allDatas.filter(item => {
-                  return item.text == a.name;
-                });
-                return a.name + ":"+ Math.decimalToLocalString(itemData[0].A/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(itemData[0].bl || 0) +"%)";
-                  // return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
+              if( ["户","个"].indexOf(unitObj.unitName) != -1 ){
+                //户数自动截取掉小数点后面的
+                let value = Math.decimalToLocalString(a.value/unitObj.mult);
+                value = value.substring(0,value.indexOf("."));
+                // return a.name + ":" + Math.numberToLocalString(a.value/unitObj.mult,null,null,0) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";  //龚总方法没加
+                return a.name + ":" + value + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
               }
-                return a.name + ":" + Math.decimalToLocalString(a.value) + "("+ Math.decimalToLocalString(a.percent) +"%)";
+              //判断是哪一个，集中度还是非集中度。
+              let itemData = allDatas.filter(item => {
+                return item.text == a.name;
+              });
+              return a.name + ":"+ Math.decimalToLocalString((itemData[0].A || 0)/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(itemData[0].bl || 0) +"%)";
+                // return a.name + ":" + Math.decimalToLocalString(a.value/unitObj.mult) + unitObj.unitName + "("+ Math.decimalToLocalString(a.percent) +"%)";
+            }
+            return a.name + ":" + Math.decimalToLocalString(a.value) + "("+ Math.decimalToLocalString(a.percent) +"%)";
           }
       };
     },

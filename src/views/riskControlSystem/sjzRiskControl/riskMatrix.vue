@@ -10,12 +10,12 @@
                 <td :style="styles" :rowspan="rowLength">风险发生概率(L)</td>
                 <td v-for="item in item1" :style="styles">{{ item.sname }}</td>
                 <td v-for="item in item1" :style="stylee">{{ item.nscore }}</td>
-                <td v-for="item in item3" :style="item.color">{{ item.nscode }}</td>
+                <td v-for="item in item3" :style="item.color" style="color: #303133">{{ item.nscode }}</td>
             </tr>
             <tr id="text" v-for="item in items">
-                <td >{{ item.sname }}</td>
+                <td style="color: #303133">{{ item.sname }}</td>
                 <td style="color: red;">{{ item.nscore }}</td>
-                <td v-for="todo in itemc" :style="getStyles(item, todo)">{{ item["val" + todo.num] }}</td>
+                <td v-for="todo in itemc" :style="getStyles(item, todo)" style="color: #303133">{{ item["val" + todo.num] }}</td>
 
                 <!-- <td :style="item.color1">{{ item.val1 }}</td> -->
                 <!-- <td :style="item.color">{{ item.text }}</td> -->
@@ -29,7 +29,7 @@
                 <td v-for="item in item2" :style="stylee">{{ item.nscore }}</td>
             </tr>
             <tr>
-                <td v-for="item in item2" :style="item.width">{{ item.sname }}</td>
+                <td v-for="item in item2" :style="item.width" style="color: #303133">{{ item.sname }}</td>
             </tr>
             <tr>
                 <td :style="styles" :rowspan="3" :colspan="rowLength">风险影响程度（S）</td>
@@ -54,7 +54,7 @@ export default {
             // 
             tableData: [],
             rowLength: 0,
-            styles: { width: "100px" },
+            styles: { width: "100px", color: "#303133" },
             stylee: { width: "100px", color: "red" },
             item1:[],   // 风险发生概率第一行
             item2:[],   // 风险影响程度

@@ -394,7 +394,7 @@ export default {
                 this.$emit('getValue',this.valueId)
                 this.defaultExpandedKey = []
                 this.isFocus = false 
-                this.$refs.sub2.$children[1].$children[0].blur() // 下拉框隐藏
+                this.$refs.sub2.$children[1].$children[1].blur() // 下拉框隐藏
             }
         },
         // 清除下拉选【风险类型】的
@@ -510,7 +510,13 @@ export default {
         // 风险类型请求
         srisktypeRequest(){
             let me = this ;
-            risktype().then(res => {
+            let companyId = me.$store.state.prame.command ;
+            let departId = me.$store.state.user.user.dept[0] ;
+            let params = {
+                company: companyId.company ,
+                depart: departId.id
+            }
+            risktype(params).then(res => { 
                 if(res.data.code === 200){
                     // me.options = res.data.data ;
                     me.options = mini.elementUI_tree(res.data.data, this, "1") ;

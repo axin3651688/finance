@@ -5,20 +5,23 @@
 */
 <template>
     <el-table 
-    :data="formatData" 
-    :row-style="showRow" 
+    :data="formatData"  
     v-bind="$attrs" 
     stripe border 
+    row-key="id"
     :height="heights"
     :cell-style="cellStyle"
-    @row-click="rowClick">
+    :expand-row-keys="expandRowKeys"
+    @row-click="rowClick"
+    :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
-                <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
+                <!-- <span v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                 <span class="tree-ctrl" v-if="iconShow(0,scope.row)" @click="toggleExpanded(scope.$index)">
-          <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
-          <i v-else class="el-icon-minus"></i>
-        </span>
+                    <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
+                    <i v-else class="el-icon-minus"></i>
+                </span> -->
                 {{scope.$index}}
             </template>
         </el-table-column>
@@ -35,12 +38,12 @@
             <template slot-scope="scope">
                 <span v-if="index === 0" v-for="space in scope.row._level" class="ms-tree-space" :key="space"></span>
                 <!-- 图标 -->
-                <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)">
+                <!-- <span class="tree-ctrl" v-if="iconShow(index,scope.row)" @click="toggleExpanded(scope.$index)"> -->
                     <!-- <i v-if="!scope.row._expanded" class="el-icon-plus"></i>
                     <i v-else class="el-icon-minus"></i> -->
-                    <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i>
-                    <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i>
-                </span>
+                    <!-- <i v-if="!scope.row._expanded" class="iconfont icon-plus-square" aria-hidden="true"></i> -->
+                    <!-- <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i> -->
+                <!-- </!--> 
                 <!-- {{scope.row[column.id]}} -->
                 <el-tooltip :content="getCellValues(scope,column)" placement="right" effect="light">
                     <span>{{ getCellValues(scope,column) }}</span>
@@ -67,7 +70,7 @@
 </template>
 
 <script>
-    import treeToArray from './eval'
+    // import treeToArray from './eval'
     import tools from "utils/tools";
     export default {
         name: 'treeTable',
@@ -94,7 +97,8 @@
         },
         data(){
             return {
-                heights: 700
+                heights: 700,
+                expandRowKeys: []
             }
         },
         created(){
@@ -106,16 +110,17 @@
         },
         computed: {
             // 格式化数据源
-            formatData: function () {
+            formatData: function () { debugger
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
                 } else {
                     tmp = this.data
                 }
-                const func = this.evalFunc || treeToArray;
-                const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
-                return func.apply(null, args)
+                return tmp ;
+                // const func = this.evalFunc || treeToArray;
+                // const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];
+                // return func.apply(null, args)
             }  
         },
         methods: {
@@ -126,20 +131,20 @@
                     me.heights = document.body.offsetHeight - 168 ;
                 }
             },
-            showRow: function (row) {
-                const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
-                row.row._show = show;
-                return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
-            },
+            // showRow: function (row) {
+            //     const show = (row.row.parent ? (row.row.parent._expanded && row.row.parent._show) : true);
+            //     row.row._show = show;
+            //     return show ? 'animation:treeTableShow 1s;-webkit-animation:treeTableShow 1s;' : 'display:none;'
+            // },
             // 切换下级是否展开
-            toggleExpanded: function (trIndex) {
-                const record = this.formatData[trIndex];
-                record._expanded = !record._expanded
-            },
+            // toggleExpanded: function (trIndex) {
+            //     const record = this.formatData[trIndex];
+            //     record._expanded = !record._expanded
+            // },
             // 图标显示
-            iconShow(index, record) {
-                return (index === 0 && record.children && record.children.length > 0)
-            },
+            // iconShow(index, record) {
+            //     return (index === 0 && record.children && record.children.length > 0)
+            // },
             /**
              * 点击公司显示具体报告内容
              * @param row

@@ -25,7 +25,7 @@
             "id": "balance",
             "type": "decimal",
             "align": "right",
-            "width": "160",
+            "width": "200px",
             "text": "余额"
         },
         {
@@ -37,28 +37,28 @@
                     "id": "oneyear",
                     "type": "decimal",
                     "align": "right",
-                    "width": "160",
+                    "width": "200px",
                     "text": "1年以内"
                 },
                 {
                     "id": "twoyear",
                     "type": "decimal",
                     "align": "right",
-                    "width": "160",
+                    "width": "200px",
                     "text": "1-2年以内"
                 },
                 {
                     "id": "threeyear",
                     "type": "decimal",
                     "align": "right",
-                    "width": "160",
+                    "width": "200px",
                     "text": "2-3年以内"
                 },
                 {
                     "id": "fouryear",
                     "type": "decimal",
                     "align": "right",
-                    "width": "160",
+                    "width": "200px",
                     "text": "3年以上"
                 }
             ]
@@ -100,21 +100,21 @@
         {
             "id": "khsje",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "text": "可收回金额*"
         },
         {
             "id": "dnkhsje",
             "type": "decimal",
-            "width": "180px",
+            "width": "200px",
             "align": "right",
             "text": "其中:当年可收回金额*"
         },
         {
             "id": "yqzk",
             "type": "decimal",
-            "width": "160",
+            "width": "200px",
             "align": "right",
             "text": "逾期账款"
         },
@@ -122,7 +122,7 @@
             "id": "szxssje",
             "type": "decimal",
             "align": "right",
-            "width": "180px",
+            "width": "200px",
             "text": "已形成实质性损失金额"
         }
     ],

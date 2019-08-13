@@ -7,7 +7,7 @@
     "showDims": ["year","month","company","conversion"],
         // 切换公司时做处理（合并显示，单体隐藏）
     "changeCompanyBefore":function(newcompany,option){
-        debugger
+        // debugger
         this.showSet(this.items); 
         option.closeTabTaget(newcompany,option);
     },
@@ -19,7 +19,7 @@
         option.closeTabTaget(newmonth,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
-        debugger
+        // debugger
         
         let me = this;
         me.items[0].updateView = $vue.updateView;
@@ -62,13 +62,13 @@
                     "id" : "syzqy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "syzqytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -89,7 +89,7 @@
             "id": "zcfzl",
             "type": "decimal",
             "width": "160px",
-            "text": "资产负债率"
+            "text": "资产负债率（%）"
         },
         {
             "id": "",
@@ -100,13 +100,13 @@
                     "id" : "yysr",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "yysrtq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -119,13 +119,13 @@
                     "id" : "yycb",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "yycbtq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -138,13 +138,13 @@
                     "id" : "xsfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "xsfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -157,13 +157,13 @@
                     "id" : "glfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "glfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -176,13 +176,13 @@
                     "id" : "cwfy",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "cwfytq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -195,13 +195,13 @@
                     "id" : "lrze",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "lrzetq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         },
@@ -214,13 +214,13 @@
                     "id" : "zcze",
                     "type" : "decimal",
                     "text" : "本期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id" : "zczetq",
                     "type" : "decimal",
                     "text" : "同期",
-                    "width": "170px"
+                    "width": "200px"
                 }
             ]
         }
@@ -244,8 +244,8 @@
                     // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
+                    // debugger
+                    // console.log(vue);
                     let $vue = vue.item.$vue;
                     $vue.closeTabTaget({}, $vue);
                     vue.item.updateView("company");
@@ -260,8 +260,8 @@
                     // "background-color":"#fff"
                 },
                 "handler":function(vue,btn){
-                    debugger
-                    console.log(vue);
+                    // debugger
+                    // console.log(vue);
                     vue.handleDownload(vue);
                 }
             }]

@@ -13,11 +13,11 @@
         option.closeTabTaget(newyear, option);
     },
     "changeMonthBefore": function(newmonth, option) {
-        debugger
+        // debugger
         option.closeTabTaget(newmonth, option);
     },
     "__queryDataAfter": function(data, $vue) { //数据的后置处理
-        debugger
+        // debugger
 
         let me = this;
         me.items[0].updateView = $vue.updateView;

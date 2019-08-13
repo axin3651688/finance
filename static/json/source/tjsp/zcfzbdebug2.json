@@ -17,7 +17,7 @@
         "weight": 24,
         "show": true,
         "queryDataBefore": function(a, b, c) {
-            debugger
+            // debugger
             // var pointItem = c.$store.pointItem;				
             b.sql = b.sql2;
             let len = c.items.length;
@@ -37,7 +37,7 @@
         },
         "config": {
             "sql": "",
-            "sql2": "SELECT D.ROOT_SCODE GSBM, D.SNAME GSMC, D.SPCODE PID, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY GSBM",
+            "sql2": "SELECT D.ROOT_SCODE SCODE, D.SNAME GSMC, D.SPCODE SPCODE, SUM(NVL(QMYE, 0)) QMYE, SUM(NVL(ZJE, 0)) ZJE,(CASE WHEN SUM(NVL(FACT_A,0))=0 THEN 0 ELSE ROUND((SUM(QMYE)-SUM(FACT_A))*100/SUM(FACT_A), 4) END) AS ZJL, SUM(NVL(SNTQ, 0)) SNTQ, SUM(QMYE-SNTQ) TBZJE, (CASE WHEN SUM(SNTQ)=0 THEN 0 ELSE ROUND((SUM(QMYE-SNTQ)/SUM(SNTQ))*100, 4) END)TBZJL, SUM(NVL(BNYS, 0)) BNYS, SUM(NVL(CYE, 0)) CYE, (CASE WHEN SUM(NVL(BNYS,0))=0 THEN 0 ELSE ROUND(((SUM(QMYE)-SUM(BNYS))*100/SUM(BNYS)), 4) END) AS CYL FROM ((SELECT A.DIM_COMPANY AS GSBM, FACT_A,A.FACT_B AS QMYE, (A.FACT_B-A.FACT_A) AS ZJE, 0 AS SNTQ, 0 AS TBZJE, 0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT A, DW_DIMCOMPANY B WHERE A.DIM_COMPANY=B.SCODE AND A.DIM_ITEMPOINT=':dimpoint' AND A.DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE, FACT_B AS SNTQ, 0 AS TBZJE,0 AS BNYS, 0 AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:comparePeriod AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE)) UNION ALL (SELECT DIM_COMPANY AS GSBM,0 FACT_A,0 AS QMYE, 0 AS ZJE,0 AS SNTQ,0 AS TBZJE, FACT_C AS BNYS, (FACT_B-FACT_C) AS CYE FROM DW_FACTFINANCEPOINT, DW_DIMCOMPANY B WHERE DIM_COMPANY=B.SCODE AND DIM_ITEMPOINT=':dimpoint' AND DIM_PERIOD=:period AND DIM_COMPANY IN (SELECT SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN ('1','R') START WITH SCODE=:company CONNECT BY PRIOR SCODE = SPCODE))) H RIGHT JOIN (SELECT ROOT_SCODE,E.SCODE,F.SNAME,F.SPCODE FROM (SELECT CONNECT_BY_ROOT(SCODE) ROOT_SCODE,SCODE FROM DW_DIMCOMPANY WHERE CISDEL='N' AND STYPE IN('1','R') START WITH SCODE in (select scode from dw_dimcompany where cisdel = 'N' start with scode =:company connect by prior scode = spcode) CONNECT BY PRIOR SCODE = SPCODE) E INNER JOIN DW_DIMCOMPANY F ON E.ROOT_SCODE=F.SCODE)D ON D.SCODE = H.GSBM GROUP BY D.ROOT_SCODE,D.SNAME,D.SPCODE ORDER BY SCODE",
             "_cube": {
                 "subject": "0001",
                 "cubeId": 4
@@ -70,7 +70,7 @@
             // 	"isTree":true
             // },
             {
-                "id": "gsbm",
+                "id": "scode",
                 "type": "string",
                 "width": "180",
                 "fixed": true,
@@ -86,7 +86,7 @@
             {
                 "id": "qmye",
                 "type": "decimal",
-                "width": "160",
+                "width": "200px",
                 "align": "right",
                 "text": "期末余额"
             },
@@ -97,7 +97,7 @@
                 "children": [{
                         "id": "zje",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "增减额"
                     },
@@ -118,14 +118,14 @@
                 "children": [{
                         "id": "sntq",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "上年同期"
                     },
                     {
                         "id": "tbzje",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "同比增减额"
                     }, {
@@ -145,14 +145,14 @@
                 "children": [{
                         "id": "bnys",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "本年预算"
                     },
                     {
                         "id": "cye",
                         "type": "decimal",
-                        "width": "160",
+                        "width": "200px",
                         "align": "right",
                         "text": "差异额"
                     },

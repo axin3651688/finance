@@ -1,6 +1,5 @@
 {
-    //sql 配置  弃用  改用cube配置
-    // 注：暂时启用
+    //sql 配置 
     "id":"0003",
     "text":"现金流量表",
     "showDims":["year","month","company","conversion"],

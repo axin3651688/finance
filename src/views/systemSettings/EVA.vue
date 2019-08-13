@@ -912,6 +912,20 @@ export default {
         this.exps[element + "_tz"] = this.exps[element] * (1 - newV / 100);
       });
     },
+    updateTzhData2(arr, newV) {
+      let me = this ;
+      arr.forEach(element => {
+        debugger
+        me.exps[element + "_tz"] = 
+            me.exps["v1400100A"] + 
+            (
+              //  研发费用  +  利息支出  -  资产处置收益  -   营业外收入  +  营业外支出
+              ( me.exps["v1435301A"] + me.exps["v1436604A"] - me.exps["v1416121A"] - me.exps["v1416301A"] + me.exps["v1426711A"] ) * 
+              (1 - newV / 100)   
+            )
+              
+      });
+    },
     // 输入限制警告
     warning(msg,item){
         this.$message({ message: msg, type: 'warning' });
@@ -941,13 +955,15 @@ export default {
         if (item.code === "sl") {
           //调整后数据
           this.updateTzhData(
-          //   研发费用      利息支出   资产处置收益   营业外收入    营业外支出   税后净营业利润
-            ["v1435301A", "v1436604A","v1416121A", "v1416301A", "v1426711A", "yywsrlrA"],
+          //   研发费用      利息支出   资产处置收益   营业外收入    营业外支出   
+            ["v1435301A", "v1436604A","v1416121A", "v1416301A", "v1426711A"],
             item.value
           );
           //营业外收支净额 营业外支出本期金额-营业外收入本期金额
           this.exps.yywsrje = this.exps.v1426711A - this.exps.v1416301A;
           this.updateTzhData(["yywsrje"], item.value);
+          //                  税后净营业利润
+          this.updateTzhData2(["yywsrlrA"], item.value)
         }
         this.setExpressionData();
 

@@ -180,6 +180,18 @@ export default {
             queryTableCensus(params).then(res => {
                 if(res.data.code == 200){
                     // me.tableData = res.data.data;
+                    //按照公司排个序。
+                    debugger;
+                    res.data.data.datas.sort(function(a,b){
+                        if(a.company > b.company){
+                            return 1;
+                        }else if(a.company < b.company) {
+                            return -1;
+                        }else {
+                            return 0;
+                        }
+                    });
+                    me.subSpanNumber(res.data.data.datas);
                     me.tableData = res.data.data.datas;
                     me.totalValue = parseInt(res.data.data.total/20) + (res.data.data.total%20 > 0? 1:0);
                 }else if (res.data.code == 1001) {
@@ -187,6 +199,34 @@ export default {
                     me.totalValue = 0;
                 }
             });
+        },
+        /**
+         * 计算span的合并数据。
+         */
+        subSpanNumber (datas){
+            let me = this;
+            let obj = {},arr = [],arrDemo = [];
+            datas.forEach(item => {
+                if(!obj[item.company]){
+                    obj[item.company] = 1;
+                }else {
+                    obj[item.company]++;
+                }
+            });
+            for(let key in obj){
+                arr.push(obj[key]);
+            }
+            for(let i = 0;i < arr.length;i++){
+                if(i == 0){
+                    arrDemo[i] = arr[i];
+                }else {
+                    arrDemo[i] = arr[i];
+                    for(let j = 0;j < i;j++){
+                        arrDemo[i] += arr[j];
+                    }
+                }
+            }
+            me.allData.spanObj = arrDemo;
         },
         /**
          * 上一页

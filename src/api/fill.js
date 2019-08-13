@@ -331,3 +331,13 @@ export function batchRollbackReview(params) {
 //         data: params
 //     })
 // }
+/**
+ * 集团
+ * @author szc 2019年5月8日08:59:35/zjb/batch_rollback_review
+ */
+export function checkDwFactTargetAssess(params) {
+    return request({
+        url: '/zjb/zjb/check_DwFactTargetAssess?company=' + params.company + '&period=' + params.period,
+        method: 'get'
+    })
+}

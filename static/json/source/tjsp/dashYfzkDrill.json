@@ -13,7 +13,7 @@
             "width": 6,
             "tableBefore": true,
             "tableBeforeFun": function($vue, params) {
-                debugger;
+                // debugger;
                 let me = this;
                 let period = $vue.$store.selectPeriod;
                 let year = period.substring(0, 4);
@@ -27,7 +27,7 @@
                 return html;
             },
             "showFun": function($store) {
-                debugger
+                // debugger
                 if ($store.getters.treeInfo.nisleaf) {
                     return true;
                 } else {
@@ -36,7 +36,7 @@
             },
 
             "queryDataBefore": function(params, config, $vue) {
-                debugger;
+                // debugger;
                 let me = this;
                 let selectPeriod = $vue.$store.selectPeriod;
                 if (selectPeriod) {
@@ -53,7 +53,7 @@
                 return params;
             },
             "queryDataAfter": function(data, $vue) {
-                debugger
+                // debugger
                 let datas = [];
                 let datax = [];
                 data.forEach(item => {
@@ -192,7 +192,7 @@
             "show": false,
             "tableBefore": true,
             "showFun": function($store) {
-                debugger
+                // debugger
                 if ($store.getters.treeInfo.nisleaf) {
                     return false;
                 } else {
@@ -200,7 +200,7 @@
                 }
             },
             "queryDataBefore": function(params, config, $vue) {
-                debugger
+                // debugger
                 let me = this;
                 //是不是穿透的
                 let selectPeriod = $vue.$store.selectPeriod;
@@ -234,7 +234,7 @@
                 return params;
             },
             "queryDataAfter": function(data, $vue) {
-                debugger
+                // debugger
                 let me = this;
                 let riskrangeData = $vue.riskrangeData;
                 let first, second;
@@ -301,7 +301,7 @@
                         "type": "string",
                         "fixed": true,
                         "width": "160",
-                        "id": "scode"
+                        "id": "gsbm"
                     },
                     {
                         "text": "公司名称",
@@ -499,7 +499,7 @@
             ],
             "drillProperties": ["riskrange", "gsmc"],
             "__onRowClick": function(row, column, e, $this) {
-                debugger
+                // debugger
                 let id = row.gsbm,
                     text = row.gsmc;
                 if (this.drillProperties[1].indexOf(column.property) != -1) {
@@ -542,7 +542,7 @@
                 }
             },
             "cellStyle": function(row, obj) {
-                debugger
+                // debugger
 
                 let css = "padding: 4px 0;";
 

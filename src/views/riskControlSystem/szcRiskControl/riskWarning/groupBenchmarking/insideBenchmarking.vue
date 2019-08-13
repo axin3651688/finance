@@ -1,6 +1,6 @@
 <template>
     <div>
-        <div>
+        <div v-if="rootRender">
             <el-tabs v-model="activeName" @tab-click="tabClick" @tab-remove="removeTab">
                 <el-tab-pane label="内部对标" name="first">
                     <div>
@@ -70,6 +70,7 @@
                 chartData:[],
                 activeName:"first",
                 editableTabs: [],
+                rootRender:true
             }
         },
         /**
@@ -121,7 +122,6 @@
                     // me.queryDataPublic(judgeParams);
                     // findThirdPartData().then(res => {
                     //     if(res.data.code == 200){
-
                     //     }
                     // });
                     me.treeData = res.data.rows;
@@ -166,7 +166,6 @@
                 });
             },
             deepCopy (obj) { //深拷贝
-                debugger; 
                 let result = Array.isArray(obj) ? [] : {};
                 for (let key in obj) {
                     if (obj.hasOwnProperty(key)) {
@@ -445,10 +444,10 @@
                     // this.showDims.month = true;
                 }
                 this.activeName = activeName;
-                // this.rootRender = false;
-                // this.$nextTick(() => {
-                //     this.rootRender = true;
-                // });
+                this.rootRender = false;
+                this.$nextTick(() => {
+                    this.rootRender = true;
+                });
             },
             /**
              * 暂时没用。

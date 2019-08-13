@@ -240,7 +240,7 @@ export default {
       aboutShow:false,
       dialogVisible: false,
       isCollapse: true,
-      yearCount: 4,
+      yearCount: 5,
       monthCount: 12, //[4,12,16]
       quarterCount:0,
       yearEnd:0,

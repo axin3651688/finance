@@ -10,7 +10,9 @@
                 :header-cell-style="headerCellStyle"
                 :header-row-style="headerRowStyle"
                 :cell-style="cellStyle"
+                :span-method="arraySpanMethod"
                 class="risk_table"
+                id="publicTable"
                 style="width: 100%">
                     <tableColumnCompon :columns.sync="columns"></tableColumnCompon>
                 </el-table>
@@ -123,6 +125,60 @@
                     }
                 }
                 return "";
+            },
+            /**
+             * 合并单元格。
+             */
+            arraySpanMethod ({ row, column, rowIndex, columnIndex }) {
+                if(this.allData && this.allData.spanObj){
+                    let spanArr = this.allData.spanObj;
+                    if(rowIndex == 0){
+                        if (columnIndex === 0) {
+                            return [spanArr[0], 1];
+                        } else {
+                            return [1, 1];
+                        }
+                    }else {
+                        let rIndex,spanNum;
+                        for(let i = 0;i < spanArr.length;i++){
+                            let item = spanArr[i];
+                            if(item == rowIndex){
+                                rIndex = item;
+                                spanNum = spanArr[i + 1] - spanArr[i];
+                                break;
+                            }
+                        }
+                        if(rowIndex == rIndex){
+                            if (columnIndex === 0) {
+                                return [spanNum, 1];
+                            } else {
+                                return [1, 1];
+                            }
+                        }else {
+                            if (columnIndex === 0) {
+                                return [0, 0];
+                            } else {
+                                return [1, 1];
+                            }
+                        }
+                    }
+                    // if (rowIndex % 2 === 0) {
+                    //     if (columnIndex === 0) {
+                    //         return [2, 1];
+                    //     } else {
+                    //         return [1, 1];
+                    //     }
+                    // }else{
+                    //     if(columnIndex === 0){
+                    //         return [0,0];
+                    //     }else {
+                    //         return [1, 1]; 
+                    //     }
+                    // }
+                }else {
+                    return [1,1]
+                }
+                // return [1,1];
             },
             /**
              *

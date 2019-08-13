@@ -24,6 +24,7 @@
             <el-button @click="saveData" class="button" v-show="showSaveButton">保存</el-button>
             <el-button @click="rowData" class="button" v-show="showAddButton">新增</el-button>
             <el-button @click="editData" class="button" v-if="showEditButton">{{ editBtnContent }}</el-button>
+            <el-button @click="examineData" class="button" v-if="showExamineButton">审核</el-button>
           </div>
           <div class="right">
             <el-button v-if="bulkButton" @click="bulkReporting">
@@ -124,7 +125,8 @@ import {
     queryUserByCompany,
     sendFillMessage,
     saveReport,
-    queryStateOfTable
+    queryStateOfTable,
+    checkDwFactTargetAssess
 } from "@/api/fill.js";
 import EventMixins from "./mixins/szcFillBtnOpe";
 // import BiModule from "@v/BiModule.vue";
@@ -139,6 +141,8 @@ export default {
   },
   data() {
     return {
+      //审核按钮。
+      showExamineButton:false,
       editBtnContent:"修改",
       editFlag:false,
       renderFlag:true,
@@ -603,6 +607,26 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    examineData(){
+      let me = this,stp = me.$store.getters,company = stp.company,period = me.parsePeriod();
+      let params = {
+        company:company,
+        period:period
+      };
+      checkDwFactTargetAssess(params).then(res => {
+        if(res.data.code == 200){
+          me.$message({
+            message:res.data.msg? res.data.msg:"数据正确！",
+            type:"success"
+          });
+        }else{
+          me.$message.error(res.data.msg? res.data.msg:"数据审核出错！");
+        }
+      });
+    },
+    /**
+     * 修改按钮。
+     */
     editData (){
       let me = this;
       if(me.editFlag){
@@ -1248,11 +1272,9 @@ export default {
       let me = this;
       // return
       //融资的新增与减少的判断 起始日期...
-      debugger;
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
         //正则判断。
-        debugger;
         if(changes && changes.length > 0){
           let arrStr = ['sstartdate','senddate','srepaydate'];
           if(arrStr.indexOf(changes[0][1]) != -1 && changes[0][3]){
@@ -1267,7 +1289,6 @@ export default {
         }
       }
       if (changes && changes.length > 0) {
-        debugger;
         changes.forEach(it => { 
           index = it[0];
           key = it[1];
@@ -1637,6 +1658,8 @@ export default {
       }else if(this.templateId == 9){
         //基本情况表的判断只读的列
         if(columns == 0 || (row < 4 && columns == 1) || (row == 0 && columns == 2) || (row == 8 && columns >= 1)){
+          cellMeta.readOnly = true;
+        }else if((row == 13 || row == 14) && columns >= 1){
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -2310,7 +2333,7 @@ export default {
             that.parseTypeOfFinance(key,item);
           }else if(that.templateId == "7" && dateStrs.indexOf(key) != -1 && item){
               let regDate = /^\d{4}(\/)\d{2}\1\d{2}$/;
-              if(regDate.test(item[key]) != true){
+              if(item[key] != "" && regDate.test(item[key]) != true){
                 // that.$message({
                 //   message:"日期格式错误，正确的格式是YYYY/MM/DD,例如：2019/07/07",
                 //   type:"warning"
@@ -2559,13 +2582,15 @@ export default {
     hideMonthByTableId () {
       let me = this,showDims = me.showDims;
       if(me.templateId == "10"){
-          me.showEditButton = true;
-          showDims.company = true,
-          showDims.year = true,
-          showDims.month = false,
-          showDims.conversion = false;
+        me.showEditButton = true;
+        me.showExamineButton = true;
+        showDims.company = true,
+        showDims.year = true,
+        showDims.month = false,
+        showDims.conversion = false;
       }else {
         me.showEditButton = false;
+        me.showExamineButton = false;
         showDims.company = true,
         showDims.year = true,
         showDims.month = true,

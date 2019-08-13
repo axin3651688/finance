@@ -28,7 +28,7 @@
                 return params;
             },
             "tableBeforeFun": function($vue, params) {
-                debugger;
+                // debugger;
                 let me = this;
                 let period = $vue.$store.selectPeriod;
                 let year = period.substring(0, 4);
@@ -42,7 +42,7 @@
                 return html;
             },
             "showFun": function($store) {
-                debugger
+                // debugger
                 if ($store.getters.treeInfo.nisleaf) {
                     return true;
                 } else {
@@ -50,7 +50,7 @@
                 }
             },
             "queryDataAfter": function(data, $vue) {
-                debugger
+                // debugger
                 let datas = [];
                 let datax = [];
                 data.forEach(item => {
@@ -195,7 +195,7 @@
                 }
             },
             "queryDataBefore": function(params, config, $vue) {
-                debugger;
+                // debugger;
                 let me = this;
                 let selectPeriod = $vue.$store.selectPeriod;
                 if (selectPeriod) {
@@ -229,7 +229,7 @@
                 return params;
             },
             "queryDataAfter": function(data, $vue) {
-                debugger
+                // debugger
                 let riskrangeData = $vue.riskrangeData;
                 let first, second;
                 if (riskrangeData.length == 0) {
@@ -289,7 +289,7 @@
                         "type": "string",
                         "fixed": true,
                         "width": "160",
-                        "id": "scode"
+                        "id": "gsbm"
                     },
                     {
                         "text": "公司名称",

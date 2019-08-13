@@ -29,7 +29,7 @@
             <ul id="menu" class="menu">
                 <li class="menu__item" @click="addClick"><i class="el-icon-circle-plus-outline add"></i>新增</li>
                 <li class="menu__item" v-show="stype != 0" @click="modifyClick"><i class="el-icon-edit-outline modify"></i>修改</li>
-                <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-circle-close-outline delete"></i>删除</li>
+                <li class="menu__item" v-show="stype != 0" @click="deleteClick"><i class="el-icon-delete delete"></i>删除</li>
                 <li class="menu__item" v-show="stype != 0" @click="riskClick"><i class="el-icon-news risk"></i>风险授权</li>
             </ul>
         </div>
@@ -41,8 +41,8 @@
         width="30%"
         :show-close="false"
         :close-on-click-modal="false">
-            <el-alert v-if="stype==2" title="修改时，部门编码不可以修改" type="warning" :closable="false" show-icon></el-alert>
-            <el-form ref="form" :rules="rules" :model="form" label-width="80px">
+            <el-alert v-if="stype==2 && stype != 4" title="修改时，部门编码不可以修改" type="warning" :closable="false" show-icon></el-alert>
+            <el-form v-show="stype !== 4" ref="form" :rules="rules" :model="form" label-width="80px">
                 <el-form-item label="父级节点">
                     <el-input v-model="form.spcode" readonly></el-input>
                 </el-form-item>
@@ -53,9 +53,23 @@
                     <el-input v-model="form.sname"></el-input>
                 </el-form-item>
                 <el-form-item label="部门职责">
-                    <el-input type="textarea" maxlength="1000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
+                    <el-input type="textarea" maxlength="5000" v-model="form.sdesc" placeholder="1.文本框可复制、可黏贴；2.文件加载在文本框中显示；3.字数限制1000个字符以内"></el-input>
                 </el-form-item>
             </el-form>
+            <div v-show="stype === 4" style="width: 100%; max-height: 308px; overflow: auto;">
+                <el-checkbox :label="checkText" @change="checkboxChange" border style="margin: 0 0 10px 20px;"></el-checkbox>
+                <el-tree
+                :data="treeData"
+                show-checkbox
+                node-key="id"
+                accordion
+                @check-change="checkChange"
+                :default-checked-keys="checkedKeys"
+                :props="defaultProps"
+                :check-strictly="false"
+                ref="tree">
+                </el-tree>
+            </div>
             <span slot="footer" class="dialog-footer">
                 <el-button type="primary" @click="determineClick('form')">确 定</el-button>
                 <el-button @click="cancelClikc('form')">取 消</el-button>
@@ -66,6 +80,7 @@
 <script>
 // 引入部门添加、删除、修改接口
 import {department_add, department_delete, department_update} from "~api/cube.js" ;
+import tools from "utils/tools";
 export default {
     props: {
         text: String,       // 公司文字
@@ -104,12 +119,14 @@ export default {
         // };
         return {
             filterText: "",
+            checkText: "全部勾选" ,
             defaultExpandAll: true,     // 是否默认全部展开 false：否/ true：是
             menuVisible: false,         // 右键点击的弹框
             dataSource: [],             // 树表的数据
             stype: 0 ,                  // 状态：0代表公司；1代表添加；2代表修改；3代表删除；4代表授权
             dialogVisible: false,       // 菜单按钮弹框 默认为隐藏
             title: "",                  // 弹框的title标题
+            titleClo: {},
             nodeValue: {},              // 节点的信息
             readonly: false ,           // 只读属性
             department: {} ,            // 添加修改的参数
@@ -123,6 +140,14 @@ export default {
                 scode: "",          // 部门编码
                 sname: "",          // 部门名称
                 sdesc: ""           // 部门职责 
+            },
+            treeData: [] , 
+            treeArray: [] ,
+            treeArray2: [] ,
+            checkedKeys: [],        // 默认勾选的节点的 key 的数组
+            defaultProps: {
+                children: 'children',
+                label: 'label'
             },
             // 验证
             rules: {
@@ -142,6 +167,86 @@ export default {
         }
     },
     methods: {
+        treeTableData(data, treeArray){
+            let me = this ;
+            data.forEach(res => {
+                treeArray.push(res) ;
+                if(res.children && res.children.length > 0)me.treeTableData(res.children, treeArray) ;
+            }) ;
+            return treeArray ;
+        },
+        parentNodesChange(node,check){
+            // debugger
+            const tree = this.treeSourceData;
+            if(check){
+                this.$refs.tree.setChecked(node.id,true,true)
+                if(node.spcode !== node.scode){
+                    let pnode = tree.filter(ele=>{
+                        return ele.scode === node.spcode
+                    })
+                    if(pnode && pnode[0]){
+                        this.$refs.tree.setChecked(pnode[0].id,true,true)
+                    }
+                }
+            }else{
+
+            }
+
+        //     if(node.parent){
+        //   for(let key in node){
+        //     if(key == "parent"){
+        //       node[key].checked = true;
+        //       this.parentNodesChange(node[key]);
+        //     }
+        //   }
+        // }  
+        },
+        /**
+         * 风险授权 复选框选择
+         */
+        checkChange(data, check, obj){
+            // this.parentNodesChange(data,check);
+            // if(data.spcode === "00" && check){
+            //     let dd  = this.$refs.tree.getCheckedNodes() ;
+            //     let cc = this.treeTableData(dd, this.treeArray) ;
+            //     this.$refs.tree.setCheckedNodes(cc) ;
+            // } else if(data.spcode === "00" && !check){
+            //     this.treeArray = this.treeArray.filter(res => {
+            //         if(res.spcode === data.scode || res.scode === data.scode){}else{return res} ;
+            //     }) ;
+            //     this.$refs.tree.setCheckedNodes(this.treeArray) ;
+            // } 
+            // return false ;
+            // let dd = this.$refs.tree.getCheckedNodes() ;
+            // if(dd.length === 1 && dd[0].children && dd[0].children.length > 0){
+
+            // } 
+            // let cc = this.treeData.filter(res => {
+            //     dd.forEach(item => {
+
+            //     })
+            // })
+            // return
+            // let kk = dd.concat(cc);
+            // this.$refs.tree.setCheckedNodes(kk)
+            
+        },
+        /**
+         * 全部勾选/全部反选
+         */
+        checkboxChange(check, obj){
+
+            let me = this ;
+            if(check) {
+                me.checkText = "全部反选"
+                //全选
+                me.$refs.tree.setCheckedNodes(me.treeTableData(me.treeData, me.treeArray2)) ;
+            } else {
+                me.checkText = "全部勾选"
+                //取消选中
+                me.$refs.tree.setCheckedKeys([]);
+            }
+        },
         /**
          * 对树形数据的处理 都放在一个数组里 即把children里的数组数据拿出来
          */
@@ -165,6 +270,7 @@ export default {
         handleContextMenu(MouseEvent, node, nodeTarget, el) {
             // debugger
             let len ;
+            this.titleClo = node ;
             if(node!=undefined)this.stype = 100;
             this.nodeValue = node ;
             this.menuVisible = false // 先把模态框关死，目的是 第二次或者第n次右键鼠标的时候 它默认的是true
@@ -267,7 +373,10 @@ export default {
          */
         riskClick(MouseEvent){
             this.stype = 4 ;
-            this.$message('暂无此功能！')
+            this.title = "【"+this.titleClo.sname+"】风险授权" ;
+            this.dialogVisible = true ;
+            this.srisktypeRequest() ;// 风险类型查询
+            // this.$message('暂无此功能！')
         },
         /**
          * @description 5. 鼠标右键 菜单 弹框 确认按钮
@@ -275,7 +384,15 @@ export default {
         determineClick(vax){
             if(this.stype == 1){    // 添加状态
                 this.addClick_new(vax) ;
-            }else{
+            }else if(this.stype == 4 ) {
+                let data  = this.$refs.tree.getCheckedNodes() ;
+                if( data.length === 0) {
+                    this.$message('暂无选择风险类型!') ;
+                } else {
+                    // 确认请求
+                    this.risktype_grant_request(data) ;
+                }
+            } else {
                 this.modifyClick_new(vax) ;  
             }
         },
@@ -285,6 +402,72 @@ export default {
         cancelClikc(vax){
             this.dialogVisible = false ;
             this.$refs[vax].resetFields();
+        },
+        // 风险类型查询接口方法
+        srisktypeRequest(){
+            // debugger
+            const me = this ;
+            let companyId = me.$store.state.prame.command ;
+            // let departId = me.$store.state.user.user.dept[0] ;
+            let departId = me.titleClo ;
+            me.axios.get('/zjb/risktype_grant/grantRiskType?company='+ companyId.company + '&depart=' + departId.id).then(res => {
+                // debugger
+                let data = res.data.data ;
+                me.checkedKeys = [] ;
+                data.forEach(item => {
+                    if(item.checked === 'Y') {
+                        me.checkedKeys.push(item.scode) ;
+                    }
+                }) ;
+                const setting = {
+                    data: {
+                        simpleData: {
+                            enable: true,
+                            idKey: "scode",
+                            pIdKey: "spcode"
+                        },
+                            key: {
+                            name: "scode",
+                            children: "children"
+                        }
+                    }
+                };
+                if (Array.isArray(data) && data.length > 0) {
+                    data = tools.sortByKey(data, "scode");
+                    data = data.filter(function(item) {
+                        item.id = item.scode;
+                        item.label = "(" + item.scode + ") " + item.sname;
+                        // if(item.spcode === "00")item.disabled = true ;
+                        return item;
+                    });
+                    me.treeSourceData = data;
+                    me.treeData = tools.transformToeTreeNodes(setting, data);
+                }
+            })
+        },
+        // 风险授权接口方法
+        risktype_grant_request(data){ 
+            const me = this ;
+            let params = [] ;
+            data.forEach(item => { 
+                params.push({
+                    id: "",
+                    sdepartment: me.titleClo.id ,
+                    scomcode: me.$store.state.prame.command.company ,
+                    srisktype: item.id 
+                })
+            })
+            // return 
+            me.axios.post('/zjb/risktype_grant/riskGrant', params).then(res => {
+                // debugger
+                if(res.data.code === 200) {
+                    me.$message({ type: "success", message: res.data.msg }) ;
+                    me.srisktypeRequest() ;
+                } else {    
+                    me.$message.error(res.data.msg) ;
+
+                }
+            })
         },
         // 添加确认
         addClick_new(val){
