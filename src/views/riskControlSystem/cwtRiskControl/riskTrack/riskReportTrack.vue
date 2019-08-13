@@ -643,11 +643,14 @@
 
                 let _title = _this.getInnerTextByClassName('report-title');
 
-                let _strIndex = _title.lastIndexOf('年') - 4;
+                // let _strIndex = _title.lastIndexOf('年') - 4;
+                //
+                // let _a = _title.split("");
+                // _a.splice(_strIndex, 0, '<br>');
 
-                let _a = _title.split("");
-                _a.splice(_strIndex, 0, '<br>');
-                reportJSONData.text = _a.join("");
+
+                // reportJSONData.text = _a.join("");
+                reportJSONData.text = _title;
 
 
                 // reportJSONData.text = _this.getInnerTextByClassName('report-title');

@@ -54,6 +54,7 @@
                     <div class="content-div">
                         <el-table
                                 :data="responsibility"
+
                                 :span-method="objectSpanMethod"
                                 :max-height='tableHeight'
                                 :header-cell-style="headerRowStyle"
@@ -62,9 +63,14 @@
                             <el-table-column
                                     prop="responsibility"
                                     label="部门职责"
-                                    align="center"
+                                    align="left"
                                     width="400"
                             >
+
+                                <template slot-scope="scope">
+                                    <div v-html="responsibilityDataFormatter(scope.row)"></div>
+                                </template>
+
                             </el-table-column>
 
                         </el-table>
@@ -303,14 +309,18 @@
             /**
              * 部门职责单元格格式化
              * @param row
-             * @param column
-             * @param cellValue
-             * @param index
              */
-            responsibilityDataFormatter(row, column, cellValue, index) {
-                /*// return row.responsibility;
-                let html = '<span style="max-height: 400px">' + row.responsibility + '</span>';
-                return html;*/
+            responsibilityDataFormatter(row) {
+                let _data = row.responsibility;
+                if(!_data){
+                    return '<p style="text-align: center"> 暂未录入部门职责 </p>';
+                }
+                let _dataArr = _data.split('；');
+                let _html = '';
+                _dataArr.forEach((_d)=>{
+                    _html += '<p> ' + _d + ' </p>';
+                });
+                return _html;
             },
 
             // 每页显示的条数

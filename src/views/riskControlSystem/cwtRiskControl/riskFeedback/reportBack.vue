@@ -348,7 +348,8 @@
                 this.reportBackDetail = true;
                 let isFeeded = scope.row.status;
                 this.isPageReadOnly = isFeeded === '已反馈';
-                this.getReportHandleData(scope);
+                let _sfromuser = scope.row['sfromuser'];
+                this.getReportHandleData(scope, _sfromuser);
             },
 
             /**
@@ -356,7 +357,7 @@
              * sql 获取在这个里面
              * @param scope
              */
-            getReportHandleData(scope) {
+            getReportHandleData(scope, _sfromuser) {
                 let _this = this;
                 let row = scope.row,
                     company = row.scode;
@@ -382,7 +383,7 @@
                     sql = sqlObj[0].sql;
                     params['sql'] = sql;
 
-                    _this.requestSend(params);
+                    _this.requestSend(params, _sfromuser);
 
                 });
             },
@@ -392,13 +393,13 @@
              * 维度在这个方法里面
              * @param params
              */
-            requestSend(params) {
+            requestSend(params, _sfromuser) {
                 let _this = this;
                 findThirdPartData(params).then((res) => {
                     let datas = res.data;
                     if (datas.code === 200) {
                         let _data = datas.data;
-                        _this.reportPageDataFormat(_data);
+                        _this.reportPageDataFormat(_data, _sfromuser);
                     }
                 })
             },
@@ -406,13 +407,15 @@
             /**
              * 发送到报告页面的数据格式化操作
              * @param data
+             * @param _sfromuser
              * @author cwt
              */
-            reportPageDataFormat(data) {
+            reportPageDataFormat(data, _sfromuser) {
                 let _this = this;
                 let _reportData = _this.reportData;
                 _reportData.reportcompanyname = data.reportcompanyname;
                 _reportData.reportperiod = data.reportperiod;
+                _reportData.stouser = _sfromuser;
                 let _reportDataContent = _reportData.reportDataContent;
                 let _riskFeedDataList = _reportDataContent.riskFeedDataList;
 
@@ -724,11 +727,14 @@
 
                 let _title = _this.getInnerTextByClassName('report-title');
 
-                let _strIndex = _title.lastIndexOf('年') - 4;
+                // let _strIndex = _title.lastIndexOf('年') - 4;
+                //
+                // let _a = _title.split("");
+                // _a.splice(_strIndex, 0, '<br>');
+                // reportJSONData.text = _a.join("");
 
-                let _a = _title.split("");
-                _a.splice(_strIndex, 0, '<br>');
-                reportJSONData.text = _a.join("");
+                reportJSONData.text = _title;
+
                 return reportJSONData;
             },
 
