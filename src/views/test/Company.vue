@@ -91,7 +91,7 @@
           </el-form-item>
 
           <el-form-item label="公司属性" prop="stype">
-            <el-select class="elform" v-model="form.stype">
+            <el-select class="elform" v-model="form.stype" @change="companyStype">
               <el-option
                   v-for=" (item ,index) in property2C "
                   :key="index"
@@ -140,14 +140,10 @@
           </el-form-item>
 
           <el-form-item label="公司地址" prop="saddress">
-            <el-input class="elform" v-model="form.saddress" placeholder="最大字符200"></el-input>
+            <el-input class="elform3" v-model="form.saddress" placeholder="最大字符200"></el-input>
           </el-form-item>
 
-          <el-form-item label="EAS账套ID" prop="seascomcode">
-            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID">
-              <template slot="prepend" >EAS源ID</template>
-            </el-input>
-          </el-form-item> 
+          
 
           <el-form-item label="国资委行业" prop="sindcodedetail">
             <!-- <el-select class="elform" v-model="form.sindcodedetail" placeholder="请选择行业">
@@ -197,7 +193,7 @@
           </el-form-item>
 
           <el-form-item v-show="isShow" label="内部行业" prop="sindcode">
-            <el-select class="elform3" v-model="form.sindcode" placeholder="请选择行业">
+            <el-select class="elform" v-model="form.sindcode" placeholder="请选择行业">
               <el-option
                 v-for=" (item,index) in sindcodes "
                 :key="index"
@@ -206,9 +202,22 @@
               ></el-option>
             </el-select>
             <el-alert
-              class="elform3"
+              class="elform"
               type="warning"
               title="合并公司无法选择内部行业"
+              show-icon
+              :closable="false"
+            ></el-alert>
+          </el-form-item> 
+
+          <el-form-item v-show="isShow" label="EAS账套ID" prop="seascomcode">
+            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID">
+              <template slot="prepend" >EAS源ID</template>
+            </el-input>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="合并公司没有EAS账套ID"
               show-icon
               :closable="false"
             ></el-alert>
@@ -555,6 +564,12 @@ export default {
           84}px`;
       };
     },
+    // 公司属性选择触发
+    companyStype(val){
+      // debugger
+      if(val === "1" || val === "R")this.isShow = true ;
+      if(val === "0")this.isShow = false ;
+    },
     EASChange(value){
       debugger
       if(value == 0 || value == 1 || value == ""){
@@ -696,6 +711,8 @@ export default {
      * 注意问题：当前选中公司的状态，后台处理
      */
     add(formName) { //debugger
+      // 添加按钮触发显示内部行业 && EAS账套ID
+      this.isShow = true ;
       // 新增公司时，国资委行业默认为 综合行业 ； 公司规模默认为 小型企业 可手动修改
       let cc = this.sindcodee.filter(res => { return res.scode == "Z" }) ;
       let dd = this.sindcoded.filter(rss => { return rss.scode == "4" }) ;
@@ -952,7 +969,7 @@ export default {
      * @param node tree 节点对象
      * @param el 节点组件本身
      *  */
-    handClick(snode, node, el) { debugger
+    handClick(snode, node, el) { //debugger
       // 0 表示合并公司 / 1 表示单体公司 / R 差额公司 
       if(snode.stype === "0") {
         this.isShow = false ;
