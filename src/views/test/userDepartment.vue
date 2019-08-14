@@ -66,7 +66,7 @@
                 @check-change="checkChange"
                 :default-checked-keys="checkedKeys"
                 :props="defaultProps"
-                :check-strictly="true"
+                :check-strictly="false"
                 ref="tree">
                 </el-tree>
             </div>

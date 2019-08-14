@@ -328,3 +328,29 @@ export function findThirdPartData1(params) {
     })
 }
 
+
+/**
+ * 风险制度建议修改
+ */
+export function riskSuggestChange(params) {
+    return request({
+        method: "post",
+        url: '/zjb/risk_sys/update_advice',
+        responseType:'blob',
+        params: params
+    })
+}
+
+/**
+ * 风险制度建议删除
+ */
+export function riskSuggestDelete(params) {
+    return request({
+        method: "post",
+        url: '/zjb/risk_sys/delete_advice',
+        responseType:'blob',
+        params: params
+    })
+}
+
+

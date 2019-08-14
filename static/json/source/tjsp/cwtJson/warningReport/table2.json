@@ -20,7 +20,7 @@
     {
       "id": "zb",
       "type": "string",
-      "text": "占比",
+      "text": "占比(%)",
       "align": "right",
       "width":200
     },

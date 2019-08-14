@@ -212,21 +212,21 @@
 							{
 								"id": "dysj",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "当月实际"
 							},
 							{
 								"id": "sntq",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "上年同期"
 							},
 							{
 								"id": "tbzje",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "同比增减额"
 							},
@@ -248,21 +248,21 @@
 							{
 								"id": "ljsj",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "累计实际"
 							},
 							{
 								"id": "sntq1",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "上年同期"
 							},
 							{
 								"id": "tbzje1",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "同比增减额"
 							},
@@ -284,14 +284,14 @@
 							{
 								"id": "bnys",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "本年预算"
 							},
 							{
 								"id": "cye",
 								"type":"decimal",
-								"width": "160",
+								"width": "200px",
 								"align": "right",
 								"text": "差异额"
 							},

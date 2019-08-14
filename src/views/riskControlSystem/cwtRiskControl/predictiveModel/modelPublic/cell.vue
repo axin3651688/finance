@@ -1,6 +1,6 @@
 <template>
     <div class="model-public-cell-single-cell">
-        <div class="model-public-cell-single-cell-all">
+        <div class="model-public-cell-single-cell-all-cell">
             <div class="model-public-cell-single-cell-top">{{cellData.name}}</div>
 
             <div class="model-public-cell-single-cell-bottom">
@@ -44,8 +44,8 @@
     }
 </script>
 
-<style>
-    .model-public-cell-single-cell-all {
+<!--<style>
+    .model-public-cell-single-cell-all-cell {
         width: 170px;
     }
 
@@ -82,18 +82,21 @@
         cursor: pointer;
     }
 
-</style>
+</style>-->
 
 
 
-<!--
+
 <style>
-    .model-public-cell-single-cell-all {
+    .model-public-cell-single-cell-all-cell {
         width: 170px;
+        border-radius: 5px;
+        border-left: 4px solid #000c17 ;
+        background-color: #ffffff;
     }
 
     .model-public-cell-single-cell-top, .model-public-cell-single-cell-bottom {
-        padding: 8px;
+        padding: 4px 4px;
         text-align: left;
     }
 
@@ -104,14 +107,15 @@
 
     .model-public-cell-single-cell-bottom {
         border-radius: 10px;
-        border: 2px solid #2DB060;
-        background-color: #BCE9F8;
+        /*border: 2px solid #2DB060;*/
+        background-color: #ffffff;
+        margin-left: 2px;
     }
 
     .model-public-cell-single-cell-bottom input {
-        background-color: #BCE9F8 ;
+        background-color: #ffffff ;
         height: 22px;
-        text-align: center;
+        text-align: left;
         font-size: 19px;
         color: #000c17 ;
         border: 0;
@@ -120,4 +124,4 @@
         cursor: pointer;
     }
 
-</style>-->
+</style>

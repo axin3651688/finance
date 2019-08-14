@@ -85,12 +85,14 @@
                 let _rowData = _this.rowData;
                 let _data = _this.data;
                 let _nid = _rowData.nid;
+                let _user = this.$store.getters.user.user.userName;
 
                 return {
                     proposedDate: _data.riskDate,
                     proposedUser: _data.riskUser,
                     proposedContent: _this.data.riskContent,
-                    infoId: _nid
+                    infoId: _nid,
+                    user: _user
                 };
             },
 

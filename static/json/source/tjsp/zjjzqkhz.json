@@ -111,21 +111,21 @@
         {
           "text": "货币金额",
           "type":"decimal",
-          "width":"175",
+          "width":"200px",
           "align":"right",
           "id": "hbzj"
         },
         {
           "text": "其中：银行存款",
           "type":"decimal",
-          "width":"175",
+          "width":"200px",
           "align":"right",
           "id": "yhck"
         },
         {
           "text": "集中金额",
           "type":"decimal",
-          "width":"174",
+          "width":"200px",
           "align":"right",
           "id": "jzje"
         },
@@ -133,7 +133,7 @@
           "text": "集中度（%）",
           "type":"decimal",
           "conversion":"%",
-          "width":"120",
+          "width":"160",
           "align":"right",
           "id": "jzd"
         }

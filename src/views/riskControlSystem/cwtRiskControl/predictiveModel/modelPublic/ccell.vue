@@ -1,6 +1,6 @@
 <template>
     <div class="model-public-cell-single-cell">
-        <div class="model-public-cell-single-cell-all">
+        <div class="model-public-cell-single-cell-all-ccell">
             <div class="model-public-cell-single-cell-top-ccell">{{cellData.name}}</div>
 
             <div class="model-public-ccell-single-cell-bottom">
@@ -73,8 +73,8 @@
     }
 </script>
 
-<style>
-    .model-public-cell-single-cell-all {
+<!--<style>
+    .model-public-cell-single-cell-all-ccell {
         width: 170px;
     }
 
@@ -113,13 +113,16 @@
         width: 100%;
     }
 
-</style>
+</style>-->
 
 
 
-<!--<style>
-    .model-public-cell-single-cell-all {
+<style>
+    .model-public-cell-single-cell-all-ccell {
         width: 170px;
+        border-radius: 5px;
+        border-left: 4px solid #2DB060;
+        background-color: #ffffff ;
     }
 
     .model-public-cell-single-cell-top-ccell, .model-public-ccell-single-cell-bottom {
@@ -134,25 +137,27 @@
     }
 
     .model-public-ccell-single-cell-bottom {
-        padding: 8px;
+        padding: 4px 4px;
         text-align: left;
         border-radius: 10px;
-        border: 2px solid #2DB060;
-        /*background-color: #BCE9F8;*/
+        margin-left: 2px;
+        border: 0;
+        /*border: 2px solid #2DB060;*/
     }
 
 
 
     .model-public-ccell-single-cell-bottom input {
-        background-color: #F0F2F5 ;
+        background-color: #ffffff ;
         height: 22px;
-        text-align: center;
+        text-align: left;
         font-size: 19px;
+        margin-left: 2px;
         color: #000c17 ;
         border: 0;
         padding: 0;
         width: 100%;
     }
 
-</style>-->
+</style>
 

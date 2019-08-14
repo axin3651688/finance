@@ -104,21 +104,21 @@
       {
         "text": "货币金额",
         "type":"decimal",
-        "width": "160",
+        "width": "200px",
         "align": "right",
         "id": "hbzj"
       },
       {
         "text": "其中：银行存款",
         "type":"decimal",
-        "width": "160",
+        "width": "200px",
         "align": "right",
         "id": "yhck"
       },
       {
         "text": "集中金额",
         "type":"decimal",
-        "width": "160",
+        "width": "200px",
         "align": "right",
         "id": "jzje"
       },
@@ -133,7 +133,7 @@
       {
         "text": "原因",
         "type": "string",
-        "width": "160",
+        "width": "260px",
         "align": "left",
         "showOverflowTooltip": true,
         "id": "yy"

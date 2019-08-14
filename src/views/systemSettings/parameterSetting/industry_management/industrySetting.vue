@@ -50,7 +50,7 @@ export default {
         // 导航栏显现
         this.getShowDims() ;
         // 季度
-        this.getQuarter() ;
+        // this.getQuarter() ;
     },
     watch: {
         // 切换年触发
@@ -68,11 +68,11 @@ export default {
     },
     methods: {
         // 季度出现
-        getQuarter(){
-            let me = this ;
-            let monthConfig = { quarterCount:4, yearEnd:1 };
-            me.$store.monthConfig = monthConfig;
-        },
+        // getQuarter(){
+        //     let me = this ;
+        //     let monthConfig = { quarterCount:4, yearEnd:1 };
+        //     me.$store.monthConfig = monthConfig;
+        // },
         // 导航栏显现
         getShowDims(){
             let dims = this.showDims ;

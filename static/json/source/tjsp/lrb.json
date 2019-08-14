@@ -62,19 +62,19 @@
                     "id": "ljsbn",
                     "type": "decimal",
                     "text": "本年",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "ljssntq",
                     "type": "decimal",
                     "text": "上年同期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "ljstbzje",
                     "type": "decimal",
                     "text": "同比增减额",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id":"ljstbzjl",
@@ -108,19 +108,19 @@
                     "id": "dysbn",
                     "type": "decimal",
                     "text": "本年",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "dyssntq",
                     "type": "decimal",
                     "text": "上年同期",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id": "dystbzje",
                     "type": "decimal",
                     "text": "同比增减额",
-                    "width": "170px"
+                    "width": "200px"
                 },
                 {
                     "id":"dystbzjl",
