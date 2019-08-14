@@ -2,25 +2,18 @@
   <el-container class="containerT">
     <el-main style="height:100%;">
       <el-row style="height:100%;">
-        <el-col :span="4" style="height:100%;">
+        <el-col :xs="4" :sm="4" :md="4" :lg="4" :xl="4" style="height:100%;">
         </el-col>
-        <el-col :span="10" style="height:100%;">
-
+        <el-col :xs="4" :sm="8" :md="10" :lg="10" :xl="10" style="height:100%;">
         </el-col>
-        <el-col :span="10" style="height:100%;">
+        <el-col :xs="16" :sm="12" :md="10" :lg="10" :xl="10" style="height:100%;">
           <el-card shadow="always" class="card_div">
-            <div style="height:200px;">
-              <el-row>
-                <el-col :span="6"></el-col>
-                <el-col :span="18">
-                  <div>
-                    <div>天津食品集团</div>
-                    <div>智能风控预警防范系统</div>
-                  </div>
-                </el-col>
-              </el-row>
+            <div style="height:37%;">
+              <div style="text-align: center;">
+                <img src="@a/loginT/loginLogo.png" class="login_logo_class">
+              </div>
             </div>
-            <div>
+            <div style="height:63%;">
               <el-form 
               label-position="right" 
               label-width="50px" 
@@ -30,11 +23,11 @@
               class="form_login"
               :hide-required-asterisk="true">
                 <el-form-item prop="usename" class="form_item_div">
-                  <label slot="label" class="form-label"><i class="el-icon-refresh"></i></label>
+                  <label slot="label" class="form-label"><i class="iconfont icon-user1 icon_class_public"></i></label>
                   <el-input class="user_public"  v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
                 </el-form-item>
                 <el-form-item prop="password" class="form_item_div">
-                  <label slot="label" class="form-label"><i class="el-icon-refresh"></i></label>
+                  <label slot="label" class="form-label"><i class="iconfont icon-yuechi icon_class_public"></i></label>
                   <el-input 
                     :type="pwdType"
                     v-model="loginUser.password"
@@ -43,48 +36,17 @@
                     @keyup.enter.native="submitForm('loginForm')"
                   ></el-input>
                 </el-form-item>
-                <div class="btn_wrapp" style="margin-top: 30%;">
+                <div class="btn_wrapp" style="margin-top: 20%;height:20%;">
                   <el-button type="primary" class="login_button loginBtn" @click="submitForm('loginForm')">登  录</el-button>
                 </div>
               </el-form>
             </div>
           </el-card>
         </el-col>
-        <!-- <el-col :span="7" class="rightContent">
-          <el-form 
-          label-position="right" 
-          label-width="80px" 
-          :rules="rules" 
-          :model="loginUser" 
-          ref="loginForm" 
-          class="login-form formContent" 
-          :hide-required-asterisk="true">
-            <el-form-item prop="usename">
-              <label slot="label" class="form-label">用户名</label>
-              <el-input  v-model="loginUser.usename" placeholder="请输入用户名"></el-input>
-            </el-form-item>
-            <el-form-item prop="password">
-              <label slot="label" class="form-label">密&nbsp;&nbsp;&nbsp;码</label>
-              <el-input 
-                :type="pwdType"
-                v-model="loginUser.password"
-                placeholder="请输入密码"
-                @keyup.enter.native="submitForm('loginForm')"
-              ></el-input>
-            </el-form-item>
-            <div class="btn_wrapp" style="text-align:right;margin-left:80px;">
-              <el-button type="primary" class="login_button loginBtn" @click="submitForm('loginForm')">登  录</el-button>
-            </div>
-          </el-form>
-        </el-col> -->
       </el-row>
     </el-main>
   </el-container>
 </template>
-
-
-
-
 <script>
 import { login } from "~api/interface.js";
 import { mapActions } from "vuex";
@@ -102,15 +64,10 @@ export default {
     }
     //每次打开获取一下原来的用户名
     this.loginUser.usename = localStorage.getItem("usename");
-    // 轮播图图片切换
-    this.initCarousels();
   },
 
   data() {
     return {
-      imageUrl2 : '',　
-      imageUrl3 : '',
-      imageUrl4 : '',
       pwdType: "password",
       loginUser: {
         usename: "",
@@ -143,35 +100,6 @@ export default {
   },
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo","ShowDims"]),
-    // showPwd() {
-    //   if (this.pwdType === "password") {
-    //     this.pwdType = "";
-    //   } else {
-    //     this.pwdType = "password";
-    //   }
-    // },
-    // sjz 初始化轮播图 
-    initCarousels(){
-      // 走马灯轮播请求
-      UploadShow().then(ress => {
-          if(ress.data.code == 200){
-            let datas = ress.data.data;
-            if(datas.length > 0 ){
-              [2,3,4].forEach(element => {
-                  this.setCarousel(datas,element);
-              });                 
-            }
-          }
-      })
-    },
-    //sjz 
-    setCarousel(datas,key){
-      let d = datas.filter(ele=>{
-          return (ele.name - 0) === (key - 0) ;
-      })
-      this["imageUrl" + key] = d && d.length == 1 ? d[0].content  : '';
-    },
-
     submitForm(formName) {
       this.$refs[formName].validate(valid => {
         if (valid) {
@@ -269,73 +197,65 @@ export default {
 };
 </script>
 <style lang='scss' scoped>
+  .login_logo_class {
+    // width: 300px;
+    // height: 99px;
+    width: 55%;
+    height: 50%;
+    margin-top: 12%;
+  }
   .card_div {
-    width: 560px;
-    height: 694px;
+    margin-top: 15%;
+    width: 65%;
+    height: 65%;
+    background:rgba(255,255,255,1);
+    opacity:0.8;
+    border-radius:16px;
+    min-width: 360px;
+    min-height: 400px;
   }
   .login_button {
-    width:400px;
-    height:56px;
+    // width:400px;
+    // height:50px;
+    height: 80%;
+    width: 100%;
+    // height: 20%;
     background:linear-gradient(135deg,rgba(159,212,103,1) 0%,rgba(45,176,96,1) 100%);
     box-shadow:0px 0px 24px rgba(62,210,107,0.16);
     opacity:1;
     border-radius:28px;
   }
 </style>
-
+<style lang="scss">
+  .card_div {
+    .el-card__body {
+      height: 100%;
+    }
+  }
+  .icon_class_public {
+    color: #60B55C;
+    font-size: 24px;
+  }
+</style>
 <style lang='scss'>
 //新加的样式
 .user_public {
   .el-input__inner {
     border: 0px;
+    height: 30px;
   }
 }
 .form_login {
   margin: 0px 13%;
+  height: 100%;
   .el-form-item {
     border-bottom: 1px solid #2DB060;
   }
 }
-.rightContent {
-  height: 100%;
-  display: flex;
-  // padding-left: 3%;
-}
-.formContent {
-  align-self: center;
-  margin-top:-20%;
-  width: 71%;
-}
 .containerT {
   height:100%;
-}
-.headerT {
-  background-color: #fff;
-  height:10% !important;
-}
-.footerT {
-  background-color: #fff;
-  height:20% !important;
-  text-align: center;
-}
-.formContent {
-  .el-form-item__label {
-    font-size: 16px;
-    color: #5A5A5A;
-  }
-}
-
-.el-carousel__item {
-  border-radius: 70px;
-}
-.el-carousel__item:nth-child(2n) {
-  background-color: #99a9bf;
-}
-.el-carousel__item:nth-child(2n+1) {
-  background-color: #d3dce6;
-}
-.el-carousel__container {
-  height:100% !important;
+  background: url("./../../../assets/loginT/background-img.png");
+  background-size: cover;
 }
 .loginBtn {
   width: 100%;
@@ -367,34 +287,6 @@ button.loginBtn>span{
   text-shadow:-0.8660253882408142px 0.5px 3px rgba(2,150,244,0.75);
   letter-spacing:10px;
   opacity:1;
-}
-.first {
-  height:100%;
-  width: 100%;
-  // background: url(@a/loginT/first.jpg);
-}
-.middleContent {
-  height: 100%;
-  width: 1px;
-  // text-align: center;
-  // background-color: rgb(168, 162, 162);
-  margin-left: 50%;
-  // margin-top: 50%;
-  width:0px;
-  // height:400px;
-  border:1px solid rgba(0,0,0,0.10196078431372549);
-  opacity:1;
-}
-.el-carousel__indicators {
-  line-height: 65px;
-}
-.el-carousel__button {
-  width:35px;
-  height:4px;
-  background:rgba(255,255,255,1);
-  opacity:1;
-  border-radius:66px
-  // background-color: #fff;
 }
 .is-active>button {
   background-color: #67c23a;
