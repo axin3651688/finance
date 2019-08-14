@@ -291,7 +291,7 @@ export default {
                 me[arr[i].id] = [];
             }
             me.transData(datas, arr);
-            me.createGauges(arr);
+            me.createGauges(arr, ['31']);
             //雷达图的数据格式。
             let radarConfig = {
                 id: 'operationQuality',
@@ -335,7 +335,7 @@ export default {
                 me[arr[i].id] = [];
             }
             me.transData(datas, arr);
-            me.createGauges(arr);
+            me.createGauges(arr, ['3', '125', '126']);
             //雷达图的数据格式。
             let radarConfig = {
                 id: 'debtRisk',
@@ -484,7 +484,8 @@ export default {
          * 生成仪表盘的公共方法。
          * @author szc 2019年6月10日11:16:14
          */
-        createGauges(arr) {
+        createGauges(arr, arr1) {
+            debugger;
             let me = this;
             arr.forEach(item => {
                 if (me[item.id] && me[item.id].length > 0) {
@@ -493,7 +494,7 @@ export default {
                         if (item.colSpanConfig) {
                             itemCnt.colSpan = item.colSpanConfig[itemCnt[item.field]];
                         }
-                        me.createOptions(itemCnt, item);
+                        me.createOptions(itemCnt, item, arr1);
                     }
                 }
                 // me.createOptions(item);
@@ -502,7 +503,8 @@ export default {
         /**
          * options 仪表盘
          */
-        createOptions(itemCnt, item) {
+        createOptions(itemCnt, item, arr1) {
+            debugger;
             let options = {
                 title: {
                     // 	padding:[410,0,0,0],    //标题相对于容器边距
@@ -564,6 +566,20 @@ export default {
                     data: [{ value: itemCnt[item.gaugeField] || 0 }]
                 }]
             };
+            //判断是不是反向指标。
+            if (arr1 && arr1.length > 0) {
+                arr1.forEach(it => {
+                    debugger;
+                    if (it == itemCnt[item.field]) {
+                        options.series[0].axisLine.lineStyle.color = [
+                            [0.25, "#2FC35B"],
+                            [0.5, "#11C3C2"],
+                            [0.75, "#FBCE14"],
+                            [1, "#F24764"]
+                        ]
+                    }
+                });
+            }
             itemCnt.options = options;
 
             return options;
