@@ -16,7 +16,7 @@
         option.closeTabTaget(newconversion,option);
     },
     "__queryDataAfter":function(data,$vue){//数据的后置处理
-        // debugger
+        debugger
         let bue = data.some(res => {
             return (res.scode=="2001" || res.scode=="2002" || res.scode=="2003") && res.bz && res.bz!=0 ;
         })
@@ -87,6 +87,7 @@
         "id":"zwgc",
         "text":"债务构成情况分析表",
         "queryDataAfter":function(data){
+            debugger
             let bue = data.some(res => {
                 return (res.scode=="2001" || res.scode=="2002" || res.scode=="2003") && res.bz && res.bz!=0 ;
             })

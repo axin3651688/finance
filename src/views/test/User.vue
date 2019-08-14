@@ -276,12 +276,12 @@
               <el-input v-model="addUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
             </el-form-item>
 
-            <el-form-item label="出生日期" prop="date">
-              <el-date-picker v-model="addUserForm.date" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
+            <el-form-item label="出生日期" prop="birthday">
+              <el-date-picker v-model="addUserForm.birthday" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
             </el-form-item>
 
-            <el-form-item label="家庭住址" prop="family">
-              <el-input v-model="addUserForm.family" placeholder="请填写家庭住址" style="width:300px"></el-input>
+            <el-form-item label="家庭住址" prop="address">
+              <el-input v-model="addUserForm.address" placeholder="请填写家庭住址" style="width:300px"></el-input>
             </el-form-item>
 
             <!-- 新增用户的 -->
@@ -443,12 +443,12 @@
             <el-input v-model="editUserForm.semail" placeholder="请填写邮箱" style="width:300px"></el-input>
           </el-form-item>
 
-          <el-form-item label="出生日期" prop="date">
-            <el-date-picker v-model="editUserForm.date" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
+          <el-form-item label="出生日期" prop="birthday">
+            <el-date-picker v-model="editUserForm.birthday" type="date" placeholder="选择日期" style="width:300px"></el-date-picker>
           </el-form-item>
 
-          <el-form-item label="家庭住址" prop="family">
-            <el-input v-model="editUserForm.family" placeholder="请填写家庭住址" style="width:300px"></el-input>
+          <el-form-item label="家庭住址" prop="address">
+            <el-input v-model="editUserForm.address" placeholder="请填写家庭住址" style="width:300px"></el-input>
           </el-form-item>
 
           <el-form-item label="政治面貌" prop="landscape">
@@ -722,7 +722,9 @@ export default {
         education: "",      // 教育程度
         professionalTitle: "",  // 专业职称
         currentPosition: "" ,   // 现任职务
-        avatar:""           // 图片
+        avatar:"",           // 图片
+        birthday: "",         // 出生日期
+        address: "" ,         // 家庭住址
       },
       tableColumn: [        // 表格列
         { id: "suser", text: "用户名称", width: "130", align: "center" },
@@ -1295,6 +1297,8 @@ export default {
               cauthorize: addUserForm.cauthorize,   // 授权
               company: addUserForm.company,         // 公司
               sdepartmentid: addUserForm.department,// 部门
+              birthday: addUserForm.birthday,       // 出生日期
+              address: addUserForm.address,         // 家庭住址
               /**------------- */
               spoliticsstatus: addUserForm.landscape,     // 政治面貌
               squalifications: addUserForm.education,     // 教育程度
@@ -1394,7 +1398,7 @@ export default {
             url: "/zjb/sys/user/update",
             method: "post",
             data: {
-              // avatar: _this.editPhotoUrl,                 // 图片
+              // avatar: _this.editPhotoUrl,              // 图片
               suser: editUserForm.suser,                  // 用户名
               struename: editUserForm.struename,          // 真实姓名
               csex: editUserForm.csex,                    // 性别
@@ -1405,6 +1409,8 @@ export default {
               cauthorize: editUserForm.cauthorize,        // 授权
               company: editUserForm.company,              // 公司
               sdepartmentid: editUserForm.department,     // 部门
+              birthday: editUserForm.birthday,            // 出生日期
+              address: editUserForm.address,              // 家庭住址
               /**-------------- */ 
               spoliticsstatus: editUserForm.landscape,     // 政治面貌
               squalifications: editUserForm.education,     // 教育程度
@@ -1561,6 +1567,8 @@ export default {
       this.editUserForm.company = row.company;
       this.editUserForm.avatar = row.avatar;
       this.editUserForm.department = row.sdepartmentid;
+      this.editUserForm.birthday = row.birthday,      // 出生日期
+      this.editUserForm.address = row.address,        // 家庭住址
       // 到时修改--------
       this.editUserForm.landscape = row.spoliticsstatus ;     // 政治面貌
       this.editUserForm.education = row.squalifications ;     // 教育程度
@@ -1581,6 +1589,8 @@ export default {
         company: row.company,
         department: row.sdepartmentid,
         avatar: this.imgFile || row.avatar,
+        birthday: row.birthday,
+        address: row.address ,
         landscape: row.spoliticsstatus ,     // 政治面貌
         education: row.squalifications ,     // 教育程度
         professionalTitle: row.sprofessionaltitle ,    // 专业职称
