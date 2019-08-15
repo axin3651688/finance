@@ -52,7 +52,7 @@ export default {
             // 设置中间main的高度
             cH.style.height = wH - 120 + 'px' ;
             // 窗口改变时触发
-            window.onresize = function temp(){
+            window.onresize = function temp(){ //debugger
                 cH.style.height =  document.body.offsetHeight - 120 + 'px' ;
             };
         }

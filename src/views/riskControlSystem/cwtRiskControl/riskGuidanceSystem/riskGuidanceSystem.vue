@@ -175,7 +175,7 @@ export default {
         setTableScollHeight(){
             let containerStyle, containerHeight, contentStyle, contentHeight ;
             const me = this ;
-            window.onresize = function temp(){ 
+            window.onresize = function temp(){ //debugger
                 containerStyle = document.getElementsByClassName('guidance_container')[0] ;   
                 containerHeight = document.body.offsetHeight - 64 - 60 + 'px' ;
                 containerStyle.style.height = containerHeight ; 
