@@ -33,6 +33,22 @@ export default {
                 },
                 yAxis: {
                     type: 'category',
+                    axisLabel:{
+                        formatter:function(aa,bb){
+                            let names = aa.split("$");
+                            let name = names[0];
+                            return name;
+                        }
+                    },
+                    axisPointer:{
+                        label:{
+                            formatter:function(aa,bb){
+                                let names = aa.value.split("$");
+                                aa.value = names[0];
+                                return aa.value;
+                            }
+                        }
+                    },
                     data: []
                 },
                 dataZoom: [
@@ -58,12 +74,13 @@ export default {
                         itemStyle: {   
                             //通常情况下：
                             normal:{
-                                color:'#c3e5eb'  
+                                // color:'#c3e5eb'
             　　　　　　　　　　　//每个柱子的颜色即为colorList数组里的每一项，如果柱子数目多于colorList的长度，则柱子颜色循环使用该数组
-                                // color: function (params){
-                                //     var colorList = ['rgb(164,205,238)','rgb(42,170,227)','rgb(25,46,94)','rgb(195,229,235)'];
-                                //     return colorList[params.dataIndex];
-                                // }
+                                color: function (params){
+                                    let colorStrs = params.name.split("$");
+                                    let colorStr = colorStrs[1];
+                                    return "#" + colorStr;
+                                }
                             }
                         },
                         data: []
@@ -71,7 +88,7 @@ export default {
                 ]
             },
             sValue:0,
-            eValue:9,
+            eValue:19,
         }
     },
     computed: {
@@ -97,6 +114,7 @@ export default {
     },
     methods: {
         updateData(){
+            debugger;
             let me = this;
             if(me.chartData && me.chartData.length > 0){
                 let datas = me.chartData,yDatas = [],seriesData = [];
@@ -113,13 +131,13 @@ export default {
                     me.sortByProp(arrDatas,"score",1);
                 }
                 arrDatas.forEach(item => {
-                    yDatas.push(item.sname);
+                    yDatas.push(item.sname + "$" + item.color);
                     seriesData.push(item.score);
                 });
                 //滚动条的位置。
                 me.receive.dataZoom[0].startValue = arrDatas.length - 1;
-                if(arrDatas.length > 10){
-                    me.receive.dataZoom[0].endValue = arrDatas.length - 10;
+                if(arrDatas.length > 20){
+                    me.receive.dataZoom[0].endValue = arrDatas.length - 20;
                 }else {
                     me.receive.dataZoom[0].endValue = 0;
                 }

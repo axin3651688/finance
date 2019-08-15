@@ -254,9 +254,11 @@ export default {
             for (let i = 0; i < data.length; i++) {
                 let item = data[i];
                 if (rootItem.scode == item.spcode) {
-                    if (item.sstate) {
+                    if (item.sstate == "未批示") {
                         item.sreportuser = "";
                         item.sreporttime = "";
+                        me.setOperations(item);
+                    } else {
                         me.setOperations(item);
                     }
                     rootItem.children.push(item);
@@ -574,7 +576,6 @@ export default {
          * 从第二个开始的格式。
          */
         jsonFormatOfTwo_old(jsonItem, jsonTwoChildren) {
-            // debugger;
             let me = this,
                 jsonBeanData = me.jsonBeanData;
             jsonItem.children.push(jsonTwoChildren);
