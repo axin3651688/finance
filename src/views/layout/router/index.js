@@ -544,7 +544,8 @@ const router = new Router({
             component: () =>
                 // import('@v/layout/login/Login'),
                 // import('@v/layout/login/LoginNew'),
-                import ('@v/layout/login/LoginNew'),
+                import ('@v/layout/login/szcLogin'),
+            // import ('@v/layout/login/LoginNew'),
         },
         {
             path: '*',
