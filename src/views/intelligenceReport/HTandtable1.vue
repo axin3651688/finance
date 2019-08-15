@@ -1367,6 +1367,10 @@ export default {
               // if (index != 0) {
                 let bb = { index: index };
                 bb[key] = values;
+                //如果是第一行的话，就加上公司的名称。
+                if(index == 0){
+                  bb.accountbanks = this.settings.data[0].accountbanks;
+                }
                 me.tableData.push(bb);
               // }
             } else if(me.templateId == 9) {
