@@ -891,8 +891,8 @@ export default {
         this.exps.wxldfz_tz -
         this.exps.v1131604_tz -
         this.exps.v1131605_tz -
-        this.exps.v1222711_tz +
-        this.exps.znhfy_tz;
+        this.exps.v1222711_tz 
+        // + this.exps.znhfy_tz;
       // 无息流动负债 =  税后净营业利润-资本占用×资本成本率
       // this.exps.shjlr =
       //   this.exps.wxldfz_tz - (this.exps.zbzyje * (this.vars[1].value / 100));  

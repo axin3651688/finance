@@ -698,7 +698,9 @@ export default {
         education: "",        // 教育程度
         professionalTitle: "",  // 专业职称
         currentPosition: "" ,   // 现任职务
-        avatar:""               // 图片
+        avatar:"",              // 图片
+        birthday: "",         // 出生日期
+        address: "" ,         // 家庭住址
       },
       // usercompany:null,//用户所属公司编码
       //修改密码
@@ -848,6 +850,12 @@ export default {
           { required: true, message: "必选项" }
         ],
         department: [
+          { required: true, message: "必选项" }
+        ],
+        birthday: [
+          { required: true, message: "必选项" }
+        ],
+        address: [
           { required: true, message: "必选项" }
         ],
         sphone: [

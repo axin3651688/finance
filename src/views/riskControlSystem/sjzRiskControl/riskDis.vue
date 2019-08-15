@@ -80,6 +80,7 @@
                     <template slot-scope="scope">
                         <div v-if="element.id === 'gradename'" :style="getStyleBgcolor(scope.row, element)">{{ scope.row[element.id] }}</div>
                         <div v-else>{{ scope.row[element.id] }}</div>
+                        <!-- <div v-else>{{ getDataContent(scope, element) }}</div> -->
                     </template>
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
@@ -158,7 +159,9 @@ import {
     // 全局参数控制
     globalparam_all,
     // 导入按钮
-    risk_excel_excel_input
+    risk_excel_excel_input,
+    // 风险矩阵全部记录查询
+    riskmatrix_all
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
@@ -177,6 +180,7 @@ export default {
             heights: 350,         // 表格的高度
             widths: "960px",    // 弹出框的宽度
             elementui: [],           // 文字
+            elementui2:[],           // 文字存储
             tableLength: 0,          // 共多少条数据
             tableData: [],      // 表格的数据
             tableData_new: [],  // 表格的复制数据
@@ -215,6 +219,8 @@ export default {
             modifyReadonly: false,
             tableData2: [],
             htmlText: "",
+            elementui3: [] ,
+            elementui3_num: 0 ,
         }
     },
     created(){
@@ -244,6 +250,7 @@ export default {
         this.axiosRequest();    // 获取【风险矩阵】的json信息
         this.table1Request();   // 获取【参照按钮-发生概率】的json信息
         this.tab1e2Request();   // 获取【参照按钮-影响程度】的json信息
+        this.riskmatrix_all_request() ;
         // this.htmlContent();     // 获取表格信息生成文字
            
     },
@@ -281,21 +288,12 @@ export default {
         ...mapGetters(["device", "user","showDims"])
     },
     methods: {
+        // 
+        
         // 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
         cellClassName({row, column, rowIndex, columnIndex}){
             // debugger
             if(column.property == "gradename"){
-                // if(row.gradename == "中等风险"){
-                //     return "gradename_yellow" ;
-                // }else if(row.gradename == "重大风险"){
-                //     return "gradename_orange" ;
-                // }else if(row.gradename == "巨大风险" || row.gradename == "高风险"){
-                //     return "gradename_red" ;
-                // }else if(row.gradename == "可接受风险" || row.gradename == "最低风险"){
-                //     return "gradename_green" ;
-                // }else {
-                //     return "gradename_blue" ;
-                // }  
                 return "gradename_bgcolor"             
             }   
         },
@@ -321,7 +319,7 @@ export default {
             const me = this ;
             setTimeout(()=>{
                 me.heights = document.documentElement.offsetHeight - 20 - 42 -64;
-            },200)           
+            },400)           
             window.onresize = function temp(){ 
                 me.heights = document.documentElement.offsetHeight - 20 - 42 -64 ;
                 if(document.body.offsetWidth <= 1200 ){
@@ -427,7 +425,7 @@ export default {
         },
         // 1.3 数据获取之后的处理
         queryDataAfter(datas){
-            // debugger
+            debugger
             let me = this ;
             let obj = me.objer ;
             let $params = me.$store.state.prame.command;
@@ -440,25 +438,48 @@ export default {
             }
             me.tableLength = me.tableData.length ;
             // 必须要有数据
-            if(me.tableData.length > 0){
+            if(me.tableLength > 0){
                 me.elementui = [] ;
-                let one = me.tableData.filter(first => { return first.gradename=="可接受风险" }) ;
-                let two = me.tableData.filter(second => { return second.gradename=="一般风险" }) ;
-                let three = me.tableData.filter(third => { return third.gradename=="中等风险" }) ;
-                let four = me.tableData.filter(fourth => { return fourth.gradename=="重大风险" }) ;
-                let five = me.tableData.filter(fifth => { return fifth.gradename == "巨大风险" }) ;
-                let six = me.tableData.filter(sixth => { return sixth.gradename == "最低风险" }) ;
-                let seven = me.tableData.filter(seventh => { return seventh.gradename == "高风险" }) ;
-                if(one.length > 0)me.elementui.push({ text: "可接受风险", html: "<a>可接受风险"+one.length+"条</a>" }) ;
-                if(two.length > 0)me.elementui.push({ text: "一般风险", html: "<a>一般风险"+two.length+"条</a>" }) ;
-                if(three.length > 0)me.elementui.push({ text: "中等风险", html: "<a>中等风险"+three.length+"条</a>" }) ;
-                if(four.length > 0)me.elementui.push({ text: "重大风险", html: "<a>重大风险"+four.length+"条</a>" }) ;
-                if(five.length > 0)me.elementui.push({ text: "巨大风险", html: "<a>巨大风险"+five.length+"条</a>" }) ;
-                if(six.length > 0)me.elementui.push({ text: "最低风险", html: "<a>最低风险"+six.length+"条</a>" }) ;
-                if(seven.length > 0)me.elementui.push({ text: "高风险", html: "<a>高风险"+seven.length+"条</a>" }) ;
+                me.elementui3= [] ;
+                me.elementui2.forEach(element => {
+                    me.elementui3_num = 0 ;
+                    me.tableData.forEach(elementui => {
+                        if(elementui.nscore >= element.nminnum && elementui.nscore <= element.nmaxnum) {
+                            me.elementui3_num += 1 
+                        }
+                    })
+                    me.elementui3.push({ number: me.elementui3_num, sname: element.sname })
+                })
+                me.elementui3.forEach(item => {
+                    if(item.number !== 0){
+                        me.elementui.push({ text: item.sname, html: "<a>"+ item.sname + item.number+"条</a>" }) ;
+                    }
+                })
             }else{
+                me.elementui3= [] ;
                 me.elementui = [] ;
             }
+            
+            // 必须要有数据
+            // if(me.tableData.length > 0){
+            //     me.elementui = [] ;
+            //     let one = me.tableData.filter(first => { return first.gradename=="可接受风险" }) ;
+            //     let two = me.tableData.filter(second => { return second.gradename=="一般风险" }) ;
+            //     let three = me.tableData.filter(third => { return third.gradename=="中等风险" }) ;
+            //     let four = me.tableData.filter(fourth => { return fourth.gradename=="重大风险" }) ;
+            //     let five = me.tableData.filter(fifth => { return fifth.gradename == "巨大风险" }) ;
+            //     let six = me.tableData.filter(sixth => { return sixth.gradename == "最低风险" }) ;
+            //     let seven = me.tableData.filter(seventh => { return seventh.gradename == "高风险" }) ;
+            //     if(one.length > 0)me.elementui.push({ text: "可接受风险", html: "<a>可接受风险"+one.length+"条</a>" }) ;
+            //     if(two.length > 0)me.elementui.push({ text: "一般风险", html: "<a>一般风险"+two.length+"条</a>" }) ;
+            //     if(three.length > 0)me.elementui.push({ text: "中等风险", html: "<a>中等风险"+three.length+"条</a>" }) ;
+            //     if(four.length > 0)me.elementui.push({ text: "重大风险", html: "<a>重大风险"+four.length+"条</a>" }) ;
+            //     if(five.length > 0)me.elementui.push({ text: "巨大风险", html: "<a>巨大风险"+five.length+"条</a>" }) ;
+            //     if(six.length > 0)me.elementui.push({ text: "最低风险", html: "<a>最低风险"+six.length+"条</a>" }) ;
+            //     if(seven.length > 0)me.elementui.push({ text: "高风险", html: "<a>高风险"+seven.length+"条</a>" }) ;
+            // }else{
+            //     me.elementui = [] ;
+            // }
             // 本属公司才能操作按钮，切换到非本属公司只能刷新和查看。单体公司不显示下达(2个)按钮，
             if($params.company === information.companyId){
                 if(nisleaf){
@@ -578,6 +599,14 @@ export default {
                 me.tableDemo2 = data ;
             });
         },
+        // 5. 风险矩阵全部记录查询（注：用于）
+        riskmatrix_all_request() {
+            const me = this ;
+            riskmatrix_all().then(res => { 
+                me.elementui2 = res.data.data 
+            })
+        },
+
         /**
          * @event 选择列
          */
@@ -711,6 +740,7 @@ export default {
             this.selection = [] ;
             this.tableData2= [] ;
             this.loadModuleBefore() ;
+            this.setClientHeight() ;
         },
         // 添加 + 修改的  ......
         reportType_quest(vax,index, tableData){

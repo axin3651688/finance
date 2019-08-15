@@ -432,7 +432,7 @@ export default {
         
     },
     mounted(){
-        
+       
     },
     computed: {
         tableData: function() {
