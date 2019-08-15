@@ -1,111 +1,74 @@
 <template>
     <div>
         <div>
-            <el-row class="div_form">
-                <el-col :span="10">
+            <el-row>
+                <div>
                     <div>
-                        <label for="">公司选择：</label>
-                        <el-select v-model="valueSname" placeholder="请选择" class="select_all" ref="company_select">
-                            <el-option
-                                class="tree_select_option"
-                                :value="'1111'"
-                                :label="''"
-                            >
-                                <el-tree 
-                                    :data="comtree2" 
-                                    :props="defaultProps"
-                                    :expand-on-click-node="false"
-                                    @node-click="nodeClick"
-                                >
-                                </el-tree>
-                            </el-option>
-                        </el-select>
+                        <span>集团公司选择：</span>
+                        <el-tag type="info" effect="plain" class="tag_public">天津食品集团有限公司</el-tag>
                     </div>
-                    <!-- <div>
-                        <label for="">公司选择：</label>
-                        <el-select v-model="value" placeholder="请选择" class="select_all">
-                            <el-option
-                            v-for="item in companyOptions"
-                            :key="item.value"
-                            :label="item.sname"
-                            :value="item.scode">
-                            </el-option>
-                        </el-select>
-                    </div> -->
-                    <!-- <div class="tree_spcompany">
-                        <label for="" class="tree_company_label">公司选择：</label>
-                        <div class="tree_company">
-                            <treeselect
-                                v-model="value"
-                                :options="comtree2"
-                                placeholder="请选择所属公司"
-                                class="tree_select"
-                            />
-                        </div>
-                    </div> -->
-                </el-col>
-                <el-col :span="14">
                     <div>
-                        <label for="">上市公司：</label>
-                        <el-select v-model="listedCompany" placeholder="请选择" class="select_all" multiple>
-                            <el-option
-                            v-for="item in companyipoOptions"
+                        <span>上市公司选择：</span>
+                        <template v-for="item in companyipoOptions">
+                            <el-tag 
+                            :key="item.scode"
+                            @click="listedCompanyHandler(item)"
+                            class="tag_public"
+                            :ref="'select_'+ item.scode"
+                            :class="'selectClass' + item.scode + ''"
+                            type="info" 
+                            effect="plain">
+                                {{ item.sname }}
+                            </el-tag>
+                        </template>
+                    </div>
+                    <div>
+                        <span>财务指标选择：</span>
+                        <template v-for="item in indicatorOptions">
+                            <el-tag 
                             :key="item.value"
-                            :label="item.sname"
-                            :value="item.scode">
-                            </el-option>
-                        </el-select>
-                        <el-button style="float:right;margin-right:20px;" @click="exportExcle">
-                            导出
+                            type="info" 
+                            class="tag_public"
+                            effect="plain">
+                                {{ item.sname }}
+                            </el-tag>
+                        </template>
+                    </div>
+                    <div>
+                        <span>期间选择(年)：</span>
+                        <template v-for="item in optionYears">
+                            <el-tag 
+                            :key="item.value"
+                            type="info" 
+                            class="tag_public"
+                            effect="plain">
+                                {{ item.label }}
+                            </el-tag>
+                        </template>
+                    </div>
+                    <div>
+                        <span>期间选择(月)：</span>
+                        <template v-for="item in optionMonths">
+                            <el-tag 
+                            :key="item.value"
+                            type="info" 
+                            class="tag_public"
+                            effect="plain">
+                                {{ item.label }}
+                            </el-tag>
+                        </template>
+                    </div>
+                </div>
+                <div>
+                    <div>
+                        <el-button style="margin:0 2%;float:right;">
+                            重置
                         </el-button>
-                    </div>
-                </el-col>
-                <!-- <el-col :span="2">
-                    <div>
-                        <el-button>
-                            导出
-                        </el-button>
-                    </div>
-                </el-col> -->
-            </el-row>
-            <el-row class="div_form">
-                <el-col :span="10">
-                    <div>
-                        <label for="">指标名称：</label>
-                        <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
-                            <el-option
-                            v-for="item in indicatorOptions"
-                            :key="item.value"
-                            :label="item.sname"
-                            :value="item.scode">
-                            </el-option>
-                        </el-select>
-                    </div>
-                </el-col>
-                <el-col :span="14">
-                    <div>
-                        <label for="">期间选择：</label>
-                        <el-select v-model="yearValue" placeholder="请选择" class="select_left">
-                            <el-option
-                            v-for="item in optionYears"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
-                            <el-option
-                            v-for="item in optionMonths"
-                            :key="item.value"
-                            :label="item.label"
-                            :value="item.value">
-                            </el-option>
-                        </el-select>
-                        <el-button @click="btnHandler" style="margin-left:2%;">
+                        <el-button @click="btnHandler" style="margin-left:2%;float:right;">
                             确定
                         </el-button>
                     </div>
-                </el-col>
+                </div>
             </el-row>
             <el-row>
                 <el-col :span="24">
@@ -219,26 +182,6 @@
                     {
                         value: '12',
                         label: '12月'
-                    },
-                    {
-                        value: 'Q1',
-                        label: '一季度'
-                    },
-                    {
-                        value: 'Q2',
-                        label: '二季度'
-                    },
-                    {
-                        value: 'Q3',
-                        label: '三季度'
-                    },
-                    {
-                        value: 'Q4',
-                        label: '四季度'
-                    },
-                    {
-                        value: 'Y1',
-                        label: '年度'
                     }
                 ],
                 value: '',
@@ -249,7 +192,8 @@
                 resData:{
                     fixedHeader:true
                 },
-                renderFlag:true//重新渲染的标识。
+                renderFlag:true,//重新渲染的标识。
+                selectClass:""
             }
         },
         /**
@@ -320,6 +264,15 @@
         mounted() {},
         methods: {
             ...mapActions(["ShowDims"]),
+            /**
+             * 上市公司的选择。
+             */
+            listedCompanyHandler (item) {
+                debugger;
+                let me = this;
+                me.$refs['select_' + item.scode][0].$el.className = me.$refs['select_' + item.scode][0].$el.className + " select_class";
+                // me["selectClass" + item.scode + ""] = "select_class";
+            },
             exportExcle () {
                 debugger;
                 let me = this;
@@ -544,6 +497,14 @@
     }
     .div_form {
         margin: 10px 0px;
+    }
+    /* 悬浮 */
+    .tag_public:hover{
+        cursor: pointer;
+    }
+    .select_class {
+        background-color: #409eff;
+        color: #fff;
     }
 </style>
 <style lang="scss" scoped>
