@@ -158,12 +158,19 @@ const router = new Router({
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskSystem/riskSystem.vue')
                 },
-                // 风险指引制度 sjz
+                // 风险指引制度 sjz （1版）
                 {
                     path: '/riskGuidanceSystem',
                     name: 'riskGuidanceSystem',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem/riskGuidanceSystem.vue')
+                },
+                // 风险指引制度 sjz （1版）
+                {
+                    path: '/riskGuidanceSystem2',
+                    name: 'riskGuidanceSystem2',
+                    component: () =>
+                        import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem2/riskGuidance.vue')
                 },
                 //组织架构
                 {
@@ -300,7 +307,7 @@ const router = new Router({
                     path: '/listingBenchmarking',
                     name: 'listingBenchmarking',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking_old.vue'),
                 }
             ]
         },
