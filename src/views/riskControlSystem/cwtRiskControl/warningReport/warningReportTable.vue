@@ -39,33 +39,35 @@
                                 <template v-if="item.id === 'company'">
 
                                     <template v-if="scope.row[scope.column.property]">
-                                        <!--<template v-for="(com, index) of scope.row[scope.column.property].split(',')">-->
-                                        <el-button  style="color:  #409eff;" size="mini" @click="desCompanyClick(scope.row[scope.column.property])">公司明细
+                                        <el-button style="color:  #409eff;" size="mini"
+                                                   @click="desCompanyClick(scope.row[scope.column.property])">公司明细
                                         </el-button>
-
-                                        <!--&nbsp;<a style="color: #2d8cf0" @click="companyClickEvent(com)">{{com.split('-')[0]}}</a>-->
-                                        <!--</template>-->
                                     </template>
 
                                 </template>
 
-
-                                <!--<template v-else-if="item.id === 'company'">-->
-                                <!--<el-button @click="desCompanyClick(scope.row[scope.column.property])"></el-button>-->
-                                <!--</template>-->
+                                <template v-else-if="item.id === 'sname'">
+                                    <span :style="{color: scope.row.color}">
+                                        {{ scope.row[scope.column.property]}}
+                                    </span>
+                                </template>
 
                                 <template v-else-if="item.id === 'sjz'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
+
                                 <template v-else-if="item.id === 'zb'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
+
                                 <template v-else-if="item.id === 'zgz'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
+
                                 <template v-else-if="item.id === 'pjz'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
+
                                 <template v-else-if="item.id === 'zdz'">
                                     {{ setNumberToStander(scope.row[scope.column.property], false) }}
                                 </template>
@@ -118,7 +120,7 @@
              * 行高设置
              * @return {string}
              */
-            RowStyle(row){
+            RowStyle(row) {
                 debugger;
                 return 'height: 20px';
             },
