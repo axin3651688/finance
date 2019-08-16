@@ -158,7 +158,7 @@
                 let _issuedNumberLength = params.issuedNumber.length;
                 if (_titleLength > 100) {
                     this.$message({
-                        message: '制度标特不能超过100字！'
+                        message: '制度标题不能超过100字！'
                     });
                     return;
                 }
