@@ -5,9 +5,7 @@ export default {
     computed: {
         ...mapGetters(["device", "user", "showDims"])
     },
-
     methods: {
-
         /**
          * 设置数据格式为标准格式
          * @param num
@@ -46,8 +44,6 @@ export default {
                 _getter = _this.$store.getters;
             return _getter.month;
         },
-
-
         /**
          * 数据计算
          * @param data
@@ -71,8 +67,6 @@ export default {
             let _singleData = _this.getSingleData(data);
             return _this.dataFormatter(data, needCNid, _singleData);
         },
-
-
         /**
          * 数据计算
          * @param _a
@@ -96,7 +90,10 @@ export default {
             });
             return i;
         },
-
+        /**
+         * 获取计算所用到的数据元
+         * @param _a
+         */
         getSingleData(_a) {
             let _o = {};
             for (let x in _a) {
@@ -110,7 +107,13 @@ export default {
             }
             return _o;
         },
-
+        /**
+         * 公式配置
+         * 很多很多公式只能在前端写，这里就是存放公式的地方
+         * @param _c
+         * @param _o
+         * @returns {number}
+         */
         dataFormula(_c, _o) {
             let _x = 0;
             switch (_c) {

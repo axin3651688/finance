@@ -55,7 +55,6 @@
                         <el-table
                                 :data="responsibility"
 
-                                :span-method="objectSpanMethod"
                                 :max-height='tableHeight'
                                 :header-cell-style="headerRowStyle"
                                 border
@@ -78,8 +77,9 @@
                     <div class="content-table">
                         <el-table
                                 :data="tableData"
-                                :span-method="objectSpanMethod"
                                 :max-height='tableHeight'
+                                :row-style="{height:'50px'}"
+                                :cell-style="{padding:'0px'}"
                                 :header-cell-style="headerRowStyle"
                                 border
                                 style="width: 100%; margin-top: 20px">

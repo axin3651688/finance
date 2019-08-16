@@ -4,15 +4,6 @@
             <div class="model-public-cell-single-cell-top-ccell">{{cellData.name}}</div>
 
             <div class="model-public-ccell-single-cell-bottom">
-                <!--<el-input
-                        :disabled=false
-                        v-model="bottom"
-                        :cellid="cellData.nid"
-                        @blur="inputBlurEvent"
-                        @keyup.enter.native="inputBlurEvent"
-                >
-                </el-input>-->
-
                 <input
                         :disabled=false
                         v-model="bottom"
@@ -28,9 +19,8 @@
 
 <script>
     import cwtPublicJs from '../../mixin/cwtPublicJS'
-
     export default {
-        name: "cell",
+        name: "ccell",
         mixins: [cwtPublicJs],
         components: {},
         props: {
@@ -57,11 +47,9 @@
                 a = a || this.cellData['value'];
                 this.bottom = this.setNumberToStander(a);
             },
-            inputBlurEvent(params) {
+            inputBlurEvent() {
                 let _this = this;
-                // let _value = params.currentTarget.value;
                 let _value = _this.bottom;
-                // let _cellid = params.currentTarget.attributes[2].value;
                 let _cellid = _this.cellData.nid;
                 let _data = {
                     id: _cellid,

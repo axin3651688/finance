@@ -4,12 +4,6 @@
             <div class="model-public-cell-single-cell-top">{{cellData.name}}</div>
 
             <div class="model-public-cell-single-cell-bottom">
-                <!--<el-input
-                        :disabled = true
-                        v-model="cellData.value || 0.00"
-                        :cellid="cellData.id"
-                >
-                </el-input>-->
                 <input
                         :disabled = true
                         :style="{color: cellData.value.replace(/,/g, '') * 1 >= 0 ? 'black' : '#e1251b'}"

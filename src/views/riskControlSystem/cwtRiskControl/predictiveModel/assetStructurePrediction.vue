@@ -2,7 +2,6 @@
     <div>
 
         <div class="top-button">
-
             <div class="button-right">
                 <el-select
                         v-model="selectValue"
@@ -29,11 +28,9 @@
                     重置
                 </el-button>
             </div>
-
         </div>
 
         <div class="content-all">
-
             <div class="content-cell">
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
@@ -113,7 +110,6 @@
                 >
                 </mtable>
             </div>
-
         </div>
 
         <div class="dialog-components">
@@ -329,7 +325,6 @@
             this.getSelectOptions();
         },
         methods: {
-
             /**
              * 获取真实数据
              */
@@ -536,6 +531,7 @@
                     }
                 })
             },
+
             /**
              * 模板重置
              */
@@ -598,7 +594,6 @@
                 }
                 return _list;
             },
-
 
             /**
              * 获取文字评论
