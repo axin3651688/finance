@@ -174,9 +174,11 @@
                     }else if(row.columnIndex >= 3 && row.columnIndex < 5) {
                         return "background-color:#5CACEE";
                     }else if(row.columnIndex >= 5 && row.columnIndex < 7) {
-                        return "background-color:#EEB422";
+                        // return "background-color:#EEB422";
+                        return "background-color:#ffd700";
                     }else if(row.columnIndex >= 7 && row.columnIndex < 9) {
-                        return "background-color:#FFDD00";
+                        // return "background-color:#FFDD00";
+                        return "background-color:#ff7f24";
                     }else if(row.columnIndex >= 9 && row.columnIndex < 12) {
                         return "background-color:#EF4D4D";
                     }

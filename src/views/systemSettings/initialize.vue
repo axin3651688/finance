@@ -204,7 +204,7 @@ export default {
                 me.$message({ message: "请选择要下载的模板！", type: "warning" }) ;
             } else {
                 // 请求方法
-                me.axios.post('/zjb/excel_init_export', Qs.stringify(params),  {responseType:'blob'}).then((res) => {
+                me.axios.post('/zjb/template_excel/excel_init_export', Qs.stringify(params),  {responseType:'blob'}).then((res) => {
                     if(res.status === 200) {
                         let blob = new Blob([res.data], {
                             type: 'application/vnd.ms-excel,application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'

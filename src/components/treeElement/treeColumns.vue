@@ -41,13 +41,13 @@
                 <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align" :show-overflow-tooltip="too.showOverflowTooltip">
                     <el-table-column v-for="tool in too.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align" :show-overflow-tooltip="tool.showOverflowTooltip">
                         <template slot-scope="scope">
-                            <el-tooltip :content="getCellValues(scope,tool)" placement="right" effect="light">
+                            <el-tooltip :content="getCellValues(scope,tool) + ''" placement="right" effect="light">
                                 <span>{{ getCellValues(scope,tool) }}</span>
                             </el-tooltip>
                     </template>
                     </el-table-column>
                     <template slot-scope="scope">
-                        <el-tooltip :content="getCellValues(scope,too)" placement="right" effect="light">
+                        <el-tooltip :content="getCellValues(scope,too) + ''" placement="right" effect="light">
                             <span>{{ getCellValues(scope,too) }}</span>
                         </el-tooltip>
                     </template>
@@ -59,7 +59,7 @@
                         <i v-if="scope.row._expanded" class="iconfont icon-minus-square" aria-hidden="true"></i>
                     </span>
                     <span v-else-if="index===0" class="ms-tree-space"></span> -->
-                    <el-tooltip v-if="!items.showOverflowTooltip" :content="getCellValues(scope,items)" placement="right" effect="light">
+                    <el-tooltip v-if="!items.showOverflowTooltip" :content="getCellValues(scope,items) + ''" placement="right" effect="light">
                         <span>{{ getCellValues(scope,items) }}</span>
                     </el-tooltip>
                     <span v-else>{{ getCellValues(scope,items) }}</span>

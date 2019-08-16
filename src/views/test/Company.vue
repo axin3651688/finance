@@ -8,6 +8,7 @@
         </el-input>
 
          <el-tree
+          class="comTreeA"
           :style="contentStyleObj"
           :data="treedata"
           node-key="scode"
@@ -58,12 +59,15 @@
       </el-col>
       <!--公司表单-->
       <el-col :xs="14" :sm="14" :md="14" :lg="14" :xl="16">
+        <div :style="contentStyleObj2" style="backgroundColor: #ffffff;">
         <el-form
           :rules="rules"
           ref="form"
           :model="form"
           :disabled="forbidden"
+          :inline="true"
           label-width="140px"
+          style="width: 1045px;"
           class="comForm"
         >
           <el-form-item label="公司编码" prop="scode">
@@ -83,28 +87,40 @@
           </el-form-item> -->
 
           <el-form-item label="上级公司编码" prop="spcode">
-            <el-input class="elform" v-model="form.spcode" disabled></el-input>
+            <el-input class="elform" v-model="form.spcode" readonly placeholder="自动编辑"></el-input>
           </el-form-item>
 
-          <el-form-item label="EAS账套编码" prop="ssrccode">
-            <el-input class="elform" v-model="form.ssrccode" @change="EASChange" placeholder="请填写EAS账套编码">
-              <template slot="prepend" v-if="form.ssrccode === '0'">虚拟汇总</template>
-              <template slot="prepend" v-else-if="form.ssrccode === '1'">虚拟录入</template>
-              <template slot="prepend" v-else>EAS源编码</template>
-            </el-input>
-            <el-alert
-              class="elform"
-              type="warning"
-              title="填写1代表虚拟录入 0代表虚拟汇总 其余请填写EAS源编码"
-              show-icon
-              :closable="false"
-            ></el-alert>
+          <el-form-item label="公司属性" prop="stype">
+            <el-select class="elform" v-model="form.stype" @change="companyStype">
+              <el-option
+                  v-for=" (item ,index) in property2C "
+                  :key="index"
+                  :label="item.text"
+                  :value="item.id"
+                ></el-option>
+            </el-select>
+          </el-form-item>    
+
+           <el-form-item label="是否重点单位" prop="property1">
+            <el-select class="elform" v-model="form.property1">
+              <el-option
+                v-for=" (item ,index) in property1s "
+                :key="index"
+                :label="item.text"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
 
-          <el-form-item label="EAS账套ID" prop="seascomcode">
-            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID">
-              <template slot="prepend" >EAS源ID</template>
-            </el-input>
+          <el-form-item label="是否本部单位" prop="sisbase">
+            <el-select class="elform" v-model="form.sisbase">
+              <el-option
+                v-for=" (item ,index) in property2s "
+                :key="index"
+                :label="item.text"
+                :value="item.id"
+              ></el-option>
+            </el-select>
           </el-form-item>
           <!-- <el-form-item label="集团合计持股比例" prop="npercent">
             <el-input v-model.number="form.npercent" placeholder="请填写持股比例">
@@ -115,16 +131,19 @@
             <el-alert type="warning" title="填写-1代表托管" show-icon :closable="false"></el-alert>
           </el-form-item> -->
 
-          <el-form-item label="内部行业" prop="sindcode">
-            <el-select class="elform" v-model="form.sindcode" placeholder="请选择行业">
-              <el-option
-                v-for=" (item,index) in sindcodes "
-                :key="index"
-                :label="item.sname"
-                :value="item.scode"
-              ></el-option>
-            </el-select>
+          <el-form-item label="企业法人" prop="scorporation">
+            <el-input class="elform" v-model="form.scorporation" placeholder="输入姓名"></el-input>
           </el-form-item>
+
+          <el-form-item label="联系电话" prop="scorporatetel">
+            <el-input class="elform" v-model="form.scorporatetel" placeholder="输入有效的电话"></el-input>
+          </el-form-item>
+
+          <el-form-item label="公司地址" prop="saddress">
+            <el-input class="elform3" v-model="form.saddress" placeholder="最大字符200"></el-input>
+          </el-form-item>
+
+          
 
           <el-form-item label="国资委行业" prop="sindcodedetail">
             <!-- <el-select class="elform" v-model="form.sindcodedetail" placeholder="请选择行业">
@@ -153,7 +172,7 @@
               show-icon
               :closable="false"
             ></el-alert>
-          </el-form-item>
+          </el-form-item> 
 
           <el-form-item label="公司规模" prop="sindsrange">
             <el-select class="elform" v-model="form.sindsrange" placeholder="请选择规模类型">
@@ -173,41 +192,53 @@
             ></el-alert>
           </el-form-item>
 
-          <el-form-item label="企业法人" prop="scorporation">
-            <el-input class="elform" v-model="form.scorporation" placeholder="输入姓名"></el-input>
-          </el-form-item>
-
-          <el-form-item label="联系电话" prop="scorporatetel">
-            <el-input class="elform" v-model="form.scorporatetel" placeholder="输入有效的电话"></el-input>
-          </el-form-item>
-
-          <el-form-item label="公司地址" prop="saddress">
-            <el-input class="elform" v-model="form.saddress" placeholder="最大字符200"></el-input>
-          </el-form-item>
-
-          <el-form-item label="是否本部单位" prop="sisbase">
-            <el-select class="elform" v-model="form.sisbase">
+          <el-form-item v-show="isShow" label="内部行业" prop="sindcode">
+            <el-select class="elform" v-model="form.sindcode" placeholder="请选择行业">
               <el-option
-                v-for=" (item ,index) in property2s "
+                v-for=" (item,index) in sindcodes "
                 :key="index"
-                :label="item.text"
-                :value="item.id"
+                :label="item.sname"
+                :value="item.scode"
               ></el-option>
             </el-select>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="合并公司无法选择内部行业"
+              show-icon
+              :closable="false"
+            ></el-alert>
+          </el-form-item> 
+
+          <el-form-item v-show="isShow" label="EAS账套ID" prop="seascomcode">
+            <el-input class="elform" v-model="form.seascomcode" placeholder="请填写EAS账套ID">
+              <template slot="prepend" >EAS源ID</template>
+            </el-input>
+            <el-alert
+              class="elform"
+              type="warning"
+              title="合并公司没有EAS账套ID"
+              show-icon
+              :closable="false"
+            ></el-alert>
+          </el-form-item> 
+
+          <el-form-item label="EAS账套编码" prop="ssrccode">
+            <el-input class="elform3" v-model="form.ssrccode" @change="EASChange" placeholder="请填写EAS账套编码">
+              <template slot="prepend" v-if="form.ssrccode === '0'">虚拟汇总</template>
+              <template slot="prepend" v-else-if="form.ssrccode === '1'">虚拟录入</template>
+              <template slot="prepend" v-else>EAS源编码</template>
+            </el-input>
+            <el-alert
+              class="elform3"
+              type="warning"
+              title="填写1代表虚拟录入 0代表虚拟汇总 其余请填写EAS源编码"
+              show-icon
+              :closable="false"
+            ></el-alert>
           </el-form-item>
 
-          <el-form-item label="是否重点单位" prop="property1">
-            <el-select class="elform" v-model="form.property1">
-              <el-option
-                v-for=" (item ,index) in property1s "
-                :key="index"
-                :label="item.text"
-                :value="item.id"
-              ></el-option>
-            </el-select>
-          </el-form-item>
-
-          <el-form-item class="elform2">
+          <el-form-item class="elform4">
             <template v-if="addButten === 1"> 
               <el-button type="primary" @click="add" :disabled="addDisabled">新增</el-button>
             </template>
@@ -233,6 +264,7 @@
             <!-- <el-button >取消</el-button> -->
           </el-form-item>
         </el-form>
+        </div>
       </el-col>
     </el-row>
   </div>
@@ -270,6 +302,10 @@ export default {
         height: 500,
         overflow: "auto"
       },
+      contentStyleObj2: {
+        height: 500,
+        overflow: "auto"
+      },
       filterText: "",
       // rootNode: "1001",
       props: {
@@ -281,6 +317,8 @@ export default {
       easDisabled: true ,
       // 国资委行业是否禁用
       disabled2: false ,
+      // 内部行业的隐藏与显示（单体显示，合并不显示）
+      isShow: true ,
       treedata: [],
       //默认展开节点
       expandKeys: [],
@@ -295,6 +333,7 @@ export default {
       sindcodesAll: [],
       property1s: [{ id: "1", text: "是" }, { id: "0", text: "否" }],
       property2s: [{ id: "Y", text: "是" }, { id: "N", text: "否" }],
+      property2C: [{ id: "1", text: "单体" }, { id: "0", text: "合并" }, { id: "R", text: "差额" }],
       wformArr: [
         "scode",            // 公司编码
         "sfullname",        // 公司全称
@@ -310,13 +349,15 @@ export default {
         "sindsrange",       // 公司规模
         "scorporatetel",    // 联系电话
         "saddress",         // 公司地址
-        "sname"             // 公司简称
+        "sname",            // 公司简称
+        "stype"             // 公司属性
       ],
       //表单对象
       form: {
         scode: "",          // 公司编码
         sfullname: "",      // 公司名称
         spcode: "",         // 上级公司编码
+        stype: "",          // 公司属性
         sindcode: "",       // 行业
         property1: "",      // 重点单位
         sisbase: "",        // 是否本部
@@ -512,12 +553,22 @@ export default {
     setTreeHeight() {
       this.contentStyleObj.height = `${document.documentElement.clientHeight -
         124}px`;
+      this.contentStyleObj2.height = `${document.documentElement.clientHeight -
+        84}px`;
       // 然后监听window的resize事件．在浏览器窗口变化时高度．
       const that = this;
       window.onresize = function temp() {
         that.contentStyleObj.height = `${document.documentElement.clientHeight -
           124}px`;
+        that.contentStyleObj2.height = `${document.documentElement.clientHeight -
+          84}px`;
       };
+    },
+    // 公司属性选择触发
+    companyStype(val){
+      // debugger
+      if(val === "1" || val === "R")this.isShow = true ;
+      if(val === "0")this.isShow = false ;
     },
     EASChange(value){
       debugger
@@ -660,6 +711,8 @@ export default {
      * 注意问题：当前选中公司的状态，后台处理
      */
     add(formName) { //debugger
+      // 添加按钮触发显示内部行业 && EAS账套ID
+      this.isShow = true ;
       // 新增公司时，国资委行业默认为 综合行业 ； 公司规模默认为 小型企业 可手动修改
       let cc = this.sindcodee.filter(res => { return res.scode == "Z" }) ;
       let dd = this.sindcoded.filter(rss => { return rss.scode == "4" }) ;
@@ -670,6 +723,7 @@ export default {
       this.form.sname = "";         // 公司简称
       this.form.sindcode = "";      // 内部行业
       this.form.property1 = "";     // 重点单位
+      this.form.stype = "" ;        // 公司属性
       this.form.sisbase = "";       // 是否本部
       this.form.npercent = 0;       // 集团合计持股比例
       this.form.ssrccode = "";      // EAS公司源编码
@@ -735,7 +789,7 @@ export default {
           });
         });
     },
-    save(formName) { debugger
+    save(formName) { //debugger
       var _this = this;
       //console.log("表单变化：", this.activeForm);
       //比对变化
@@ -814,7 +868,8 @@ export default {
                 sindsrange: form.sindsrange,          // 公司规模
                 scorporatetel: form.scorporatetel,    // 联系电话
                 saddress: form.saddress,              // 公司地址
-                sfullname: form.sfullname             // 公司简称
+                sfullname: form.sfullname,            // 公司简称
+                stype: form.stype                     // 公司属性
                 // }
               }
             }).then(result => { //debugger
@@ -915,6 +970,12 @@ export default {
      * @param el 节点组件本身
      *  */
     handClick(snode, node, el) { //debugger
+      // 0 表示合并公司 / 1 表示单体公司 / R 差额公司 
+      if(snode.stype === "0") {
+        this.isShow = false ;
+      } else {
+        this.isShow = true ;
+      }
       // console.log(this.form, snode, node);
       //根据动态生成行业的选择条数。
       // this.companyOfInsNumber(snode);
@@ -936,6 +997,7 @@ export default {
       this.form.scorporatetel = snode.scorporatetel;    // 联系电话
       this.form.saddress = snode.saddress;              // 公司地址
       this.form.sfullname = snode.sfullname;            // 公司简称
+      this.form.stype = snode.stype ;                   // 公司属性
       if (this.form.npercent - 0 !== -1) {
         this.form.npercent = this.form.npercent * 100;
       }
@@ -1090,16 +1152,28 @@ export default {
 
 <style scoped>
 .elform {
-  width: 420px;
+  width: 360px;
   height: 40px;
 }
 .elform2 {
   /* margin-left: 188px; */
   text-align: right;
 }
+.elform3 {
+  width: 870px;
+  height: 40px;
+}
+.elform4 {
+  width: 870px;
+  margin-left: 140px;
+  text-align: right;
+  /* background: red; */
+}
 .comForm {
   /* background-color: beige; */
-  width: 560px;
+  width: 501px;
+  padding-top: 40px;
+  /* overflow: auto; */
 }
 </style>
 

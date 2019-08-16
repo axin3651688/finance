@@ -240,6 +240,16 @@ export function riskmatrix(data) {
         params: data
     })
 }
+/**
+ * name: sjz
+ * 说明：
+ */
+export function riskmatrix_all() {
+    return request({
+        url: '/zjb/riskmatrix/query_all',
+        method: 'get'
+    })
+}
 /**7.
  * name: sjz
  * 说明：风险识别的【风险矩阵】接口 /riskmatrix/query_tovo
