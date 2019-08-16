@@ -221,7 +221,7 @@
             // this.doNotShowDim(true);
             let _this = this;
             _this.ShowDims({
-                company: false,
+                company: true,
                 year: true,
                 month: true,
             });
