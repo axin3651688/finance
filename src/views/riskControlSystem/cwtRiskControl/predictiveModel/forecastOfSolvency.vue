@@ -220,8 +220,8 @@
                     </div>
 
                     <div class="content" style="color: green">
-                        <p :style="{color:conclusionData.f3.s1.color}">
-                            {{conclusionData.f3.s1.content}}
+                        <p :style="{color:conclusionData.f3.s2.color}">
+                            {{conclusionData.f3.s2.content}}
                         </p>
                     </div>
                 </div>
@@ -231,8 +231,8 @@
                     </div>
 
                     <div class="content" style="color: green">
-                        <p :style="{color:conclusionData.f3.s2.color}">
-                            {{conclusionData.f3.s2.content}}
+                        <p :style="{color:conclusionData.f3.s1.color}">
+                            {{conclusionData.f3.s1.content}}
                         </p>
                     </div>
                 </div>
@@ -555,12 +555,12 @@
                     f1: {
                         s1: {
                             clu1: {
-                                color: 'red',
+                                color: 'green',
                                 //付息负债的期末数=0
                                 content: '本公司无付息负债，不存在负债经营风险。'
                             },
                             clu2: {
-                                color: 'red',
+                                color: 'black',
                                 //净利润的累计数<=0
                                 content: '公司净利润为负，负债经营是否可行，取决于能否扭亏为盈。'
                             },
@@ -570,7 +570,7 @@
                                 content: '从公司当期资本结构、借款利率和盈利水平三者的关系来看，公司增加负债不会增加公司的盈利水平，相反会降低公司现在的盈利水平。'
                             },
                             clu4: {
-                                color: 'red',
+                                color: 'green',
                                 //净利润的累计数>0,财务风险系数>=1
                                 content: '从公司当期资本结构、借款利率和盈利水平三者的关系来看，公司增加负债能够给企业带来利润的增加，负债经营可行。'
                             }
@@ -579,12 +579,12 @@
                     f2: {
                         s1: {
                             clu1: {
-                                color: 'green',
+                                color: 'red',
                                 //现金支付能力<=0,短期借款的期末余额>应付票据的期末余额
                                 content: '从支付能力来看，日常现金支付资金比较紧张，主要依靠短期借款。'
                             },
                             clu2: {
-                                color: 'green',
+                                color: 'black',
                                 //现金支付能力<=0, 短期借款的期末余额<应付票据的期末余额
                                 content: '从支付能力来看，日常现金支付资金比较紧张，主要依靠应付票据。'
                             },
@@ -596,12 +596,12 @@
                         },
                         s2: {
                             clu1: {
-                                color: 'black',
+                                color: 'red',
                                 //偿还流动负债的资金<(1/2*流动负债合计的期末余额
                                 content: '从发展角度来看，按照当前资产的周转速度和盈利水平，公司短期债务的偿还没有充足的资金保证，需要依靠借新债还旧债。'
                             },
                             clu2: {
-                                color: 'black',
+                                color: 'green',
                                 //else
                                 content: '从发展角度来看，按照当前资产的周转速度和盈利水平，公司有能力偿还短期借款。'
                             }
@@ -610,24 +610,24 @@
                     f3: {
                         s1: {
                             clu1: {
-                                color: 'blue',
+                                color: 'red',
                                 //流动比率<=0.8
                                 content: '当期流动比率过低，如果经营形势没有大的变化，偿还流动负债比较困难。'
                             },
                             clu2: {
-                                color: 'blue',
+                                color: 'black',
                                 //0.8<流动比率<1.2
                                 content: '流动资产处于相对较低水平，流动比率不太合理。'
                             },
                             clu3: {
-                                color: 'blue',
+                                color: 'green',
                                 //else
                                 content: '用当期流动资产偿还流动负债，没有困难，流动比率比较合理。'
                             }
                         },
                         s2: {
                             clu1: {
-                                color: 'black',
+                                color: 'red',
                                 //速动比率<=0.6
                                 content: '速动资产过低，速动比率不太合理。'
                             },
@@ -637,7 +637,7 @@
                                 content: '速动资产处于相对较低水平。'
                             },
                             clu3: {
-                                color: 'black',
+                                color: 'green',
                                 //else
                                 content: '速动资产充足，速动比率合理。'
                             }
@@ -646,17 +646,17 @@
                     f4: {
                         s1: {
                             clu1: {
-                                color: 'purpule',
+                                color: 'red',
                                 //现金支付能力<=0,短期借款期末数>应付票据期末数
                                 content: '从短期来看，公司经营活动的资金主要依靠短期借款。全部偿还短期债务本息会有一定困难。'
                             },
                             clu2: {
-                                color: 'purpule',
+                                color: 'black',
                                 //现金支付能力<=0, 短期借款期末数<应付票据期末数
                                 content: '从短期来看，公司经营活动的资金主要依靠应付票据。全部偿还短期债务本息会有一定困难。'
                             },
                             clu3: {
-                                color: 'purpule',
+                                color: 'green',
                                 //else
                                 content: '从短期来看，公司拥有支付利息的能力。'
                             }
@@ -668,27 +668,27 @@
                                 content: '本期财务费用为负，无法进行长期付息能力判断。'
                             },
                             clu2: {
-                                color: 'black',
+                                color: 'red',
                                 //财务费用累计数>0,利润总额累计数<0
                                 content: '本期亏损，利息支出没有保障。'
                             },
                             clu3: {
-                                color: 'black',
+                                color: 'red',
                                 //财务费用累计数>0,利润总额累计数=0
                                 content: '本期没有实现盈利，利息支出没有保障。'
                             },
                             clu4: {
-                                color: 'black',
+                                color: 'green',
                                 //财务费用累计数>0,利润总额累计数>0,利息保障倍数>=4
                                 content: '从盈利情况来看，公司盈利对利息的保障倍数为lxbzbsdown倍。从实现利润和利息的关系来看，公司盈利能力较强，利息支付有保证。'
                             },
                             clu5: {
-                                color: 'black',
+                                color: 'red',
                                 //财务费用累计数>0,利润总额累计数>0,1<=利息保障倍数<4
                                 content: '从盈利情况来看，公司盈利对利息的保障倍数为lxbzbs倍。公司盈利能力对利息的保障程度偏低。'
                             },
                             clu6: {
-                                color: 'black',
+                                color: 'red',
                                 //财务费用累计数>0,利润总额累计数>0,利息保障倍数<=1
                                 content: '从盈利情况来看，公司盈利对利息的保障倍数为"&利息保障倍数&"倍。公司盈利能力对利息的保障程度比较差。'
                             }
