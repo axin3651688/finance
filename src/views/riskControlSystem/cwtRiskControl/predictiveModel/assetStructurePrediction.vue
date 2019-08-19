@@ -2,7 +2,6 @@
     <div>
 
         <div class="top-button">
-
             <div class="button-right">
                 <el-select
                         v-model="selectValue"
@@ -29,11 +28,9 @@
                     重置
                 </el-button>
             </div>
-
         </div>
 
         <div class="content-all">
-
             <div class="content-cell">
                 <div v-for="(part, key, index) of allData" :class="key">
                     <div v-for="(item, _key, index) of part" :class="key + 'cell'">
@@ -113,7 +110,6 @@
                 >
                 </mtable>
             </div>
-
         </div>
 
         <div class="dialog-components">
@@ -229,32 +225,32 @@
 
                 aAssetStructurePrediction: {
                     clu1: {
-                        color: 'black',
+                        color: 'green',
                         //流动资产增长率>营业收入增长率,总资产报酬率>总资产报酬率的比较期
                         content: '总体来看，虽流动资产增长快于主营业务收入增长，但资产的盈利能力有所提高,资产结构趋于改善。'
                     },
                     clu2: {
-                        color: 'black',
+                        color: 'red',
                         //流动资产增长率>营业收入增长率,总资产报酬率<总资产报酬率的比较期
                         content: '总体来看，流动资产增长快于主营业务收入增长，且资产的盈利能力也没有提高,资产结构趋于恶化。'
                     },
                     clu3: {
-                        color: 'black',
+                        color: 'green',
                         //流动资产增长率<营业收入增长率,总资产报酬率>总资产报酬率的比较期
                         content: '总体来看，流动资产增长慢于主营业务收入增长，并且资产的盈利能力有所提高,资产结构趋于改善。'
                     },
                     clu4: {
-                        color: 'black',
+                        color: 'red',
                         //流动资产增长率<营业收入增长率,总资产报酬率<总资产报酬率的比较期
                         content: '总体来看，虽流动资产增长慢于主营业务收入增长，但资产的盈利能力没有提高,资产结构趋于恶化。'
                     },
                     clu5: {
-                        color: 'black',
+                        color: 'green',
                         //流动资产增长率=营业收入增长率,总资产报酬率>总资产报酬率的比较期
                         content: '总体来看，流动资产与主营业务收入同比变化。但资产的盈利能力有所提高,资产结构趋于改善。'
                     },
                     clu6: {
-                        color: 'black',
+                        color: 'red',
                         //流动资产增长率=营业收入增长率,总资产报酬率<总资产报酬率的比较期
                         content: '总体来看，流动资产与主营业务收入同比变化。但资产的盈利能力没有提高,资产结构趋于恶化。'
                     }
@@ -268,15 +264,18 @@
                 allData: {},
                 tableData: [
                     {
-                        "project": "资产负债率(%)",
+                        // "project": "资产负债率(%)",
+                        "project": "资产负债率",
                         "formula": "负债总计/资产总计*100"
                     },
                     {
-                        "project": "流动资产增长率(%)",
+                        // "project": "流动资产增长率(%)",
+                        "project": "流动资产增长率",
                         "formula": "(流动资产-比较年流动资产)/比较年流动资产*100"
                     },
                     {
-                        "project": "营业收入增长率(%)",
+                        // "project": "营业收入增长率(%)",
+                        "project": "营业收入增长率",
                         "formula": "(营业收入-比较年营业收入)/比较年营业收入*100"
                     },
                     {
@@ -329,7 +328,6 @@
             this.getSelectOptions();
         },
         methods: {
-
             /**
              * 获取真实数据
              */
@@ -394,6 +392,7 @@
              * 初始化数据
              */
             initData() {
+                debugger;
                 let _this = this;
                 let _data = _this.allData;
                 _this.allData = _this.dataCalculate(_data);
@@ -536,6 +535,7 @@
                     }
                 })
             },
+
             /**
              * 模板重置
              */
@@ -599,7 +599,6 @@
                 return _list;
             },
 
-
             /**
              * 获取文字评论
              */
@@ -615,42 +614,44 @@
                 // 营业收入增长率(%)
                 // (营业收入-比较年营业收入)/比较年营业收入*100
 
-                let _lastzzcbcl = (_lastData[1].value * 1 + _lastData[11].value * 1) / ((_lastData[4].value * 1 + _lastData[14].value * 1) / 2) * 100;
-                let _thiszzcbcl = (_thisData[1].value * 1 + _thisData[11].value * 1) / ((_thisData[4].value * 1 + _thisData[14].value * 1) / 2) * 100;
+                if (_lastData.length > 0 && _thisData.length > 0) {
 
-                let ldzcazzl = (_thisData[3].value * 1 - _thisData[12].value * 1) / (_thisData[12].value * 1) * 100;
-                let yysrzzl = (_thisData[0].value * 1 - _thisData[13].value * 1) / (_thisData[13].value * 1) * 100;
+                    let _lastzzcbcl = (_lastData[1].value * 1 + _lastData[11].value * 1) / ((_lastData[4].value * 1 + _lastData[14].value * 1) / 2) * 100;
+                    let _thiszzcbcl = (_thisData[1].value * 1 + _thisData[11].value * 1) / ((_thisData[4].value * 1 + _thisData[14].value * 1) / 2) * 100;
 
-                _lastzzcbcl = isNaN(_lastzzcbcl) ? 0 : _lastzzcbcl;
-                _thiszzcbcl = isNaN(_thiszzcbcl) ? 0 : _thiszzcbcl;
-                ldzcazzl = isNaN(ldzcazzl) ? 0 : ldzcazzl;
-                yysrzzl = isNaN(yysrzzl) ? 0 : yysrzzl;
+                    let ldzcazzl = (_thisData[3].value * 1 - _thisData[12].value * 1) / (_thisData[12].value * 1) * 100;
+                    let yysrzzl = (_thisData[0].value * 1 - _thisData[13].value * 1) / (_thisData[13].value * 1) * 100;
 
-                let flag = 0;
-                if (yysrzzl > ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
-                    flag = 1;
-                } else if (yysrzzl > ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
-                    flag = 2;
-                } else if (yysrzzl < ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
-                    flag = 3;
-                } else if (yysrzzl < ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
-                    flag = 4;
-                } else if (yysrzzl = ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
-                    flag = 5;
-                } else if (yysrzzl = ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
-                    flag = 6;
+                    _lastzzcbcl = isNaN(_lastzzcbcl) ? 0 : _lastzzcbcl;
+                    _thiszzcbcl = isNaN(_thiszzcbcl) ? 0 : _thiszzcbcl;
+                    ldzcazzl = isNaN(ldzcazzl) ? 0 : ldzcazzl;
+                    yysrzzl = isNaN(yysrzzl) ? 0 : yysrzzl;
+
+                    let flag = 0;
+                    if (yysrzzl > ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                        flag = 1;
+                    } else if (yysrzzl > ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                        flag = 2;
+                    } else if (yysrzzl < ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                        flag = 3;
+                    } else if (yysrzzl < ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                        flag = 4;
+                    } else if (yysrzzl = ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                        flag = 5;
+                    } else if (yysrzzl = ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                        flag = 6;
+                    }
+
+                    let _index = 'clu' + flag;
+                    if (flag === 0) {
+                        _this.conclusionData.color = 'black';
+                        _this.conclusionData.content = '此期间无数据';
+                    } else {
+                        _this.conclusionData.color = _this.aAssetStructurePrediction[_index].color;
+                        _this.conclusionData.content = _this.aAssetStructurePrediction[_index].content;
+                    }
+
                 }
-
-                let _index = 'clu' + flag;
-                if(flag === 0){
-                    _this.conclusionData.color = 'black';
-                    _this.conclusionData.content = '此期间无数据';
-                }else{
-                    _this.conclusionData.color = _this.aAssetStructurePrediction[_index].color;
-                    _this.conclusionData.content = _this.aAssetStructurePrediction[_index].content;
-                }
-
-
             }
         }
     }

@@ -5,7 +5,7 @@
                     :data="tableData.list"
                     stripe
                     border
-                    height="600"
+                    height="710"
                     :header-cell-style="headerRowStyle"
                     @selection-change="handleSelectionChange"
                     style="width: 100%"

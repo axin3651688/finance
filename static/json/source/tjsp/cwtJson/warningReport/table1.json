@@ -44,7 +44,7 @@
       "id": "zdznf",
       "type": "string",
       "text": "最低值年份",
-      "align": "center",
+      "align": "left",
       "width":400
     }
   ],

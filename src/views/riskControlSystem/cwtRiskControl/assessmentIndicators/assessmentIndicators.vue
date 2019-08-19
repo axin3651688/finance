@@ -14,7 +14,7 @@
                     <div class="tip-text">{{item.pjname}}</div>
                 </div>
             </div>
-            <el-row>
+            <el-row style="padding-left: 10px; padding-top: 10px">
                 <el-col
                         :span="8"
                         class="echarts-content"
@@ -318,6 +318,8 @@
 
     .echarts-content {
         /*border: 1px solid black;*/
+        margin-right: 10px;
+        background-color: white;
     }
 
     .content-all {
@@ -330,6 +332,7 @@
         height: 260px;
         margin-bottom: 20px;
         min-width: 460px;
+        max-width: 517px;
     }
 
     .left-content-all {

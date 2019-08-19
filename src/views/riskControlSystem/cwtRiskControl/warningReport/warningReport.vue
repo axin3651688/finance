@@ -44,7 +44,7 @@
                 二、国内对标
             </div>
             <div class="content-des">
-                天津食品集团有限公司（合并）行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
+                {{companyname}}行业对标参数来源于国务院国资委财务监督与考核评价局每年发布的《企业绩效评价标准值》
             </div>
 
             <div class="content-down-table">
@@ -76,7 +76,7 @@
                         </template>
 
                         <template v-else>
-                            <p class="loop-content">{{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业{{item.grade}}水平，与行业值 {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>{{setNumberToStanderABS(item.cz)}}。
+                            <p class="loop-content">{{companyDownName}},{{showperiod}}，{{item.sname}}为{{setNumberToStander(item.val)}}。处于行业<template><span :style="{color: item.color}">{{item.grade}}</span></template>水平，与行业值 {{setNumberToStander(item.val_1)}}相比<template v-if="item.cz>=0">多出</template><template v-if="item.cz<0">相差</template>{{setNumberToStanderABS(item.cz)}}。
                             </p>
                         </template>
 
@@ -178,7 +178,7 @@
                 showperiod: this.$store.getters.year + '年' + this.$store.getters.month + '月',
                 showyear: this.$store.getters.year + '年',
                 compareYear: parseInt(this.$store.getters.year) - 4 + '年',
-                companyname: '天津食品集团有限公司（合并）',
+                companyname: '',
                 companyDownName: '天津食品集团有限公司（合并）',
 
                 table1data: [],
@@ -214,14 +214,14 @@
                     _this.table2columns = res.data.columns
                 }
             });
-            // this.showDataFresh();
+            this.showDataFresh();
             this.getAllData();
         },
         mounted() {
             // this.doNotShowDim(true);
             let _this = this;
             _this.ShowDims({
-                company: false,
+                company: true,
                 year: true,
                 month: true,
             });
@@ -237,7 +237,6 @@
              * @param companys
              */
             companyClicked(companys) {
-                debugger;
                 let _this = this;
                 _this.companyData = [];
                 let companyList = companys.split(',');
@@ -268,6 +267,7 @@
 
                         _this.loopData1 = res.data.data[1];
 
+                        debugger;
                         _this.table2data = res.data.data[2];
 
                         _this.loopData2 = res.data.data[3];
@@ -310,10 +310,11 @@
              * 期间维度切换页面显示维度刷新
              */
             showDataFresh() {
+
                 this.showperiod = this.$store.getters.year + '年' + this.$store.getters.month + '月';
                 this.showyear = this.$store.getters.year + '年';
                 this.compareYear = parseInt(this.$store.getters.year) - 4 + '年';
-                // this.companyname = this.$store.getters.company;
+                this.companyname = this.$store.getters.companyName;
                 // this.companyDownName = this.$store.getters.company;
             },
 

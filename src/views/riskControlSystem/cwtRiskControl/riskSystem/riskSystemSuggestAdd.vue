@@ -15,7 +15,7 @@
                         type="textarea"
                         :rows="4"
                         v-model="data.riskContent"
-                        placeholder="我是缺省内容"
+                        placeholder="请填写建议内容。。。"
                 >
                 </el-input>
             </el-form-item>
