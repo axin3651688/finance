@@ -196,7 +196,9 @@
     .echarts-content {
         height: 300px;
         margin-bottom: 20px;
-        min-width: 532px;
-        width: 532px;
+        min-width: 510px;
+        width: 510px;
+        background-color: white;
+        margin-right: 10px;
     }
 </style>

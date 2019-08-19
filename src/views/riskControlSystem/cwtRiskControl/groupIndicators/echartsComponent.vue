@@ -25,7 +25,7 @@
         data() {
             return {
                 echartOption: {
-                    color: ['#3398DB'],
+                    color: ['#FFCC41'],
                     title: {
                         show: true,                                                //显示策略，默认值true,可选为：true（显示） | false（隐藏）
                         text: '我是echart标题',                                                  //主标题文本，'\n'指定换行
@@ -84,6 +84,7 @@
                         name: '',
                         type: 'line',  //要用到line  和  bar  两种类型
                         barWidth: '60%',
+                        smooth:true,  //这个是把线变成曲线
                         // barMinHeight: 10,//柱状图的最小高度
                         itemStyle: {
                             normal: {
@@ -159,6 +160,7 @@
 
                 if (_echartData.sunit === '%') {
                     _this.echartOption.series.type = 'line';
+                    _this.echartOption.color = ['#9013FE'];
                 } else {
                     _this.echartOption.series.type = 'bar';
                 }
