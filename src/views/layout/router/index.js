@@ -307,7 +307,7 @@ const router = new Router({
                     path: '/listingBenchmarking',
                     name: 'listingBenchmarking',
                     component: () =>
-                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking_old.vue'),
+                        import ('@v/riskControlSystem/szcRiskControl/riskWarning/groupBenchmarking/listingBenchmarking.vue'),
                 }
             ]
         },

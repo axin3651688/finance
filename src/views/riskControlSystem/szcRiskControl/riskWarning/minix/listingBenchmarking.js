@@ -209,12 +209,12 @@ export default {
             let me = this,
                 submitSign = me.submitSign;
             if (submitSign == 'list') {
-                me.listedCompany = me.listedCompanyList;
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
                 me.multipleSelection.forEach(item => {
                     me.listedCompany.push(item.scode);
                 });
             } else if (submitSign == 'indicator') {
-                me.indicatorNames = me.indicatorNamesLeft;
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
                 me.multipleSelection.forEach(item => {
                     // let flag = true;
                     // for (let i = 0; i < me.indicatorNames.length; i++) {
@@ -240,10 +240,33 @@ export default {
             debugger;
             let me = this;
             if (sign == 'list') {
-                me.listedCompany = me.listedCompanyList;
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
+                me.multipleSelection.forEach(item => {
+                    me.listedCompany.push(item.scode);
+                });
             } else if (sign == 'indicator') {
-                me.indicatorNames = me.indicatorNamesLeft;
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
+                me.multipleSelection.forEach(item => {
+                    me.indicatorNames.push(item.scode);
+                });
             }
-        }
+        },
+        deepCopy(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (obj[key] == null) {
+                        result[key] = null;
+                    } else if (obj[key] == undefined) {
+                        result[key] = undefined;
+                    } else if (typeof obj[key] === 'object') {
+                        result[key] = this.deepCopy(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
     },
 }

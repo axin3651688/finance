@@ -2,7 +2,7 @@
     <div>
         <div>
             <el-row>
-                <div ref="root_div">
+                <div ref="root_div" style="max-width:1300px;overflow-x:auto;">
                     <div>
                         <span class="public_span">集团公司选择：</span>
                         <el-tag type="info" effect="plain" class="tag_public">天津食品集团有限公司</el-tag>
@@ -91,9 +91,9 @@
                 </div>
                 <div>
                     <div>
-                        <el-button style="margin:0 2%;float:right;">
+                        <!-- <el-button style="margin:0 2%;float:right;">
                             重置
-                        </el-button>
+                        </el-button> -->
                         <el-button @click="btnHandler" style="margin-left:2%;float:right;">
                             确定
                         </el-button>
@@ -242,7 +242,8 @@
                 ManyTableData:[],//多表头数据
                 manyColumns:[],//多表头列配置
                 resData:{
-                    fixedHeader:true
+                    fixedHeader:true,
+                    tableHeight:0
                 },
                 renderFlag:true,//重新渲染的标识。
                 selectClass:"",
@@ -296,6 +297,7 @@
             }
         },
         created() {
+            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
             //隐藏公司、年、月。
             me.hideNavInfo();
@@ -305,33 +307,26 @@
             me.selectAllOptions();
             //制造多表头数据格式。
             me.createMoreHeader();
-            // this.axios.get(url).then(res => {
-            //     if(res.data.code == 200) {
-
-            //         // debugger;
-            //         // me.tableData = res.data.rows;
-            //         // me.columns = res.data.columns;
-            //         // me.manyColumns = res.data.manyColumns;
-            //         // me.ManyTableData = res.data.manyRows;
-            //         // me.resData = res.data;
-            //         // me.updateData();
-            //     }
-            // });
-            // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
-            // this.axios.get(url).then(res => {
-            //     if(res.data.code == 200) {
-            //         me.tableData = res.data.rows;
-            //         me.columns = res.data.columns
-            //     }
-            // });
+            /**
+             * 计算表格高度
+             */
+            let offsetHeight = document.body.offsetHeight,//页面整体高度
+                selectHeight = 40 + 10 + 160,//select框高度 加上中间的margin-bottom的值
+                tabHeight = 39,//tab标签高度
+                gapHeight = 32,//间隙的高度
+                pageHeaderHeight = 64;//导航栏高度
+            this.resData.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
         },
         mounted() {
-            // let me = this;
-            // window.onresize = function temp(){
-            //     debugger;
-            //     let width = me.$refs["root_div"].offsetWidth;
-            //     me.selectLayout(width);
-            // };
+            const _this = this;
+            window.onresize = function temp() {
+                    let offsetHeight = document.body.offsetHeight,//页面整体高度
+                        selectHeight = 40 + 10 + 170,//select框高度 加上中间的margin-bottom的值
+                        tabHeight = 39,//tab标签高度
+                        gapHeight = 32,//间隙的高度
+                        pageHeaderHeight = 64;//导航栏高度
+                    _this.resData.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+                };
         },
         methods: {
             ...mapActions(["ShowDims"]),
@@ -708,6 +703,7 @@
 <style lang="scss" scoped>
     .public_div_class {
         margin: 10px 0px;
+        width: 1300px;
     }
     .public_span {
         width: 120px;
