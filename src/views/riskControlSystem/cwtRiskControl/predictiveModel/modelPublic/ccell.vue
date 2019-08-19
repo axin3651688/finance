@@ -61,7 +61,7 @@
     }
 </script>
 
-<!--<style>
+<style>
     .model-public-cell-single-cell-all-ccell {
         width: 170px;
     }
@@ -101,11 +101,11 @@
         width: 100%;
     }
 
-</style>-->
+</style>
 
 
 
-<style>
+<!--<style>
     .model-public-cell-single-cell-all-ccell {
         width: 170px;
         border-radius: 5px;
@@ -147,5 +147,5 @@
         width: 100%;
     }
 
-</style>
+</style>-->
 

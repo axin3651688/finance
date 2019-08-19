@@ -38,7 +38,7 @@
     }
 </script>
 
-<!--<style>
+<style>
     .model-public-cell-single-cell-all-cell {
         width: 170px;
     }
@@ -76,12 +76,12 @@
         cursor: pointer;
     }
 
-</style>-->
+</style>
 
 
 
 
-<style>
+<!--<style>
     .model-public-cell-single-cell-all-cell {
         width: 170px;
         border-radius: 5px;
@@ -118,4 +118,4 @@
         cursor: pointer;
     }
 
-</style>
+</style>-->
