@@ -25,7 +25,7 @@
         data() {
             return {
                 echartOption: {
-                    color: ['#FFCC41'],
+                    color: ['#77EFB7'],
                     title: {
                         show: true,                                                //显示策略，默认值true,可选为：true（显示） | false（隐藏）
                         text: '我是echart标题',                                                  //主标题文本，'\n'指定换行
