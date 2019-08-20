@@ -99,7 +99,7 @@
                             <div class="demo-drawer__main-B">
                                 <!-- 删除按钮 -->
                                 <el-tooltip content="删除" placement="top" effect="light">
-                                    <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" :disabled="disabled2" @click="deleteClick(element, '3')">
+                                    <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" :disabled="disabled2" @click="deleteClick(element, index, '3')">
                                         <i class="el-icon-delete second_A"></i> 
                                     </el-button>
                                 </el-tooltip>
@@ -162,7 +162,7 @@
                             <div class="demo-drawer__main-B">
                                 <!-- 删除按钮 -->
                                 <el-tooltip content="删除" placement="top" effect="light">
-                                    <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" @click="deleteClick(element, '4')">
+                                    <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" @click="deleteClick(element, index, '4')">
                                         <i class="el-icon-delete second_A"></i> 
                                     </el-button>
                                 </el-tooltip>
@@ -218,6 +218,10 @@ export default {
 
             disabled1: false ,      // 第一禁用
             disabled2: false ,      // 第二禁用
+
+            number: "" ,                // 点击输入框的区分等级用的
+            controllerCtrl: true ,      // 控制器 应用于保存 1 Ctrl+s
+            controllerBlur: true ,      // 控制器 应用于保存 2 blur()
         }   
     },
     methods: {
@@ -228,12 +232,17 @@ export default {
                 borderLeft: "4px solid"+" "+this.headColor[index%len]
             }
         },
+        // 随机数
+        random(min, max) {
+            return Math.floor(Math.random() * (max - min)) + min;
+        },
         // id
         getElementById(data) {
             if(data.id === null) {
-                data.id = 0 ;
+                if(data.id == 0)data.id = "A" + this.random(5000, 10000) ;
                 return data.id ;
             } else {
+                if(data.id == 0)data.id = "A" + this.random(5000, 10000) ;
                 return data.id ;
             }
         },
@@ -241,11 +250,20 @@ export default {
         getContentData(data) {
             this.firstInformation = {} ;
             this.firstInformation = data ;
+            this.number = "" ;
+            this.number = "" + data.nlevel ;
+            this.controllerCtrl = true ;
+            this.controllerBlur = true ;
         },
-        // ctrl + s 保存组合键 
+        /**
+         * @event ctrl+s保存组合键  
+         */ 
         CtrlS(e) {
-            if(e.ctrlKey == true){                
-                this.blurContentediTable(this.firstInformation);
+            if(e.ctrlKey == true){          
+                if(this.controllerCtrl) {
+                    this.controllerBlur = false ;
+                    this.saveInformation(this.firstInformation, this.number) ;
+                }
                 e.preventDefault();
                 e.returnValue = false;
                 console.log("键盘触发");
@@ -259,19 +277,23 @@ export default {
          *  stype: 2  二级内容
          */
         blurContentediTable(element, stype) {
-            // debugger
+            if(this.controllerBlur) {
+                this.controllerCtrl = false ;
+                this.saveInformation(element, stype) ;        
+            }   
+        },
+        /**
+         * @event 保存的通用方法
+         */
+        saveInformation(element, stype) { 
             let cc = document.getElementById(element.id) ;
             let scontent = cc.innerHTML.replace(/[\r\n]/g,"").trim() ;
             if(scontent == element.scontent) {
                 return false ;
             }
-            // if(!scontent) {
-            //     this.$message.warning('为空时，无法对信息进行处理！')
-            //     return false ;
-            // }
             // 为添加状态
             // 则为修改状态
-            if(element.id == 0) {
+            if(element.scode == 0 || !element.id) {
                 this.riskguidecontentAdd_request(element, scontent, stype) ;
             } else {
                 this.riskguidecontentUpdate_request(element, scontent) ;
@@ -286,15 +308,15 @@ export default {
             // debugger
             let isAry ;
             // 添加的，没有进行数据添加的可以直接进行删除
-            if(stype === '2' && element.id === 0 && element.catalogid !== 0) {
+            if(stype === '2' && element.scode === 0 && element.catalogid !== 0) {
                 this.contentA = this.contentA.filter((res,index) => { return index !== $index }) ;
                 return
             }
-            if(stype === '3' && element.id === 0 && element.catalogid !== 0) {
+            if(stype === '3' && element.scode === 0 && element.catalogid !== 0) {
                 this.contentB = this.contentB.filter((res,index) => { return index !== $index }) ;
                 return
             }
-            if(stype === '4' && element.id === 0 && element.catalogid !== 0) {
+            if(stype === '4' && element.scode === 0 && element.catalogid !== 0) {
                 this.contentC = this.contentC.filter((res,index) => { return index !== $index }) ;
                 return
             }
@@ -322,10 +344,13 @@ export default {
          */
         addContent(stype) {
             let tmp ;
+            this.controllerCtrl = true ;
+            this.controllerBlur = true ;
             if(stype == "1") {
                 tmp  = this.contentA ;
                 tmp.push({
                     id: 0 ,
+                    scode: 0,
                     catalogid: this.lowerLevelObj.id ,
                     pid: this.lowerLevelObj.pid ,
                     nlevel: 1 ,
@@ -337,6 +362,7 @@ export default {
                 tmp = this.contentB ;
                 tmp.push({
                     id: 0 ,
+                    scode: 0,
                     pid: this.lowerLevelObj2.id ,
                     nlevel: 2 ,
                     add: true ,
@@ -347,6 +373,7 @@ export default {
                 tmp = this.contentC ;
                 tmp.push({
                     id: 0 ,
+                    scode: 0,
                     pid: this.lowerLevelObj3.id ,
                     nlevel: 3 ,
                     add: true ,
@@ -394,6 +421,8 @@ export default {
          */
         riskguidecontentUpdate_request(element, scontent) {
             const me = this ;
+            // me.controllerCtrl = true ;  // 初始化
+            // me.controllerBlur = true ;  // 初始化
             let params = [{
                 id: element.id,
                 chartpath: "",
@@ -412,9 +441,11 @@ export default {
         /**
          * @event 内容【添加】接口
          */
-        riskguidecontentAdd_request(element, scontent, stype) { debugger
+        riskguidecontentAdd_request(element, scontent, stype) {
             const me = this ;
             let contPid ;
+            // me.controllerCtrl = true ;  // 初始化
+            // me.controllerBlur = true ;  // 初始化
             if(stype === "1")contPid = me.lowerLevelObj.pid ;
             if(stype === "2")contPid = me.lowerLevelObj2.id ;
             if(stype === "3")contPid = me.lowerLevelObj3.id ;
@@ -490,5 +521,18 @@ export default {
     font-size: 14px !important ;
     color: #303133 !important;
     font-weight: 500 !important;
+}
+.riskGuidanceDialog-container .el-drawer__body::-webkit-scrollbar {
+    width: 5px;
+    height: 0px;
+    background-color: #f5f5f5;
+}
+.riskGuidanceDialog-container .el-drawer__body::-webkit-scrollbar-track {
+    -webkit-box-shadow: inset 0 0 1px rgba(112, 238, 90, 0.3);
+    border-radius: 2px;
+    background-color: #f5f5f5;
+}
+.riskGuidanceDialog-container .el-drawer__body::-webkit-scrollbar-thumb {
+    background-color: #9fd467;
 }
 </style>

@@ -173,7 +173,7 @@ export default {
         ).then((res)=>{
             if(res.status === 200) { 
                 if(res.data.code === 200) {
-                    debugger
+                    // debugger
                     me.previewURL = res.data.data ;
                     let a = document.getElementById(me.review)
                     a.setAttribute("onclick",'');
