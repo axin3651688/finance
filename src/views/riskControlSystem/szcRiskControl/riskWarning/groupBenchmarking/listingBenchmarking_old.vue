@@ -1,104 +1,111 @@
 <template>
     <div>
         <div>
-            <el-row>
-                <div ref="root_div" style="max-width:1300px;overflow-x:auto;">
+            <el-row class="div_form">
+                <el-col :span="10">
                     <div>
-                        <span class="public_span">集团公司选择：</span>
-                        <el-tag type="info" effect="plain" class="tag_public">天津食品集团有限公司</el-tag>
+                        <label for="">公司选择：</label>
+                        <el-select v-model="valueSname" placeholder="请选择" class="select_all" ref="company_select">
+                            <el-option
+                                class="tree_select_option"
+                                :value="'1111'"
+                                :label="''"
+                            >
+                                <el-tree 
+                                    :data="comtree2" 
+                                    :props="defaultProps"
+                                    :expand-on-click-node="false"
+                                    @node-click="nodeClick"
+                                >
+                                </el-tree>
+                            </el-option>
+                        </el-select>
                     </div>
-                    <div class="public_div_class">
-                        <span class="public_span">上市公司选择：</span>
-                        <div style="display:inline-block;">
-                            <el-checkbox-group v-model="listedCompanyList" size="small" style="display:inline-block;" @change="changeSelect('list')">
-                                <el-checkbox-button v-for="item in companyipoOptions" 
-                                :label="item.scode" 
-                                class="check_box_span"
-                                :key="item.scode">{{ item.sname }}</el-checkbox-button>
-                            </el-checkbox-group>
-                            <el-button @click="pointsEventHandler('list')" size="small" style="position: relative;top: 4px;">...</el-button>
-                        </div>
-                        <!-- <template v-for="item in companyipoOptions">
-                            <el-tag 
-                            :key="item.scode"
-                            @click="listedCompanyHandler(item,'list')"
-                            class="tag_public"
-                            :ref="'select_'+ item.scode"
-                            type="info" 
-                            effect="plain">
-                                {{ item.sname }}
-                            </el-tag>
-                        </template> -->
-                    </div>
-                    <div class="public_div_class">
-                        <span class="public_span">财务指标选择：</span>
-                        <div style="display:inline-block;">
-                            <el-checkbox-group v-model="indicatorNamesLeft" size="small" style="display:inline-block;" @change="changeSelect('indicator')">
-                                <el-checkbox-button v-for="item in indicatorOptions" 
-                                :label="item.scode" 
-                                class="check_box_span"
-                                :key="item.scode">{{ item.sname }}</el-checkbox-button>
-                            </el-checkbox-group>
-                            <el-button @click="pointsEventHandler('indicator')" size="small" style="position: relative;top: 4px;">...</el-button>
-                        </div>
-                        <!-- <template v-for="item in indicatorOptions">
-                            <el-tag 
+                    <!-- <div>
+                        <label for="">公司选择：</label>
+                        <el-select v-model="value" placeholder="请选择" class="select_all">
+                            <el-option
+                            v-for="item in companyOptions"
                             :key="item.value"
-                            type="info" 
-                            @click="listedCompanyHandler(item,'target')"
-                            class="tag_public"
-                            :ref="'select_'+ item.scode"
-                            effect="plain">
-                                {{ item.sname }}
-                            </el-tag>
-                        </template> -->
-                    </div>
-                    <div class="public_div_class">
-                        <span class="public_span">期间选择(年)：</span>
-                        <template v-for="item in optionYears">
-                            <el-tag 
-                            :key="item.value"
-                            type="info" 
-                            @click="listedCompanyHandler(item,'year')"
-                            class="tag_public"
-                            :ref="'select_'+ item.value"
-                            effect="plain">
-                                {{ item.label }}
-                            </el-tag>
-                        </template>
-                    </div>
-                    <div class="public_div_class">
-                        <span class="public_span">期间选择(月)：</span>
-                        <div style="display:inline-block;">
-                            <el-checkbox-group v-model="monthValue" size="small">
-                                <el-checkbox-button v-for="item in optionMonths" 
-                                :label="item.value" 
-                                :key="item.value">{{ item.label }}</el-checkbox-button>
-                            </el-checkbox-group>
+                            :label="item.sname"
+                            :value="item.scode">
+                            </el-option>
+                        </el-select>
+                    </div> -->
+                    <!-- <div class="tree_spcompany">
+                        <label for="" class="tree_company_label">公司选择：</label>
+                        <div class="tree_company">
+                            <treeselect
+                                v-model="value"
+                                :options="comtree2"
+                                placeholder="请选择所属公司"
+                                class="tree_select"
+                            />
                         </div>
-                        <!-- <template v-for="item in optionMonths">
-                            <el-tag 
-                            :key="item.value"
-                            type="info" 
-                            @click="listedCompanyHandler(item,'month')"
-                            class="tag_public"
-                            :ref="'select_'+ item.value"
-                            effect="plain">
-                                {{ item.label }}
-                            </el-tag>
-                        </template> -->
-                    </div>
-                </div>
-                <div>
+                    </div> -->
+                </el-col>
+                <el-col :span="14">
                     <div>
-                        <!-- <el-button style="margin:0 2%;float:right;">
-                            重置
-                        </el-button> -->
-                        <el-button @click="btnHandler" style="margin-left:2%;float:right;">
+                        <label for="">上市公司：</label>
+                        <el-select v-model="listedCompany" placeholder="请选择" class="select_all" multiple>
+                            <el-option
+                            v-for="item in companyipoOptions"
+                            :key="item.value"
+                            :label="item.sname"
+                            :value="item.scode">
+                            </el-option>
+                        </el-select>
+                        <el-button style="float:right;margin-right:20px;" @click="exportExcle">
+                            导出
+                        </el-button>
+                    </div>
+                </el-col>
+                <!-- <el-col :span="2">
+                    <div>
+                        <el-button>
+                            导出
+                        </el-button>
+                    </div>
+                </el-col> -->
+            </el-row>
+            <el-row class="div_form">
+                <el-col :span="10">
+                    <div>
+                        <label for="">指标名称：</label>
+                        <el-select v-model="indicatorNames" placeholder="请选择" class="select_all" multiple>
+                            <el-option
+                            v-for="item in indicatorOptions"
+                            :key="item.value"
+                            :label="item.sname"
+                            :value="item.scode">
+                            </el-option>
+                        </el-select>
+                    </div>
+                </el-col>
+                <el-col :span="14">
+                    <div>
+                        <label for="">期间选择：</label>
+                        <el-select v-model="yearValue" placeholder="请选择" class="select_left">
+                            <el-option
+                            v-for="item in optionYears"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-select v-model="monthValue" placeholder="请选择" class="select_right" multiple>
+                            <el-option
+                            v-for="item in optionMonths"
+                            :key="item.value"
+                            :label="item.label"
+                            :value="item.value">
+                            </el-option>
+                        </el-select>
+                        <el-button @click="btnHandler" style="margin-left:2%;">
                             确定
                         </el-button>
                     </div>
-                </div>
+                </el-col>
             </el-row>
             <el-row>
                 <el-col :span="24">
@@ -107,28 +114,6 @@
                     </div>
                 </el-col>
             </el-row>
-        </div>
-        <div>
-            <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
-                <el-table
-                    v-if="tableFlag"
-                    ref="multipleTable"
-                    :data="tableData"
-                    tooltip-effect="dark"
-                    style="width: 100%;height:100%;"
-                    @selection-change="handleSelectionChange">
-                        <el-table-column
-                            type="selection">
-                        </el-table-column>
-                        <el-table-column
-                            prop="sname"
-                            label="名称">
-                        </el-table-column>
-                </el-table>
-                <span slot="footer" class="dialog-footer">
-                    <el-button type="primary" @click="submitClick">确 定</el-button>
-                </span>
-            </el-dialog>
         </div>
     </div>
 </template>
@@ -234,6 +219,26 @@
                     {
                         value: '12',
                         label: '12月'
+                    },
+                    {
+                        value: 'Q1',
+                        label: '一季度'
+                    },
+                    {
+                        value: 'Q2',
+                        label: '二季度'
+                    },
+                    {
+                        value: 'Q3',
+                        label: '三季度'
+                    },
+                    {
+                        value: 'Q4',
+                        label: '四季度'
+                    },
+                    {
+                        value: 'Y1',
+                        label: '年度'
                     }
                 ],
                 value: '',
@@ -242,23 +247,9 @@
                 ManyTableData:[],//多表头数据
                 manyColumns:[],//多表头列配置
                 resData:{
-                    fixedHeader:true,
-                    tableHeight:0
+                    fixedHeader:true
                 },
-                renderFlag:true,//重新渲染的标识。
-                selectClass:"",
-                activeItem:"",
-                dialogTableVisible:false,
-                afterIndicators:[],
-                afterCompanyipo:[],
-                submitSign:"",
-                multipleSelection:[],
-                tableFlag:true,
-                allIndicatorOptions:[],
-                allCompanyipoOptions:[],
-                indicatorNamesLeft:[],
-                listedCompanyList:[]
-
+                renderFlag:true//重新渲染的标识。
             }
         },
         /**
@@ -297,7 +288,6 @@
             }
         },
         created() {
-            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
             //隐藏公司、年、月。
             me.hideNavInfo();
@@ -307,136 +297,29 @@
             me.selectAllOptions();
             //制造多表头数据格式。
             me.createMoreHeader();
-            /**
-             * 计算表格高度
-             */
-            let offsetHeight = document.body.offsetHeight,//页面整体高度
-                selectHeight = 40 + 10 + 160,//select框高度 加上中间的margin-bottom的值
-                tabHeight = 39,//tab标签高度
-                gapHeight = 32,//间隙的高度
-                pageHeaderHeight = 64;//导航栏高度
-            this.resData.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
+            // this.axios.get(url).then(res => {
+            //     if(res.data.code == 200) {
+
+            //         // debugger;
+            //         // me.tableData = res.data.rows;
+            //         // me.columns = res.data.columns;
+            //         // me.manyColumns = res.data.manyColumns;
+            //         // me.ManyTableData = res.data.manyRows;
+            //         // me.resData = res.data;
+            //         // me.updateData();
+            //     }
+            // });
+            // let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/riskTable.json";
+            // this.axios.get(url).then(res => {
+            //     if(res.data.code == 200) {
+            //         me.tableData = res.data.rows;
+            //         me.columns = res.data.columns
+            //     }
+            // });
         },
-        mounted() {
-            const _this = this;
-            window.onresize = function temp() {
-                    let offsetHeight = document.body.offsetHeight,//页面整体高度
-                        selectHeight = 40 + 10 + 170,//select框高度 加上中间的margin-bottom的值
-                        tabHeight = 39,//tab标签高度
-                        gapHeight = 32,//间隙的高度
-                        pageHeaderHeight = 64;//导航栏高度
-                    _this.resData.tableHeight = offsetHeight - pageHeaderHeight - selectHeight - tabHeight - gapHeight;
-                };
-        },
+        mounted() {},
         methods: {
             ...mapActions(["ShowDims"]),
-            /**
-             * 窗口刷新重新布局。
-             */
-            selectLayout (width) {
-                let me = this,listedCompany = me.listedCompany,indicatorOptions = me.indicatorOptions;
-
-            },
-            /**
-             * 上市公司的选择。
-             */
-            listedCompanyHandler (item,sign) {
-                debugger;
-                let me = this,listedCompany = me.listedCompany,indicatorNames = me.indicatorNames,monthValue = me.monthValue;
-                if(sign == 'month' || sign == 'year'){
-                    item.scode = item.value;
-                }
-                let classNameSelect = me.$refs['select_' + item.scode][0].$el.className;
-                if(classNameSelect.indexOf("select_class") != -1){
-                    classNameSelect = classNameSelect.replace("select_class","");
-                    if(sign && sign == 'list'){
-                        listedCompany = listedCompany.filter(it => {
-                            return it != item.scode;
-                        });
-                    }else if(sign && sign == 'target'){
-                        indicatorNames = indicatorNames.filter(it => {
-                            return it != item.scode;
-                        });
-                    }else if(sign == 'month'){
-                        monthValue = monthValue.filter(it => {
-                            return it != item.value;
-                        });
-                    }else if (sign == 'year'){
-
-                        me.transYearClass(item);
-                        classNameSelect += 'select_class';
-                    }
-                }else {
-                    classNameSelect += " select_class";
-                    if(sign && sign == 'list'){
-                        listedCompany.push(item.scode);
-                    }else if(sign && sign == 'target'){
-                        indicatorNames.push(item.scode);
-                    }else if(sign == 'month'){
-                        monthValue.push(item.value);
-                    }else if(sign == 'year'){
-                        me.transYearClass(item);
-                        me.yearValue = item.value;
-                    }
-                }
-                me.$refs['select_' + item.scode][0].$el.className = classNameSelect;
-                // me["selectClass" + item.scode + ""] = "select_class";
-            },
-            listedCompanyHandler_old (item,sign) {
-                debugger;
-                let me = this,listedCompany = me.listedCompany,indicatorNames = me.indicatorNames,monthValue = me.monthValue;
-                if(sign == 'year'){
-                    me.activeItem = 'select' + item.value;
-                    me.yearValue = item.value;
-                }else {
-                    if(sign == 'month'){
-                        item.scode = item.value;
-                    }
-                    let classNameSelect = me.$refs['select_' + item.scode][0].$el.className;
-                    if(classNameSelect.indexOf("select_class") != -1){
-                        classNameSelect = classNameSelect.replace("select_class","");
-                        if(sign && sign == 'list'){
-                            listedCompany = listedCompany.filter(it => {
-                                return it != item.scode;
-                            });
-                        }else if(sign && sign == 'target'){
-                            indicatorNames = indicatorNames.filter(it => {
-                                return it != item.scode;
-                            });
-                        }else if(sign == 'month'){
-                            monthValue = monthValue.filter(it => {
-                                return it != item.value;
-                            });
-                        }
-                    }else {
-                        classNameSelect += " select_class";
-                        if(sign && sign == 'list'){
-                            listedCompany.push(item.scode);
-                        }else if(sign && sign == 'target'){
-                            indicatorNames.push(item.scode);
-                        }else if(sign == 'month'){
-                            monthValue.push(item.value);
-                        }
-                    }
-                    me.$refs['select_' + item.scode][0].$el.className = classNameSelect;
-                }
-                // me["selectClass" + item.scode + ""] = "select_class";
-            },
-            /**
-             * 装换年的class
-             */
-            transYearClass(item) {
-                let me = this,optionYears = me.optionYears,pClassSelect = "";
-                optionYears.forEach(it => {
-                    if(item.value != it.value){
-                        let classNameSelect = me.$refs['select_' + it.value][0].$el.className;
-                        if(classNameSelect.indexOf('select_class') != -1){
-                            classNameSelect = classNameSelect.replace('select_class','');
-                            me.$refs['select_' + it.value][0].$el.className = classNameSelect;
-                        }
-                    }
-                });
-            },
             exportExcle () {
                 debugger;
                 let me = this;
@@ -517,39 +400,11 @@
              * 渲染各个指标下拉选。
              */
             renderSelectOptions (datas) {
-                debugger;
                 let me = this;
                 // me.companyOptions = datas[0].company;
                 me.treeCompanyFormat(datas[0].company);
-                me.transformDataOfSelect(datas);
-                me.allCompanyipoOptions = datas[0].companyipo;
-                me.allIndicatorOptions = datas[0].indicator;
-            },
-            /**
-             * 转换选择框的数据。
-             */
-            transformDataOfSelect (datas) {
-                let me = this,companyipos = datas[0].companyipo,indicator = datas[0].indicator;
-                if(companyipos && companyipos.length > 6){
-                    for(let i = 0;i < 6;i++){
-                        let item = companyipos[i];
-                        me.companyipoOptions.push(item);
-                    }
-                    me.afterCompanyipo = companyipos.slice(6);
-                }else {
-                    me.companyipoOptions = companyipos;
-                    me.afterCompanyipo = [];
-                }
-                if(indicator && indicator.length > 6){
-                    for(let i = 0;i < 6;i++){
-                        let item = indicator[i];
-                        me.indicatorOptions.push(item);
-                    }
-                    me.afterIndicators = indicator.slice(6);
-                }else {
-                    me.indicatorOptions = indicator;
-                    me.afterIndicators = [];
-                }
+                me.companyipoOptions = datas[0].companyipo;
+                me.indicatorOptions = datas[0].indicator;
             },
             treeCompanyFormat(data){
                 let me = this;
@@ -598,14 +453,13 @@
                     stype:"sj",
                     sqlKey:"RiskWarning.ssdb"
                 };
-                // me.renderFlag = false;
-                // me.$nextTick(()=>{
-                //     me.renderFlag = true;
-                // })
+                me.renderFlag = false;
+                me.$nextTick(()=>{
+                    me.renderFlag = true;
+                })
                 me.createMoreHeader();
                 groupQuery(params).then(res => {
                     if (res.data.code == 200) {
-                        // me.selectTarget();
                         me.renderTableOfDatas(res.data.data);
                     }
                 });
@@ -617,25 +471,6 @@
                 debugger;
                 let me = this;
                 me.ManyTableData = datas;
-                // me.selectTarget();
-            },
-            selectTarget () {
-                let me = this,listedCompany = me.listedCompany,indicatorNames = me.indicatorNames;
-                if(listedCompany && listedCompany.length > 0){
-                    listedCompany.forEach(item => {
-                        let className = me.$refs['select_' + item][0].$el.className;
-                        className += ' select_class';
-                        me.$refs['select_' + item][0].$el.className = className;
-                    });
-                }
-                if(indicatorNames && indicatorNames.length > 0){
-                    indicatorNames.forEach(item => {
-                        let className = me.$refs['select_' + item][0].$el.className;
-                        className += ' select_class';
-                        me.$refs['select_' + item][0].$el.className = className;
-                    });
-                }
-                
             },
             /**
              * 渲染查询table的数据。不用转换了
@@ -693,23 +528,7 @@
         }
     };
 </script>
-<style lang="scss">
-    .check_box_span {
-        span{
-            width: 180px;
-        }
-    }
-</style>
-<style lang="scss" scoped>
-    .public_div_class {
-        margin: 10px 0px;
-        width: 1300px;
-    }
-    .public_span {
-        width: 120px;
-        display: inline-block;
-        text-align: right;
-    }
+<style scoped>
     .select_all {
         width: 55%;
     }
@@ -725,14 +544,6 @@
     }
     .div_form {
         margin: 10px 0px;
-    }
-    /* 悬浮 */
-    .tag_public:hover{
-        cursor: pointer;
-    }
-    .select_class {
-        background-color: #409eff;
-        color: #fff;
     }
 </style>
 <style lang="scss" scoped>

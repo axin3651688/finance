@@ -9,6 +9,25 @@
                     <table-column :columns="item.children"></table-column>
                 </el-table-column>
             </template>
+            <template v-else-if="item && item.minWidth">
+                <el-table-column
+                    :align="item.align || 'left'"
+                    :key="index"
+                    :show-overflow-tooltip="true"
+                    :prop="item.id"
+                    header-align="center"
+                    :label="item.text"
+                    :min-width="item.minWidth">
+                    <template slot-scope="scope">
+                        <span v-if="item.type == 'number'">
+                            {{ getCellValues(scope,item) }}
+                        </span>
+                        <span v-else>
+                            {{ scope.row[scope.column.property] }}
+                        </span>
+                    </template>
+                </el-table-column>
+            </template>
             <template v-else>
                 <el-table-column
                     :align="item.align || 'left'"
@@ -17,7 +36,6 @@
                     :prop="item.id"
                     header-align="center"
                     :label="item.text"
-                    :min-width="item.minWidth"
                     :width="item.width">
                     <template slot-scope="scope">
                         <span v-if="item.type == 'number'">

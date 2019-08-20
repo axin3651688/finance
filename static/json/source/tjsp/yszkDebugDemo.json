@@ -248,6 +248,10 @@
                     if (first && first != 0 && second && second != 0 && res.zjl && res.zjl > first && res.zjl < second) res.riskrange = "提示";
                     if (first == 0 && second == 0) res.riskrange = "";
                     if (!res.zjl || res.zjl == 0) res.riskrange = "";
+                    //去除9
+                    if (res.gsbm == '9') {
+                        res.gsbm = '';
+                    }
                 })
                 return data;
             },

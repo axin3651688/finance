@@ -345,36 +345,36 @@
                 cCapitalChainAndFinancingForecast: {
                     f1: {
                         clu1: {
-                            color: 'black',
+                            color: 'green',
                             //营运资本>0
                             content: '投融资活动是协调的'
                         },
                         clu2: {
-                            color: 'black',
+                            color: 'red',
                             //else
                             content: '投融资活动存在资金缺口，并需要占用流动资金为：round'
                         }
                     },
                     f2: {
                         clu1: {
-                            color: 'black',
+                            color: 'green',
                             //营运资金需求<0
                             content: '经营活动是协调的'
                         },
                         clu2: {
-                            color: 'black',
+                            color: 'red',
                             //else
                             content: '经营活动存在资金缺口为:round'
                         }
                     },
                     f3: {
                         clu1: {
-                            color: 'black',
+                            color: 'green',
                             //现金支付能力>0, 营运资金需求>0, 营运资本>0, 营运资本>营运资金需求
                             content: '协调且有支付能力'
                         },
                         clu2: {
-                            color: 'black',
+                            color: 'green',
                             //AND(现金支付能力>0,营运资金需求<0, 营运资本>0
                             content: '资金大量富裕'
                         },
@@ -389,12 +389,12 @@
                             content: '不协调'
                         },
                         clu5: {
-                            color: 'black',
+                            color: 'red',
                             //现金支付能力<0,营运资金需求>0,营运资本>0,营运资本<营运资金需求
                             content: '协调但有支付困难'
                         },
                         clu6: {
-                            color: 'black',
+                            color: 'red',
                             //else
                             content: '严重不协调'
                         }
@@ -751,19 +751,20 @@
                 let _flag = 0;
                 for (let k1 in _conclusionData) {
                     if (k1 === 'f1') {
-
                         if (_needData.yyzb > 0) {
                             _flag = 1;
                         } else {
                             _flag = 2;
                         }
 
+                        if(_needData.yyzb === 0) _flag = 0;
                     } else if (k1 === 'f2') {
                         if (_needData.yyzjxq < 0) {
                             _flag = 1;
                         } else {
                             _flag = 2;
                         }
+                        if(_needData.yyzjxq === 0) _flag = 0;
                     } else if (k1 === 'f3') {
                         if (_needData.xjzfnl > 0 && _needData.yyzjxq > 0 && _needData.yyzb > 0 && _needData.yyzb > _needData.yyzjxq) {
                             _flag = 1;
@@ -779,7 +780,10 @@
                             _flag = 6;
                         }
 
+                        if(_needData.xjzfnl === 0 && _needData.yyzb === 0 && _needData.yyzjxq === 0) _flag = 0;
+
                     }
+
 
                     let _index = 'clu' + _flag;
                     if (_flag === 0) {

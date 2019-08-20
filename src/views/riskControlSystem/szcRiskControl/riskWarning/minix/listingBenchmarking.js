@@ -14,7 +14,7 @@ export default {
                 yearValue = me.yearValue,
                 monthValue = me.monthValue,
                 indicatorNames = me.indicatorNames,
-                indicatorOptions = me.indicatorOptions;
+                indicatorOptions = me.allIndicatorOptions;
             let objHead = {
                 id: "comsname",
                 type: "string",
@@ -178,6 +178,95 @@ export default {
             }
             me.manyColumns = manyColumns;
             console.log(manyColumns);
-        }
+        },
+        /**
+         * 三点的模态框弹出事件。
+         */
+        pointsEventHandler(sign) {
+            let me = this;
+            me.dialogTableVisible = true;
+            me.submitSign = sign;
+            if (sign == 'list') {
+                me.tableData = me.afterCompanyipo;
+            } else if (sign == 'indicator') {
+                me.tableData = me.afterIndicators;
+            }
+        },
+        /**
+         * 选择的改变
+         * @param {*} val 
+         */
+        handleSelectionChange(val) {
+            debugger;
+            this.multipleSelection = val;
+            // this.multipleSelection = val;
+        },
+        /**
+         * 弹出框的提交事件。
+         */
+        submitClick() {
+            debugger;
+            let me = this,
+                submitSign = me.submitSign;
+            if (submitSign == 'list') {
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
+                me.multipleSelection.forEach(item => {
+                    me.listedCompany.push(item.scode);
+                });
+            } else if (submitSign == 'indicator') {
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
+                me.multipleSelection.forEach(item => {
+                    // let flag = true;
+                    // for (let i = 0; i < me.indicatorNames.length; i++) {
+                    //     let it = me.indicatorNames[i];
+                    //     if (it == item) {
+                    //         flag = false;
+                    //         break;
+                    //     }
+                    //     // me.indicatorNames.push(item.scode);
+                    // }
+                    // if (flag) {
+                    //     me.indicatorNames.push(item.scode);
+                    // }
+                    me.indicatorNames.push(item.scode);
+                });
+            }
+            me.dialogTableVisible = false;
+        },
+        /**
+         * 选择框的改变事件。
+         */
+        changeSelect(sign) {
+            debugger;
+            let me = this;
+            if (sign == 'list') {
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
+                me.multipleSelection.forEach(item => {
+                    me.listedCompany.push(item.scode);
+                });
+            } else if (sign == 'indicator') {
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
+                me.multipleSelection.forEach(item => {
+                    me.indicatorNames.push(item.scode);
+                });
+            }
+        },
+        deepCopy(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (obj[key] == null) {
+                        result[key] = null;
+                    } else if (obj[key] == undefined) {
+                        result[key] = undefined;
+                    } else if (typeof obj[key] === 'object') {
+                        result[key] = this.deepCopy(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
     },
 }

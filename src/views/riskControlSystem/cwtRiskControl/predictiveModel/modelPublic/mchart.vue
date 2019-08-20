@@ -26,9 +26,7 @@
         },
         data() {
             return {
-                option: {
-                    // height_s: '300px',
-                },
+                option: {},
                 mchareShow: true,
                 funnelOption: {
                     height_s: '500px',
@@ -264,6 +262,9 @@
             this.initEchartData()
         },
         methods: {
+            /**
+             * 初始化数据
+             */
             initEchartData() {
                 let _this = this;
                 _this.option = {};
