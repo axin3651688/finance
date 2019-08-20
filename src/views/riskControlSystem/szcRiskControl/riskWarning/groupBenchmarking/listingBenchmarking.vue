@@ -297,7 +297,6 @@
             }
         },
         created() {
-            debugger;
             let me = this,url = "/cnbi/json/source/tjsp/szcJson/risk/listingBenchmarking.json";
             //隐藏公司、年、月。
             me.hideNavInfo();
@@ -338,10 +337,9 @@
 
             },
             /**
-             * 上市公司的选择。
+             * 上市公司的选择。暂时废弃了  2019年8月20日11:31:55
              */
             listedCompanyHandler (item,sign) {
-                debugger;
                 let me = this,listedCompany = me.listedCompany,indicatorNames = me.indicatorNames,monthValue = me.monthValue;
                 if(sign == 'month' || sign == 'year'){
                     item.scode = item.value;
@@ -383,7 +381,6 @@
                 // me["selectClass" + item.scode + ""] = "select_class";
             },
             listedCompanyHandler_old (item,sign) {
-                debugger;
                 let me = this,listedCompany = me.listedCompany,indicatorNames = me.indicatorNames,monthValue = me.monthValue;
                 if(sign == 'year'){
                     me.activeItem = 'select' + item.value;
@@ -438,7 +435,6 @@
                 });
             },
             exportExcle () {
-                debugger;
                 let me = this;
                 import('@/excel/SZCExport2ExcelTable').then(excel => {
                     //制造一个columns格式传过去。
@@ -517,7 +513,6 @@
              * 渲染各个指标下拉选。
              */
             renderSelectOptions (datas) {
-                debugger;
                 let me = this;
                 // me.companyOptions = datas[0].company;
                 me.treeCompanyFormat(datas[0].company);
@@ -598,10 +593,10 @@
                     stype:"sj",
                     sqlKey:"RiskWarning.ssdb"
                 };
-                // me.renderFlag = false;
-                // me.$nextTick(()=>{
-                //     me.renderFlag = true;
-                // })
+                me.renderFlag = false;
+                me.$nextTick(()=>{
+                    me.renderFlag = true;
+                })
                 me.createMoreHeader();
                 groupQuery(params).then(res => {
                     if (res.data.code == 200) {
@@ -614,7 +609,6 @@
              * 渲染查询table的数据。
              */
             renderTableOfDatas (datas) {
-                debugger;
                 let me = this;
                 me.ManyTableData = datas;
                 // me.selectTarget();

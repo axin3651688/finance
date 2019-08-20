@@ -1285,6 +1285,64 @@ export default {
         stateStr
       );
     },
+    handleStateOfPeriod_old(rowData, rowIndex) {
+      // 
+      let me = this,
+        startIndex = 5,
+        repaymentIndex = 13,
+        month = this.$store.getters.month,
+        year = this.$store.getters.year;
+      let startPeriod = rowData[startIndex],
+        repaymentPeriod = rowData[repaymentIndex];
+      let arrStart,
+        arrRepayment,
+        stateStr = "";
+      if (startPeriod) {
+        arrStart = startPeriod.split("/");
+      }
+      if (repaymentPeriod) {
+        arrRepayment = repaymentPeriod.split("/");
+      }
+      //两个日期都存在
+      if (arrStart && arrRepayment) {
+        if (
+          arrStart[0] == year &&
+          arrStart[1] - 0 == month &&
+          arrRepayment[1] - 0 != month
+        ) {
+          stateStr = "新增";
+        } else if (
+          arrStart[1] - 0 != month &&
+          arrRepayment[0] == year &&
+          arrRepayment[1] - 0 == month
+        ) {
+          stateStr = "减少";
+        } else {
+          stateStr = "";
+        }
+      } else if (
+        arrStart &&
+        arrStart[0] == year &&
+        !arrRepayment &&
+        arrStart[1] - 0 == month
+      ) {
+        stateStr = "新增";
+      } else if (
+        arrRepayment &&
+        arrRepayment[0] == year &&
+        arrRepayment[1] - 0 == month &&
+        !arrStart
+      ) {
+        stateStr = "减少";
+      } else {
+        stateStr = "";
+      }
+      this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+        rowIndex,
+        15,
+        stateStr
+      );
+    },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
       let obj = {},index,key,values,reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)|(\-?)/,
