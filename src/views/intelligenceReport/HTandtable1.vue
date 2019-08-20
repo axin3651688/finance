@@ -1249,16 +1249,20 @@ export default {
       if (arrStart && arrRepayment) {
         if (
           arrStart[0] == year &&
-          arrStart[1] - 0 == month &&
-          arrRepayment[1] - 0 != month
+          arrStart[1] - 0 == month
         ) {
           stateStr = "新增";
+          if(arrRepayment[0] == year && arrRepayment[1] - 0 == month){
+            stateStr = "";
+          }
         } else if (
-          arrStart[1] - 0 != month &&
           arrRepayment[0] == year &&
           arrRepayment[1] - 0 == month
         ) {
           stateStr = "减少";
+          if(arrStart[0] - 0 == year && arrStart[1] - 0 == month){
+            stateStr = "";
+          }
         } else {
           stateStr = "";
         }
@@ -1697,6 +1701,7 @@ export default {
       }
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
+        // cellMeta.background="red";
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
       }
       //声明一个存放条件限制的数组。此时只针对预付、其他表的填报。
@@ -3313,6 +3318,9 @@ export default {
 } */
 </style>
 <style lang="scss">
+.cellMeta_class {
+  border: solid 1px red;    
+}
 .shuju {
   .el-checkbox + .el-checkbox {
     margin-left: 0px;
@@ -3353,7 +3361,6 @@ export default {
     margin-right: 100px;
     font-size: 18px;
   }
-
   //   .el-input__inner {
   //     padding: 0px;
   //   }
