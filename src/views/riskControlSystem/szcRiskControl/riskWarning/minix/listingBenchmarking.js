@@ -4,6 +4,20 @@
 export default {
     methods: {
         /**
+         * 根据一个属性排序。
+         */
+        sortByProp(datas, prop, num) {
+            datas.sort(function(a, b) {
+                if (a[prop] > b[prop]) {
+                    return num;
+                } else if (a[prop] < b[prop]) {
+                    return -num;
+                } else {
+                    return 0;
+                }
+            });
+        },
+        /**
          * 生成多表头数据。
          */
         createMoreHeader() {
@@ -12,7 +26,7 @@ export default {
                 year = me.$store.getters.year,
                 manyColumns = [],
                 yearValue = me.yearValue,
-                monthValue = me.monthValue,
+                monthValue = me.monthValue.sort(),
                 indicatorNames = me.indicatorNames,
                 indicatorOptions = me.allIndicatorOptions;
             let objHead = {
