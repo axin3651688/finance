@@ -651,7 +651,7 @@ export default {
         /**
          * (一级)输入框保存
          */
-        saveChange(scope) { 
+        saveChange(scope) { debugger
             let id, params ;
             let idContent = document.getElementById(scope.row.id) ;
             this.disabled2 = false ;    // 一级按钮启用
