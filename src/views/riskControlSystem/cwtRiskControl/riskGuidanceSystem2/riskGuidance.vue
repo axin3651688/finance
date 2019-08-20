@@ -22,14 +22,14 @@
                         <span>修 改</span> 
                     </el-button>
                     <!-- 导出按钮 -->
-                    <el-button class="riskGuidance_btnB" type="text">
+                    <el-button class="riskGuidance_btnB" type="text" @click="importClick">
                         <i class="iconfont icon-daochu riskGuidance_btnA-B"></i>
                         <span>导 出</span>
                     </el-button>
                     <!-- 预览按钮 -->
-                    <el-button class="riskGuidance_btnC riskGuidance_btnA-C" type="success" round size="mini">
-                        预 览
-                    </el-button>
+                    <el-button ref="review" :id="review" class="riskGuidance_btnC riskGuidance_btnA-C" type="success" round size="mini" @click="previewClick(previewURL)">
+                        <a>预 览</a>
+                    </el-button>                    
                 </div>
                 <!-- 标题首行部分 -->
                 <div class="riskGuidance_title">
@@ -61,19 +61,22 @@
                                     <span v-if="!cont.showContent"><i class="el-icon-arrow-right first_icon"></i></span>
                                     <span v-else><i class="el-icon-arrow-down first_icon"></i></span>
                                 </div>
-                                <div class="content_first-text">{{ cont.scontent }}</div>
+                                <!-- <div class="content_first-text">{{ cont.scontent }}</div> -->
+                                <div class="content_first-text" v-html="cont.scontent"></div>
                             </div>
 
                             <!-- 二级内容层 -->
                             <div class="content_second" v-for="(todo, index3) in contentB" v-show="getContentView2(cont, todo)">
                                 <div class="content_second-A">
-                                    <div class="content_second-text" :style="randomRgb(index3)">{{ todo.scontent }}</div>
+                                    <!-- <div class="content_second-text" :style="randomRgb(index3)">{{ todo.scontent }}</div> -->
+                                    <div class="content_second-text" :style="randomRgb(index3)" v-html="todo.scontent"></div>
 
                                     <!-- 三级内容层 -->
                                     <div v-show="todo.showContent">
                                         <div class="content_third" v-if="todo.showContent" v-for="(tool, index4) in contentCC">
                                             <div :style="randomRgb2(index4)" class="content_third-icon"></div>
-                                            <div class="content_third-text">{{ tool.scontent }}</div>
+                                            <!-- <div class="content_third-text">{{ tool.scontent }}</div> -->
+                                            <div class="content_third-text" v-html="tool.scontent"></div>
                                         </div>
                                     </div>
 
@@ -92,8 +95,16 @@
         <!-- 
             弹出层
             newThis -> 本组件大对象
+            dataDirectory -> 目录数组
+            dataContent -> 内容数组
          -->
-        <riskGuidance-dialog v-if="dialogVisible_first" :newThis="newThis"></riskGuidance-dialog>
+        <riskGuidance-dialog 
+            ref="dialogA" 
+            v-if="dialogVisible_first" 
+            :newThis="newThis"
+            :dataDirectory="directory"
+            :dataContent="content">
+        </riskGuidance-dialog>
     </div>
 </template>
 <script>
@@ -106,11 +117,13 @@ import {
     riskguidetitle_Delete ,
     // 指引制度标题修改接口
     riskguidetitle_Updata ,
-    // 指引制度标题目录接口
+    // 指引制度标题目录接口（内容）
     selectAll
 } from './interface.js'
 // 引用子组件弹出层
 import riskGuidanceDialog from './riskGuidanceDialog.vue'
+// 导出文档js
+import riskGuidance from './import_riskGuidance_world.js'
 export default {
     components: {
         riskGuidanceDialog
@@ -122,10 +135,13 @@ export default {
             headColor: ['rgb(82,196,26)', 'rgb(184,233,134)', 'rgb(250,173,20)'] ,
             titleName: [] ,         // 标题数组存储器
             directory: [] ,         // 目录数组存储器
+            content: [] ,           // 总内容数组存储器
             contentA: [] ,          // 一级内容层存储器
             contentB: [] ,          // 二级内容层存储器
             contentC: [] ,          // 三级内容层存储器
             contentCC:[] ,          // 三级过滤内容存储器
+            previewURL: "",         // 跳转的地址
+            review: "review" ,
 
             dialogVisible_first: false ,            // 目录弹出层 默认不显示false | true显示
         }
@@ -316,7 +332,34 @@ export default {
         addDirectory(event) {
             // debugger
             this.dialogVisible_first = true ;
-        }   
+        },
+        /**
+         * @event 导出按钮  
+         */
+        /**
+         * 导出按钮
+         */
+        importClick(){
+            this.$confirm('是否下载该文件, 是否继续?', '提示', {
+                confirmButtonText: '确定',
+                cancelButtonText: '取消',
+                type: 'warning'
+            }).then(() => {
+                riskGuidance.importRiskGuidanceWorld(this, "import") ;
+            }).catch(() => {
+                this.$message({ type: 'info', message: '已取消下载' });          
+            });
+        },
+        /**
+         * 预览按钮
+         */   
+        previewClick(previewURL) {
+            if(previewURL === "") {
+                riskGuidance.importRiskGuidanceWorld(this, "preview") ;
+            } else {
+                window.open(previewURL,'_blank') // 新窗口打开外链接
+            }
+        }
     }
 }
 </script>

@@ -1,0 +1,132 @@
+.riskGuidanceDialog-directory li{
+    list-style: none ;
+}
+
+.asd {
+    height: 48px ;
+    line-height: 48px;
+    background-color: #FFF;
+    color: #303133;
+    cursor: pointer;
+    border-bottom: 1px solid #EBEEF5;
+    font-size: 13px;
+    font-weight: 500;
+    align-items: center;
+}
+.asd:hover {
+    background: #EBEEF5 ;
+}
+.asder {
+    float: left;
+}
+.asder i {
+    color: rgb(41, 189, 49);
+    margin-right: 5px ;
+    margin-left: 5px ;
+}
+.asder2 {
+    float: right;
+    color: #2DB060;
+    margin-right: 20px;
+}
+.first_B, .first_C, .first_D {
+    font-size: 16px ;
+}
+.first_B { 
+    color: rgb(250,173,20) ;
+}
+.first_C {
+    color: #f56c6c ;
+}
+.first_D {
+    color: #1790ff;
+}
+.riskGuidanceDialog_btnA, 
+.riskGuidanceDialog_btnB,
+.riskGuidanceDialog_btnC {
+    transition: All 0.4s ease-in-out;
+    -webkit-transition: All 0.4s ease-in-out;
+    -moz-transition: All 0.4s ease-in-out;
+    -o-transition: All 0.4s ease-in-out;
+}
+.riskGuidanceDialog_btnA:hover, 
+.riskGuidanceDialog_btnB:hover,
+.riskGuidanceDialog_btnC:hover {
+    transform: scale(1.2);
+    -webkit-transform: scale(1.2);
+    -moz-transform: scale(1.2);
+    -o-transform: scale(1.2);
+    -ms-transform: scale(1.2);
+}
+.add-directory {
+    border: 0 ;
+    background: linear-gradient(to right, #9FD467 , #2DB060);
+} 
+.demo-drawer__main {
+    padding: 20px ;
+}
+.demo-drawer__main li {
+    list-style: none ;
+}
+.demo-drawer__content {
+    overflow: auto;
+}
+.demo-drawer__main-A {
+    min-height: 32px ;
+    line-height: 22px !important ;
+    font-size: 14px !important ;
+    color: #303133 !important;
+    /* border: 1px solid rgba(236,236,236,1); */
+    border-radius: 2px ;
+    font-weight: 500 !important;
+    align-items: center;
+    padding: 5px ;
+} 
+.demo-drawer__main-B {
+    border: 1px solid rgba(236,236,236,1);
+    opacity: 1;
+    border-radius: 0px 0px 2px 2px;
+    font-family: Microsoft YaHei;
+    font-weight: 400;
+    line-height: 22px;
+    font-size: 14px;
+    color: rgba(144,144,144,0.50);
+    opacity: 1;
+    text-align: center;
+    padding: 5px;
+}
+.second_A ,
+.second_B {
+    font-size: 16px ;
+}
+.second_A { color: #f56c6c ; }
+.second_B { color: #1790ff ; }
+
+.demo-drawer__main2, .demo-drawer__main22 {
+    line-height: 22px;
+    margin: 20px 0px 20px 0px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #454545;
+    padding: 5px;
+    background: #F2F6FC;
+}
+.demo-drawer__main22 {
+    margin-bottom: 0px;
+}
+.demo-drawer__main3 {
+    line-height: 22px;
+    font-size: 14px;
+    font-weight: 500;
+    color: #454545;
+    padding: 5px 5px 5px 28px;
+    background: #F2F6FC;
+}
+.fourth_icon {
+    color: #2DB060 ;
+    float: left;
+    line-height: 22px ;
+}
+.demo-drawer__main2-A {
+    padding-left: 24px ;
+}
