@@ -57,12 +57,12 @@
                         <!-- 一级内容层 -->
                         <div class="content_first" v-for="(cont,index2) in contentA" v-show="getContentView(item, cont)">
                             <div class="content_first-A" @click="changeContent2(cont, index2)">
-                                <div class="content_first-icon">
+                                <div class="content_first-icon" v-if="firstShow">
                                     <span v-if="!cont.showContent"><i class="el-icon-arrow-right first_icon"></i></span>
                                     <span v-else><i class="el-icon-arrow-down first_icon"></i></span>
                                 </div>
                                 <!-- <div class="content_first-text">{{ cont.scontent }}</div> -->
-                                <div class="content_first-text" v-html="cont.scontent"></div>
+                                <div class="content_first-text" v-if="firstShow" v-html="cont.scontent"></div>
                             </div>
 
                             <!-- 二级内容层 -->
@@ -70,7 +70,6 @@
                                 <div class="content_second-A">
                                     <!-- <div class="content_second-text" :style="randomRgb(index3)">{{ todo.scontent }}</div> -->
                                     <div class="content_second-text" :style="randomRgb(index3)" v-html="todo.scontent"></div>
-
                                     <!-- 三级内容层 -->
                                     <div v-show="todo.showContent">
                                         <div class="content_third" v-if="todo.showContent" v-for="(tool, index4) in contentCC">
@@ -141,9 +140,12 @@ export default {
             contentC: [] ,          // 三级内容层存储器
             contentCC:[] ,          // 三级过滤内容存储器
             previewURL: "",         // 跳转的地址
-            review: "review" ,
+            review: "review" ,      // id
 
             dialogVisible_first: false ,            // 目录弹出层 默认不显示false | true显示
+            firstShow: true ,       // 第一层次的显示控制
+            secondShow:true ,       // 第二层次的显示控制
+            thirdShow: true ,       // 第二层次的显示控制
         }
     },
     mounted(){
@@ -299,6 +301,13 @@ export default {
          * 3. 二级内容层 -> 三级内容层 
          */
         changeContent(item, index) {
+            let array = this.contentA.filter(element => { return element.catalogid == item.id })
+            if(array.length == 1 && array[0].id == null && array[0].scontent == null) {
+                this.$message.info('暂无数据显示，请添加数据')
+                this.firstShow = false ;
+            } else {
+                this.firstShow = true ;
+            }
             let temp = this.directory
             temp[index].showContent = !temp[index].showContent
             temp.forEach(res => {
@@ -306,7 +315,11 @@ export default {
             })
             this.directory = temp
         },
-        changeContent2(cont, index) {
+        changeContent2(cont, index) { 
+            let array = this.contentB.filter(element => { return element.pid == cont.id }) 
+            if(array.length == 0) {
+                this.$message.info('暂无数据显示，请添加数据')
+            } 
             let temp = this.contentA
             temp[index].showContent = !temp[index].showContent
             temp.forEach(res => {
@@ -315,6 +328,10 @@ export default {
             this.contentA = temp
         },
         changeContent3(todo, index) {
+            let array = this.contentC.filter(element => { return element.pid == todo.id }) 
+            if(array.length == 0) {
+                this.$message.info('暂无数据显示，请添加数据')
+            } 
             this.contentCC = [] ;
             this.contentCC = this.contentC.filter(res => {
                 return res.pid === todo.id 
@@ -334,7 +351,7 @@ export default {
             this.dialogVisible_first = true ;
         },
         /**
-         * @event 导出按钮  
+         * @event 导出按钮/预览按钮  
          */
         /**
          * 导出按钮
