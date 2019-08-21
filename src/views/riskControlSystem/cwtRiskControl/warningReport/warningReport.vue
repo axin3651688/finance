@@ -267,7 +267,6 @@
 
                         _this.loopData1 = res.data.data[1];
 
-                        debugger;
                         _this.table2data = res.data.data[2];
 
                         _this.loopData2 = res.data.data[3];

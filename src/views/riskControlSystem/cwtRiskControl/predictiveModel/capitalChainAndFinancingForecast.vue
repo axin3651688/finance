@@ -305,7 +305,7 @@
                 pie3HasNagetiveData: false,
                 pie4HasNagetiveData: false,
                 pie_1EchartData: {
-                    name: "结构性资产占用构型图",
+                    name: "结构性资产占用构成图",
                     data: []
                 },
                 pie_2EchartData: {

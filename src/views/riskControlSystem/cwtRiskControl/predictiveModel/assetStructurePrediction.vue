@@ -613,7 +613,7 @@
                 // (流动资产-比较年流动资产)/比较年流动资产*100
                 // 营业收入增长率(%)
                 // (营业收入-比较年营业收入)/比较年营业收入*100
-
+                debugger;
                 if (_lastData.length > 0 && _thisData.length > 0) {
 
                     let _lastzzcbcl = (_lastData[1].value * 1 + _lastData[11].value * 1) / ((_lastData[4].value * 1 + _lastData[14].value * 1) / 2) * 100;
@@ -628,17 +628,17 @@
                     yysrzzl = isNaN(yysrzzl) ? 0 : yysrzzl;
 
                     let flag = 0;
-                    if (yysrzzl > ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    if (ldzcazzl > yysrzzl && _thiszzcbcl > _lastzzcbcl) {
                         flag = 1;
-                    } else if (yysrzzl > ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    } else if (ldzcazzl > yysrzzl && _thiszzcbcl < _lastzzcbcl) {
                         flag = 2;
-                    } else if (yysrzzl < ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    } else if (ldzcazzl < yysrzzl && _thiszzcbcl > _lastzzcbcl) {
                         flag = 3;
-                    } else if (yysrzzl < ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    } else if (ldzcazzl < yysrzzl && _thiszzcbcl < _lastzzcbcl) {
                         flag = 4;
-                    } else if (yysrzzl = ldzcazzl && _thiszzcbcl > _lastzzcbcl) {
+                    } else if (ldzcazzl = yysrzzl && _thiszzcbcl > _lastzzcbcl) {
                         flag = 5;
-                    } else if (yysrzzl = ldzcazzl && _thiszzcbcl < _lastzzcbcl) {
+                    } else if (ldzcazzl = yysrzzl && _thiszzcbcl < _lastzzcbcl) {
                         flag = 6;
                     }
 
