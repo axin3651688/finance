@@ -60,12 +60,12 @@ export default {
                 {
                     id:"companyname",
                     text:"公司名称",
-                    width:320
+                    minWidth:400
                 },
                 {
                     id:"templatename",
                     text:"报表名称",
-                    width:180
+                    minWidth:200
                 },
                 // {
                 //     id:"",

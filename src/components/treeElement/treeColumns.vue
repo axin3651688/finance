@@ -131,6 +131,7 @@ export default {
         // }
         // 格式化数据源
         data: function () { 
+            debugger;
             let tmp;
             let cc = this.item ;
             if (!Array.isArray(this.dataSource)) {

@@ -4,17 +4,30 @@
 export default {
     methods: {
         /**
+         * 根据一个属性排序。
+         */
+        sortByProp(datas, prop, num) {
+            datas.sort(function(a, b) {
+                if (a[prop] > b[prop]) {
+                    return num;
+                } else if (a[prop] < b[prop]) {
+                    return -num;
+                } else {
+                    return 0;
+                }
+            });
+        },
+        /**
          * 生成多表头数据。
          */
         createMoreHeader() {
-            debugger;
             let me = this,
                 year = me.$store.getters.year,
                 manyColumns = [],
                 yearValue = me.yearValue,
-                monthValue = me.monthValue,
+                monthValue = me.monthValue.sort(),
                 indicatorNames = me.indicatorNames,
-                indicatorOptions = me.indicatorOptions;
+                indicatorOptions = me.allIndicatorOptions;
             let objHead = {
                 id: "comsname",
                 type: "string",
@@ -178,6 +191,125 @@ export default {
             }
             me.manyColumns = manyColumns;
             console.log(manyColumns);
-        }
+        },
+        /**
+         * 三点的模态框弹出事件。
+         */
+        pointsEventHandler(sign) {
+            let me = this;
+            me.dialogTableVisible = true;
+            me.submitSign = sign;
+            if (sign == 'list') {
+                me.tableData = me.afterCompanyipo;
+            } else if (sign == 'indicator') {
+                me.tableData = me.afterIndicators;
+            }
+        },
+        /**
+         * 选择的改变
+         * @param {*} val 
+         */
+        handleSelectionChange(val) {
+            this.multipleSelection = val;
+            // this.multipleSelection = val;
+        },
+        /**
+         * 弹出框的提交事件。
+         */
+        submitClick() {
+            let me = this,
+                submitSign = me.submitSign;
+            if (submitSign == 'list') {
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
+                me.multipleSelection.forEach(item => {
+                    me.listedCompany.push(item.scode);
+                });
+            } else if (submitSign == 'indicator') {
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
+                me.multipleSelection.forEach(item => {
+                    // let flag = true;
+                    // for (let i = 0; i < me.indicatorNames.length; i++) {
+                    //     let it = me.indicatorNames[i];
+                    //     if (it == item) {
+                    //         flag = false;
+                    //         break;
+                    //     }
+                    //     // me.indicatorNames.push(item.scode);
+                    // }
+                    // if (flag) {
+                    //     me.indicatorNames.push(item.scode);
+                    // }
+                    me.indicatorNames.push(item.scode);
+                });
+            }
+            me.dialogTableVisible = false;
+        },
+        /**
+         * 选择框的改变事件。
+         */
+        changeSelect(sign) {
+            let me = this;
+            if (sign == 'list') {
+                me.listedCompany = me.deepCopy(me.listedCompanyList);
+                me.multipleSelection.forEach(item => {
+                    me.listedCompany.push(item.scode);
+                });
+            } else if (sign == 'indicator') {
+                me.indicatorNames = me.deepCopy(me.indicatorNamesLeft);
+                me.multipleSelection.forEach(item => {
+                    me.indicatorNames.push(item.scode);
+                });
+            }
+        },
+        /**
+         * 重置按钮事件。2019年8月20日15:45:05
+         */
+        resetBtnHandler() {
+            this.listedCompany = [];
+            this.listedCompanyList = [];
+            this.indicatorNames = [];
+            this.indicatorNamesLeft = [];
+            this.multipleSelection = [];
+            this.monthValue = [];
+            //消除弹出层的选中的数据
+            this.$refs.multipleTable.clearSelection();
+            //如果年份存在，就消除样式。
+            if (this.yearValue) {
+                this.removeYearClass(this.yearValue);
+            }
+            this.yearValue = "";
+        },
+        /**
+         * 移除年的样式。
+         */
+        removeYearClass(yearValue) {
+            let me = this;
+            let classNameSelect = me.$refs['select_' + yearValue][0].$el.className;
+            if (classNameSelect.indexOf('select_class') != -1) {
+                classNameSelect = classNameSelect.replace('select_class', '');
+                me.$refs['select_' + yearValue][0].$el.className = classNameSelect;
+            }
+        },
+        /**
+         * 深拷贝。
+         * @param {*} obj 
+         */
+        deepCopy(obj) { //深拷贝
+            let result = Array.isArray(obj) ? [] : {};
+            for (let key in obj) {
+                if (obj.hasOwnProperty(key)) {
+                    if (obj[key] == null) {
+                        result[key] = null;
+                    } else if (obj[key] == undefined) {
+                        result[key] = undefined;
+                    } else if (typeof obj[key] === 'object') {
+                        result[key] = this.deepCopy(obj[key]); //递归复制
+                    } else {
+                        result[key] = obj[key];
+                    }
+                }
+            }
+            return result;
+        },
     },
 }

@@ -62,7 +62,7 @@
           <!-- <span>这是一段信息</span> -->
           <!-- <el-checkbox-group v-model="checked"> -->
           <el-checkbox
-            v-for="item of list"
+            v-for="item of listDownload"
             :key="item.id"
             class="checkbox"
             @change="select($event, item)"
@@ -90,7 +90,7 @@
           </el-button>
           <el-dropdown-menu slot="dropdown">
             <el-dropdown-item
-              v-for="(item,index) of list"
+              v-for="(item,index) of listExcel"
               @click.native="importDropdownMenu(list,index)"
               :key="index"
             >{{item.title}}</el-dropdown-item>
@@ -256,7 +256,9 @@ export default {
         // setDataAtCell: Function
         // ,
         // getDataAtRow: Function
-      }
+      },
+      listExcel:[],
+      listDownload:[]
     };
   },
   watch: {
@@ -310,6 +312,8 @@ export default {
       let flag = this.contentOfCompany();
       //公司的显示选项的控制。
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
+      //选择模板根据公司变换。
+      this.listExcel = this.list;
       this.divShow = false;
       this.fillShow = true;
       //清楚以前的数据。
@@ -556,7 +560,9 @@ export default {
       
       // this.list = res.data.data;
       this.listOld = res.data.data;
+      // this.listExcel = this.deepCopy(res.data.data);
       this.list = this.parseResultOfCompany(res.data.data);
+      this.listExcel = this.list;
       // console.log(res)
       this.cubeId = res.data.config.cube.cubeId;
     });
@@ -607,6 +613,26 @@ export default {
     ...mapGetters(["user", "year", "month", "company","showDims"])
   },
   methods: {
+    /**
+     * 深拷贝
+     */
+    deepCopy (obj) { //深拷贝
+        let result = Array.isArray(obj) ? [] : {};
+        for (let key in obj) {
+            if (obj.hasOwnProperty(key)) {
+                if(obj[key] == null){
+                    result[key] = null;
+                }else if (obj[key] == undefined) {
+                    result[key] = undefined;
+                }else if (typeof obj[key] === 'object') {
+                    result[key] = this.deepCopy(obj[key]); //递归复制
+                } else {
+                    result[key] = obj[key];
+                }
+            }
+        }
+        return result;
+    },
     examineData(){
       let me = this,stp = me.$store.getters,company = stp.company,period = me.parsePeriod();
       let params = {
@@ -1207,7 +1233,69 @@ export default {
       // 
       let me = this,
         startIndex = 5,
-        repaymentIndex = 11,
+        repaymentIndex = 13,
+        month = this.$store.getters.month,
+        year = this.$store.getters.year;
+      let startPeriod = rowData[startIndex],
+        repaymentPeriod = rowData[repaymentIndex];
+      let arrStart,
+        arrRepayment,
+        stateStr = "";
+      if (startPeriod) {
+        arrStart = startPeriod.split("/");
+      }
+      if (repaymentPeriod) {
+        arrRepayment = repaymentPeriod.split("/");
+      }
+      //两个日期都存在
+      if (arrStart && arrRepayment) {
+        if (
+          arrStart[0] == year &&
+          arrStart[1] - 0 == month
+        ) {
+          stateStr = "新增";
+          if(arrRepayment[0] == year && arrRepayment[1] - 0 == month){
+            stateStr = "";
+          }
+        } else if (
+          arrRepayment[0] == year &&
+          arrRepayment[1] - 0 == month
+        ) {
+          stateStr = "减少";
+          if(arrStart[0] - 0 == year && arrStart[1] - 0 == month){
+            stateStr = "";
+          }
+        } else {
+          stateStr = "";
+        }
+      } else if (
+        arrStart &&
+        arrStart[0] == year &&
+        !arrRepayment &&
+        arrStart[1] - 0 == month
+      ) {
+        stateStr = "新增";
+      } else if (
+        arrRepayment &&
+        arrRepayment[0] == year &&
+        arrRepayment[1] - 0 == month &&
+        !arrStart
+      ) {
+        stateStr = "减少";
+      } else {
+        stateStr = "";
+      }
+      this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+        rowIndex,
+        15,
+        stateStr
+      );
+    },
+    handleStateOfPeriod_old(rowData, rowIndex) {
+      // 
+      let me = this,
+        startIndex = 5,
+        repaymentIndex = 13,
         month = this.$store.getters.month,
         year = this.$store.getters.year;
       let startPeriod = rowData[startIndex],
@@ -1257,7 +1345,7 @@ export default {
       }
       this.$refs.hotTableComponent.hotInstance.setDataAtCell(
         rowIndex,
-        13,
+        15,
         stateStr
       );
     },
@@ -1615,6 +1703,7 @@ export default {
       }
       if (this.templateId == 4) {
         cellMeta.readOnly = this.reRenderCell(row, columns);
+        // cellMeta.background="red";
         //console.info("after-----"+row+"==="+columns+"==="+ cellMeta.readOnly);
       }
       //声明一个存放条件限制的数组。此时只针对预付、其他表的填报。
@@ -1624,7 +1713,7 @@ export default {
       }
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
-        if(columns == 10 || columns == 12){
+        if(columns == 12 || columns == 14){
           // cellMeta.readOnly = this.paymentLimit(row, columns);
           cellMeta.readOnly = false;
         }else if (columns == 2) {
@@ -1638,7 +1727,7 @@ export default {
           cellMeta.width = "350px";
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
-        }else if (columns == 13) {
+        }else if (columns == 15) {
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1698,7 +1787,9 @@ export default {
       if(ssrccode && ssrccode != '1' && ssrccode != '0' && columns != 5){
         return true;
       }else {
-        if(columns == 4){
+        if(row == 0 && columns < 5){
+          return true;
+        }else if(columns == 4 || columns == 1 || columns == 3){
           return true;
         }
         return false;
@@ -1835,6 +1926,7 @@ export default {
       }
       if (value != null && !isNaN(value)) {
         if(this.templateId == "7" && (prop == "B" || prop == "C")){
+          //value需要乘以100，百分号显示。
           flagElement.innerText = value == ""? "":value.toFixed(4);
         }else {
           flagElement.innerText = arr.indexOf(this.templateId) != -1? (value == ""? "":parseInt(value)):Math.decimalToLocalString(value);
@@ -2668,10 +2760,22 @@ export default {
         // me.$set(me.settings, "data", res.data.data.rows);
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
+          this.parsePercent(rows);
         }
         //查询当前选中报表的状态。
         me.queryStateOfFillTable(columns,rows,res);
         // me.convertHansoneTableColumns(columns, rows,res);
+      });
+    },
+    /**
+     * 百分号的转换。
+     */
+    parsePercent (rows) {
+      let me = this,keys = ['B','C'];
+      rows.forEach(item => {
+        for(let i = 0;i < keys.length;i++){
+          item[keys[i]] = item[keys[i]] * 100;
+        }
       });
     },
     /**
@@ -2883,7 +2987,7 @@ export default {
       this.isShow = true;
       this.axios.get("/cnbi/json/source/tjsp/template.json").then(res => {
         console.log(res);
-        this.list = res.data.data;
+        this.listDownload = res.data.data;
       });
     },
     // 下载模板弹框的取消
@@ -3216,6 +3320,9 @@ export default {
 } */
 </style>
 <style lang="scss">
+.cellMeta_class {
+  border: solid 1px red;    
+}
 .shuju {
   .el-checkbox + .el-checkbox {
     margin-left: 0px;
@@ -3256,7 +3363,6 @@ export default {
     margin-right: 100px;
     font-size: 18px;
   }
-
   //   .el-input__inner {
   //     padding: 0px;
   //   }

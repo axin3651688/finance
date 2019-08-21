@@ -5,7 +5,7 @@
                 <el-table
                 :data="tableData"
                 border
-                :height="tableHeight"
+                :height="allData.tableHeight || tableHeight"
                 stripe
                 :header-cell-style="headerCellStyle"
                 :header-row-style="headerRowStyle"
@@ -59,10 +59,15 @@
          * 组件生成的回调。
          */
         created() {
+            debugger;
             let me = this;
             /**
              * 计算表格高度
              */
+            if(me.allData.tableHeight){
+                me.tableHeight = me.allData.tableHeight;
+                return;
+            }
             let offsetHeight = document.body.offsetHeight,//页面整体高度
                 selectHeight = 40 + 10,//select框高度 加上中间的margin-bottom的值
                 tabHeight = 39,//tab标签高度
@@ -77,6 +82,10 @@
             /**
              * 屏幕自适应方法调用
              */
+            if(this.allData.tableHeight){
+                this.tableHeight = this.allData.tableHeight;
+                return;
+            }
             this.setPageAdaptive();
         },
         methods: {
