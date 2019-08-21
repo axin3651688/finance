@@ -122,6 +122,13 @@ const router = new Router({
                     component: () =>
                         import ('@v/riskControlSystem/sjzRiskControl/riskReport.vue')
                 },
+                // 风险统计sjz
+                {
+                    path: '/riskStatistics',
+                    name: 'riskStatistics',
+                    component: () => 
+                        import ('@v/riskControlSystem/riskStatistics/riskStatistics.vue')
+                },
                 //风险管控
                 {
                     path: '/riskControl',
@@ -160,15 +167,15 @@ const router = new Router({
                 },
                 // 风险指引制度 sjz （1版）
                 {
-                    path: '/riskGuidanceSystem',
-                    name: 'riskGuidanceSystem',
+                    path: '/riskGuidanceSystem2',
+                    name: 'riskGuidanceSystem2',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem/riskGuidanceSystem.vue')
                 },
                 // 风险指引制度 sjz （1版）
                 {
-                    path: '/riskGuidanceSystem2',
-                    name: 'riskGuidanceSystem2',
+                    path: '/riskGuidanceSystem',
+                    name: 'riskGuidanceSystem',
                     component: () =>
                         import ('@v/riskControlSystem/cwtRiskControl/riskGuidanceSystem2/riskGuidance.vue')
                 },
