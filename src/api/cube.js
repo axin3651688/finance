@@ -591,3 +591,14 @@ export function downLoadTemplate() {
         method: 'post'
     })
 }
+/**
+ * name: sjz
+ * 说明：
+ */
+export function selectQuery(data) {
+    return request({
+        url: "/zjb/select/query",
+        method: 'post',
+        params: data
+    })
+}
