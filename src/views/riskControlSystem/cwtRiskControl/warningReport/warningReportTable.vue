@@ -121,7 +121,6 @@
              * @return {string}
              */
             RowStyle(row) {
-                debugger;
                 return 'height: 20px';
             },
 

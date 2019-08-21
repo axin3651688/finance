@@ -18,7 +18,7 @@
                         class="lj"
                         :type="this.buttonType === 'ldfzbl' ? 'primary' : ''"
                         @click="topButtonClick('ldfzbl')"
-                >流动/负债比率
+                >流动/速动比率
                 </el-button>
                 <el-button
                         class="lj"
@@ -1223,13 +1223,14 @@
                         //"&ROUNDDOWN(利息保障倍数,1)&"
 
                         if (k1 === 'f4' && k2 === 's2') {
+                            debugger;
                             if (_conclusionData[k1][k2].content.indexOf('lxbzbs') !== -1) {
                                 let __f = _this.setNumberToStander(_needData.lxbz);
                                 _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs', __f);
                             }
-                            if (_conclusionData[k1][k2].content.indexOf('lxbzbsdown') !== -1) {
-                                let __d = _this.setNumberToStander(_needData.lxbz);
-                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('lxbzbs', __d);
+                            if (_conclusionData[k1][k2].content.indexOf('down') !== -1) {
+                                // let __d = _this.setNumberToStander(_needData.lxbz);
+                                _conclusionData[k1][k2].content = _conclusionData[k1][k2].content.replace('down', '');
                             }
 
                         }
@@ -1454,7 +1455,7 @@
     .content-text_2 {
         position: absolute;
         width: 300px;
-        height: 100px;
+        height: 122px;
         top: 14px;
         left: 600px;
         border: 1px solid #303133;
@@ -1473,7 +1474,7 @@
     }
 
     .content-text_3 {
-        top: 150px;
+        top: 134px;
     }
 
     .content-text_4 {

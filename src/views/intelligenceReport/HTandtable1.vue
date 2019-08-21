@@ -312,6 +312,8 @@ export default {
       let flag = this.contentOfCompany();
       //公司的显示选项的控制。
       this.listOld && this.listOld.length > 0? this.list = this.parseResultOfCompany(this.listOld):"";
+      //选择模板根据公司变换。
+      this.listExcel = this.list;
       this.divShow = false;
       this.fillShow = true;
       //清楚以前的数据。
