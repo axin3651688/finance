@@ -131,7 +131,6 @@ export default {
         // }
         // 格式化数据源
         data: function () { 
-            debugger;
             let tmp;
             let cc = this.item ;
             if (!Array.isArray(this.dataSource)) {
@@ -146,7 +145,7 @@ export default {
                 tmp.forEach(res => { me.expandRowKeys.push(res.id) }) ;
             } else {
                 me.expandRowKeys = [] ;
-                if(cc.id !== "zjjzqk" && cc.id !== "yszkej")me.tree_tableData(tmp, me.expandRowKeys, me) ;
+                if(cc.id !== "zjjzqk" && cc.id !== "yszkej" && cc.id !== "yfzkej" && cc.id !== "qtyskej")me.tree_tableData(tmp, me.expandRowKeys, me) ;
             }
             return tmp ;
             // const func = this.evalFunc || treeToArray;
