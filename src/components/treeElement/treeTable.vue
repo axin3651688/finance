@@ -124,7 +124,7 @@ export default {
             };
             debugger;
             if (Array.isArray(data) && data.length > 0) {
-                data = tools.sortByKey(data, "scode");
+                // data = tools.sortByKey(data, "scode");
                 data = data.filter(function(item) {
                     item.id = item.scode;
                     item.label = "(" + item.scode + ") " + item.sname;
