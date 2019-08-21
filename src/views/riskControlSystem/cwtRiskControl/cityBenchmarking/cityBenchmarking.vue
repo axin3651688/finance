@@ -151,7 +151,7 @@
                         });
 
                         emptyArray.forEach((item) => {
-                            if (item.fact_a || item.fact_a === 0) {
+                            if (item.fact_a && item.fact_a !== 0) {
                                 _this.numCount++;
                             }
                         });
