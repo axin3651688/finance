@@ -21,7 +21,6 @@ export default {
          * 生成多表头数据。
          */
         createMoreHeader() {
-            debugger;
             let me = this,
                 year = me.$store.getters.year,
                 manyColumns = [],
@@ -211,7 +210,6 @@ export default {
          * @param {*} val 
          */
         handleSelectionChange(val) {
-            debugger;
             this.multipleSelection = val;
             // this.multipleSelection = val;
         },
@@ -219,7 +217,6 @@ export default {
          * 弹出框的提交事件。
          */
         submitClick() {
-            debugger;
             let me = this,
                 submitSign = me.submitSign;
             if (submitSign == 'list') {
@@ -251,7 +248,6 @@ export default {
          * 选择框的改变事件。
          */
         changeSelect(sign) {
-            debugger;
             let me = this;
             if (sign == 'list') {
                 me.listedCompany = me.deepCopy(me.listedCompanyList);
@@ -265,6 +261,39 @@ export default {
                 });
             }
         },
+        /**
+         * 重置按钮事件。2019年8月20日15:45:05
+         */
+        resetBtnHandler() {
+            this.listedCompany = [];
+            this.listedCompanyList = [];
+            this.indicatorNames = [];
+            this.indicatorNamesLeft = [];
+            this.multipleSelection = [];
+            this.monthValue = [];
+            //消除弹出层的选中的数据
+            this.$refs.multipleTable.clearSelection();
+            //如果年份存在，就消除样式。
+            if (this.yearValue) {
+                this.removeYearClass(this.yearValue);
+            }
+            this.yearValue = "";
+        },
+        /**
+         * 移除年的样式。
+         */
+        removeYearClass(yearValue) {
+            let me = this;
+            let classNameSelect = me.$refs['select_' + yearValue][0].$el.className;
+            if (classNameSelect.indexOf('select_class') != -1) {
+                classNameSelect = classNameSelect.replace('select_class', '');
+                me.$refs['select_' + yearValue][0].$el.className = classNameSelect;
+            }
+        },
+        /**
+         * 深拷贝。
+         * @param {*} obj 
+         */
         deepCopy(obj) { //深拷贝
             let result = Array.isArray(obj) ? [] : {};
             for (let key in obj) {

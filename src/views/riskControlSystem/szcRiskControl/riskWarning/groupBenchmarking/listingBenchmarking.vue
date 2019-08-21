@@ -72,7 +72,8 @@
                         <div style="display:inline-block;">
                             <el-checkbox-group v-model="monthValue" size="small">
                                 <el-checkbox-button v-for="item in optionMonths" 
-                                :label="item.value" 
+                                :label="item.value"
+                                class="check_month" 
                                 :key="item.value">{{ item.label }}</el-checkbox-button>
                             </el-checkbox-group>
                         </div>
@@ -91,9 +92,9 @@
                 </div>
                 <div>
                     <div>
-                        <!-- <el-button style="margin:0 2%;float:right;">
+                        <el-button @click="resetBtnHandler" style="margin:0 2%;float:right;">
                             重置
-                        </el-button> -->
+                        </el-button>
                         <el-button @click="btnHandler" style="margin-left:2%;float:right;">
                             确定
                         </el-button>
@@ -693,6 +694,11 @@
             width: 180px;
         }
     }
+    .check_month {
+        span {
+            width: 90px;
+        }
+    }
 </style>
 <style lang="scss" scoped>
     .public_div_class {
@@ -719,6 +725,10 @@
     }
     .div_form {
         margin: 10px 0px;
+    }
+    .tag_public {
+        width: 180px;
+        text-align: center;
     }
     /* 悬浮 */
     .tag_public:hover{
