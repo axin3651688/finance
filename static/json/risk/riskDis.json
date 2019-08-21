@@ -28,6 +28,14 @@
         //     "width": "60"
         // },
         {
+            "id": "period",
+            "text": "风险属性",
+            "type": "string",
+            "determine": false,
+            "align": "center",
+            "width": "120"
+        },
+        {
             "id": "isclosename",
             "text": "风险状态",
             "type": "string",
@@ -193,9 +201,21 @@
         });
         return datas ;
     },
-    "drillProperties": ["sissubmit","isclosename"],
+    "drillProperties": ["sissubmit","isclosename", "period"],
+    "getPeriod": function($params){
+        let mm ;
+        if($params.month > 0 && $params.month < 10){
+            mm = '0' + $params.month ;
+        }else{
+            mm = $params.month ;
+        }
+        return $params.year + mm ;
+    },
     "cellStyle": function({row, column, rowIndex, columnIndex}, $this){
         // debugger
+        let $params = $this.$store.state.prame.command;
+        let navPeriod = this.getPeriod($params) ;
+        let riskPeriod= row["period"] ;
         let css = "padding: 4px 0;";
         let pro = column.property;
         if (!pro) {
@@ -216,6 +236,13 @@
             }else if(row[pro] == "已关闭"){
                 let drill = "color: green; fontWeight: bold;" ;
                 return css + drill ;
+            }else if(pro === "period"){
+                if(riskPeriod !== navPeriod){
+                    return {
+                        backgroundColor: "#e6a23c",
+                        color: "#303133"
+                    }
+                }
             }
         }else{
             return css ;
