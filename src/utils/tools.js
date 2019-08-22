@@ -3,7 +3,7 @@
  * @Date: 2018-12-11 17:34:38 
  * @Decription: 本项目用到的通用方法 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-03-12 10:40:29
+ * @Last Modified time: 2019-08-22 09:19:34
  */
 //加载工具类 lodash
 let _ = require('lodash');
@@ -90,7 +90,7 @@ export default {
         return node[key];
     },
     transformTozTreeFormat(setting, sNodes) {
-        debugger;
+        // debugger;
         var i,
             l,
             key = setting.data.simpleData.idKey,
