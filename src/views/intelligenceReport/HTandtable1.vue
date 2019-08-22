@@ -930,6 +930,7 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle(){
+      let arrs = ['4','5','6'];
       //判断如果没有保存，提示他去保存。
       if(this.tableData && this.tableData.length > 0){
         this.$message({
@@ -937,6 +938,15 @@ export default {
           type:"warning"
         });
         return;
+      }else if (arrs.indexOf(this.templateId) != -1) {
+        let flag = this.isItInternal();
+        if(flag){
+          this.$message({
+            message:"‘是否内部’不能为空！",
+            type:"warning"
+          });
+          return;
+        }
       }
       let me = this,
           item = this.currentItem,
@@ -2358,6 +2368,21 @@ export default {
       }
       return flag;
     }, 
+    /**
+     * 是否内部的必填判断。
+     */
+    isItInternal () {
+      let me = this;
+      let data = me.settings.data,tableData = me.tableData,key = ['isinside'],flag = false;
+      for(let i = 0;i < data.length;i++){
+        let item = data[i];
+        if(item.isinside == null){
+          flag = true;
+          break;
+        }
+      }
+      return flag;
+    },
     //点击保存数据
     saveData() {
       let that = this;
@@ -2369,6 +2394,7 @@ export default {
         });
         return;
       }
+      let arrTems = ['4','5','6'];
       //如果是资金集中情况表。如果有“其中：银行存款”为零，则必须要填写相应的说明。
       if(this.templateId == "8"){
         let flag08 = that.explainColumnTable08();
@@ -2379,8 +2405,16 @@ export default {
           });
           return;
         }
+      }else if (arrTems.indexOf(this.templateId) != -1) {
+        let flag = this.isItInternal();
+        if(flag){
+          this.$message({
+            message:"‘是否内部’不能为空",
+            type:"warning"
+          });
+          return;
+        }
       }
-      let arrTems = ['4','5','6'];
       //这个变量是存储日期格式判断的字段的。
       let dateStrs = ['sstartdate','senddate','srepaydate'],flag7 = false;
       this.tableData.forEach(item => {
