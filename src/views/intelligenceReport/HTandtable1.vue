@@ -1928,6 +1928,7 @@ export default {
      * @author szc 2019年5月31日11:17:28
      */
     changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
+      debugger;
       td.style.textAlign = "center"
       // if (!value) {
       //   td.innerHTML = companyname;
@@ -2832,7 +2833,7 @@ export default {
       let me = this,keys = ['B','C'];
       rows.forEach(item => {
         for(let i = 0;i < keys.length;i++){
-          item[keys[i]] = item[keys[i]] * 100;
+          item[keys[i]] = item[keys[i]]? item[keys[i]] * 100:item[keys[i]];
         }
       });
     },
