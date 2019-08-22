@@ -87,12 +87,6 @@
             columns: {
                 type: Array,
                 default: () => []
-            },
-            evalFunc: Function,
-            evalArgs: Array,
-            expandAll: {
-                type: Boolean,
-                default: false
             }
         },
         data(){
@@ -110,7 +104,7 @@
         },
         computed: {
             // 格式化数据源
-            formatData: function () { debugger
+            formatData: function () { 
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]

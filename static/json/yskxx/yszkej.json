@@ -349,7 +349,7 @@
                 }
             },
             "rowClick": function({row, event, column}, $this){
-                // debugger
+                debugger
                 let pool = {
                     id: row.gsbm,
                     text: row.gsmc,
@@ -371,7 +371,7 @@
                 }else{
                     sourceApi1 = "/cnbi/json/yskxx/yszkDrill.json";
                 }
-                if (this.drillProperties[1].indexOf(column.property) != -1 && drill) {
+                if (this.drillProperties[1].indexOf(event.property) != -1 && drill) {
                     $this.$emit("addTab",pool, sourceApi1);
                 }
             }
