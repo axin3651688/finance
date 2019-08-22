@@ -1359,6 +1359,29 @@ export default {
         stateStr
       );
     },
+    /**
+     * 借款余额的自动汇总。
+     */
+    loanBalance (changes) {
+      if(!changes){
+        return;
+      }
+      let me = this,rowIndex = changes[0][0],name = changes[0][1],arr = ["A", "D"];
+      if(arr.indexOf(name) != -1){
+        let rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+          rowIndex
+        );
+        if(rowData){
+          let jkbj = rowData[4] || 0,hkje = rowData[11] || 0;
+          let jkje = jkbj - hkje;
+          this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+            rowIndex,
+            12,
+            jkje
+          );
+        }
+      }
+    },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
       let obj = {},index,key,values,reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)|(\-?)/,
@@ -1372,6 +1395,7 @@ export default {
       //融资的新增与减少的判断 起始日期...
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
+        this.loanBalance(changes);
         //正则判断。
         if(changes && changes.length > 0){
           let arrStr = ['sstartdate','senddate','srepaydate'];
@@ -1723,7 +1747,7 @@ export default {
       }
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
-        if(columns == 12 || columns == 14){
+        if(columns == 14){
           // cellMeta.readOnly = this.paymentLimit(row, columns);
           cellMeta.readOnly = false;
         }else if (columns == 2) {
@@ -1737,7 +1761,7 @@ export default {
           cellMeta.width = "350px";
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
-        }else if (columns == 15) {
+        }else if (columns == 15 || columns == 12) {
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
