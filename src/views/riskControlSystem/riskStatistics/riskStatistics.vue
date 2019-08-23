@@ -4,7 +4,7 @@
         说明：风险统计页面
     -->
     <div id="riskStatistics">
-        <el-row :gutter="20">
+        <el-row :gutter="20" style="padding-top:20px;">
             <el-col :span="8">
                 <div class="grid-content bg-purple">
                     <!-- echarts图形 -->

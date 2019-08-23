@@ -590,7 +590,7 @@ export default {
     getMessage(){
       let me = this,suser = this.$store.getters.user.user.userName,router = me.$router;
       request({
-        url: '/zjb/sys/Msg/query_nolook_count?user=' + suser,
+        url: '/zjb/risk/Msg/query_nolook_count?user=' + suser,
         method: 'get',
         validateStatus: function(status) {
             if (status == 999) {
@@ -705,7 +705,7 @@ export default {
         num = me.messageValue/20 + (me.messageValue%20 > 0? 1:0);
       }
       this.modalConfig = {
-        title:"报表审阅",//modal框标题
+        title:"风险消息列表",//modal框标题
         rowListener:"checkfilldata",//事件监听方法名
         dialogVisible:true,
         width:"70%",
@@ -749,7 +749,7 @@ export default {
     checkFillDataHandle (rowData,sign) {
       let me = this,id = rowData.id;
       let params = {
-        id:id
+        ids:[id]
       };
       if(sign){
         if(sign == "agree"){
