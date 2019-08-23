@@ -119,6 +119,16 @@
         },
         created() {
             let me = this;
+            let row;
+            debugger;
+            if(me.pComponentData){
+                row = me.pComponentData;
+            }
+            if(row){
+                me.titleContent = row.allData[0].companyname + ";" + "所属行业：农、林、牧、渔业;期间：（" + me.getPeriod() + "）;";
+                me.companyTips = true;
+                // judgeParams.row = row;
+            }
         },
         mounted() {},
         methods: {

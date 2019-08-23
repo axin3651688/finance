@@ -81,7 +81,7 @@ export default {
             },
             // 模板匹配下拉选数组
             items: [
-                { id: "1", text: "用户管理", type: "PersonnelManagement", name: "人员管理" },
+                { id: "1", text: "用户管理", type: "PersonnelManagement", name: "用户管理" },
                 { id: "2", text: "风险发生概率", type: "RiskProbability", name: "风险发生概率" },
                 { id: "3", text: "风险影响程度", type: "RiskInfluenceDegree", name: "风险影响程度" },
                 { id: "4", text: "风险策略", type: "RiskStrategy", name: "风险策略" },

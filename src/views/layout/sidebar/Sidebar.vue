@@ -195,7 +195,7 @@ export default {
       findSideBar(userId, code[0]).then(response => {
         let data = response.data.data;
         //排序 这个本是sql来处理的，但是没有，所以在此加一个自己的排序。 2019年7月30日09:19:54
-        if(data && data.length > 0 && data[1].sort){
+        if(data && data.length > 0 && data[0].sort){
           this.sortBySsort(data,"sort");
         }
         data.forEach(ele => {
