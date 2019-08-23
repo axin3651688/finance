@@ -889,6 +889,18 @@ export default {
               }
             }
           }
+        ],
+        landscape:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        education:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        professionalTitle:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        currentPosition:[
+          {required: true, message: "必填项", trigger: "blur"}
         ]
       }
     };
