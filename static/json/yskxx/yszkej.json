@@ -242,36 +242,24 @@
                 return datas ;
             },
             "toolbar": [
-                {
-                    "id": "1",
-                    "text": "全部展开",
-                    "xtype": "button",
-                    "handler": function(data, btn, $this) {
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = true ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                }, 
-                {
-                    "id": "2",
-                    "text": "全部收起",
-                    "xtype": "button",
-                    "handler": function(data, btn, $this) {
-                        if(data && data.length>0){
-                            data.forEach(res => {
-                                res._expanded = false ; 
-                                if(res.children && res.children.length>0)this.handler(res.children); 
-                            });
-                        }else{  
-                            $vue.$message('暂无数据！');
-                        }
-                    }
-                },
+                // {
+                //     "id": "1",
+                //     "text": "全部展开",
+                //     "xtype": "button",
+                //     "handler": function(data, btn, $this) {
+                //         $this.defaultExpandAll = true ;
+                //         $this.loadModuleBefore() ;
+                //     }
+                // }, 
+                // {
+                //     "id": "2",
+                //     "text": "全部收起",
+                //     "xtype": "button",
+                //     "handler": function(data, btn, $this) {
+                //         $this.defaultExpandAll = false ;
+                //         $this.setTreeTableRequest() ;
+                //     }
+                // },
                 {
                     "id": "3",
                     "text": "刷新",

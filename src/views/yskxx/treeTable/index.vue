@@ -12,8 +12,10 @@
     :height="heights"
     :cell-style="cellStyle"
     :expand-row-keys="expandRowKeys"
+    :default-expand-all="defaultExpandAll"
     @row-click="rowClick"
     :tree-props="{children: 'children', hasChildren: 'hasChildren'}"
+    ref="ddtable"
     >
         <el-table-column v-if="columns.length===0" width="150">
             <template slot-scope="scope">
@@ -87,12 +89,14 @@
             columns: {
                 type: Array,
                 default: () => []
-            }
+            },
+            newThis: Object
         },
         data(){
             return {
                 heights: 700,
-                expandRowKeys: []
+                expandRowKeys: [],
+                defaultExpandAll: false ,
             }
         },
         created(){
@@ -100,17 +104,22 @@
             this.heights = document.body.offsetHeight - 168 ;
         },
         mounted(){
+            debugger
             this.setClientHeight();
         },
         computed: {
             // 格式化数据源
-            formatData: function () { 
+            formatData: function () { //debugger
+                let isTrue = this.newThis.defaultExpandAll
+                let me = this ;
                 let tmp;
                 if (!Array.isArray(this.data)) {
                     tmp = [this.data]
                 } else {
                     tmp = this.data
                 }
+                if(isTrue)tmp.forEach(element => { me.expandRowKeys.push(element.id, true) });
+                if(!isTrue)me.expandRowKeys = [] ;
                 return tmp ;
                 // const func = this.evalFunc || treeToArray;
                 // const args = this.evalArgs ? Array.concat([tmp, this.expandAll], this.evalArgs) : [tmp, this.expandAll];

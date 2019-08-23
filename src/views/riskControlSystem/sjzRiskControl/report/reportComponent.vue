@@ -215,11 +215,11 @@ export default {
         // 自适应高度
         setClientHeight(){
             let offsetHeight = document.body.offsetHeight ;
-            this.styleHeight.height = offsetHeight - 80 + "px" ;
+            this.styleHeight.height = offsetHeight - 70 + "px" ;
             const me = this ;
             window.onresize = function temp(){ 
                 if(document.body.offsetHeight >= 560){
-                    me.styleHeight.height = document.body.offsetHeight - 80 + "px" ;
+                    me.styleHeight.height = document.body.offsetHeight - 70 + "px" ;
                 }else{
                     me.styleHeight.height = "560px";
                 }                

@@ -18,6 +18,15 @@ export default {
         }
         return month;
     },
+    getPeriod_two($params) {
+        let mm ;
+        if($params.month > 0 && $params.month < 10) {
+            mm = '0' + $params.month;
+        } else {
+            mm = $params.month;
+        }
+        return $params.year + mm ;
+    },
     /**
      * @author sjz
      * @event 时间获取---作用于【提交时间】列

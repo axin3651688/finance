@@ -138,7 +138,7 @@
                 return datas ;
             },
             "queryDataBefore":function(params, $this){
-                debugger
+                // debugger
                 
                 params.company = $this.objer.company ; 
                 params.sql = $this.objer.config.sql ;

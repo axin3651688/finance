@@ -751,6 +751,10 @@ export default {
         spassword2: [{ validator: validatePass2, trigger: "blur" }]
       },
       rules: {
+        landscape: [ { required: true, message: "必填项" } ],
+        education: [ { required: true, message: "必填项" } ],
+        professionalTitle: [ { required: true, message: "必填项" } ],
+        currentPosition: [ { required: true, message: "必填项" } ],
         //新增用户验证
         suser: [
           { required: true, message: "必填项" },
