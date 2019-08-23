@@ -183,7 +183,14 @@
 
         },
         mounted() {
-            this.doNotShowDim(false);
+            // this.doNotShowDim(false);
+            this.ShowDims({
+                company:true,
+                year:false,
+                month:false,
+                day:false,
+                conversion:false
+            });
         },
         methods: {
             /**
@@ -220,7 +227,8 @@
             getAllData() {
                 let params = {
                     dim: 'SPOLITICSSTATUS',
-                    deptId: ''
+                    deptId: '',
+                    company: this.$store.getters.company,
                 };
                 params['type'] = 'all';
                 this.getSelectedPersonRequestSend(params);
