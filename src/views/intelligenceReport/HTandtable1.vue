@@ -930,6 +930,7 @@ export default {
      * @author szc 2019年4月2日16:29:19
      */
     reportHandle(){
+      let arrs = ['4','5','6'];
       //判断如果没有保存，提示他去保存。
       if(this.tableData && this.tableData.length > 0){
         this.$message({
@@ -937,6 +938,15 @@ export default {
           type:"warning"
         });
         return;
+      }else if (arrs.indexOf(this.templateId) != -1) {
+        let flag = this.isItInternal();
+        if(flag){
+          this.$message({
+            message:"‘是否内部’不能为空！",
+            type:"warning"
+          });
+          return;
+        }
       }
       let me = this,
           item = this.currentItem,
@@ -1349,6 +1359,29 @@ export default {
         stateStr
       );
     },
+    /**
+     * 借款余额的自动汇总。
+     */
+    loanBalance (changes) {
+      if(!changes){
+        return;
+      }
+      let me = this,rowIndex = changes[0][0],name = changes[0][1],arr = ["A", "D"];
+      if(arr.indexOf(name) != -1){
+        let rowData = this.$refs.hotTableComponent.hotInstance.getDataAtRow(
+          rowIndex
+        );
+        if(rowData){
+          let jkbj = rowData[4] || 0,hkje = rowData[11] || 0;
+          let jkje = jkbj - hkje;
+          this.$refs.hotTableComponent.hotInstance.setDataAtCell(
+            rowIndex,
+            12,
+            jkje
+          );
+        }
+      }
+    },
     //修改的数据[行，列，老值，新值]
     afterChange(changes, source) {
       let obj = {},index,key,values,reg = /(^[1-9]([0-9]+)?(\.[0-9]{1,2})?$)|(^(0){1}$)|(^[0-9]\.[0-9](0-9)?$)|(\-?)/,
@@ -1362,6 +1395,7 @@ export default {
       //融资的新增与减少的判断 起始日期...
       if (this.templateId == "7") {
         this.changeAddOrReduce(changes);
+        this.loanBalance(changes);
         //正则判断。
         if(changes && changes.length > 0){
           let arrStr = ['sstartdate','senddate','srepaydate'];
@@ -1713,7 +1747,7 @@ export default {
       }
       if (this.templateId == 7) {
         //添加一个还款来源的限制。
-        if(columns == 12 || columns == 14){
+        if(columns == 14){
           // cellMeta.readOnly = this.paymentLimit(row, columns);
           cellMeta.readOnly = false;
         }else if (columns == 2) {
@@ -1727,7 +1761,7 @@ export default {
           cellMeta.width = "350px";
           cellMeta.source = this.typeOfFinancing();
           cellMeta.type = "dropdown";
-        }else if (columns == 15) {
+        }else if (columns == 15 || columns == 12) {
           cellMeta.readOnly = true;
         }else {
           cellMeta.readOnly = false;
@@ -1894,6 +1928,7 @@ export default {
      * @author szc 2019年5月31日11:17:28
      */
     changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
+      debugger;
       td.style.textAlign = "center"
       // if (!value) {
       //   td.innerHTML = companyname;
@@ -2358,6 +2393,21 @@ export default {
       }
       return flag;
     }, 
+    /**
+     * 是否内部的必填判断。
+     */
+    isItInternal () {
+      let me = this;
+      let data = me.settings.data,tableData = me.tableData,key = ['isinside'],flag = false;
+      for(let i = 0;i < data.length;i++){
+        let item = data[i];
+        if(item.isinside == null){
+          flag = true;
+          break;
+        }
+      }
+      return flag;
+    },
     //点击保存数据
     saveData() {
       let that = this;
@@ -2369,6 +2419,7 @@ export default {
         });
         return;
       }
+      let arrTems = ['4','5','6'];
       //如果是资金集中情况表。如果有“其中：银行存款”为零，则必须要填写相应的说明。
       if(this.templateId == "8"){
         let flag08 = that.explainColumnTable08();
@@ -2379,8 +2430,16 @@ export default {
           });
           return;
         }
+      }else if (arrTems.indexOf(this.templateId) != -1) {
+        let flag = this.isItInternal();
+        if(flag){
+          this.$message({
+            message:"‘是否内部’不能为空",
+            type:"warning"
+          });
+          return;
+        }
       }
-      let arrTems = ['4','5','6'];
       //这个变量是存储日期格式判断的字段的。
       let dateStrs = ['sstartdate','senddate','srepaydate'],flag7 = false;
       this.tableData.forEach(item => {
@@ -2774,7 +2833,7 @@ export default {
       let me = this,keys = ['B','C'];
       rows.forEach(item => {
         for(let i = 0;i < keys.length;i++){
-          item[keys[i]] = item[keys[i]] * 100;
+          item[keys[i]] = item[keys[i]]? item[keys[i]] * 100:item[keys[i]];
         }
       });
     },

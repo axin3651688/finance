@@ -123,14 +123,20 @@ export default {
             // 注：每次切换公司应该把tabsDataArray的数组清空，要不保留的还是上一次公司的信息，坑啊
             this.tabsDataArray = [] ;
             if(this.items.length > 1)this.closeTab(newcompany) ;
-            let cc = this.$store.getters.treeInfo.nisleaf ;
-            if(cc === this.biNisleaf){
-                this.loadModuleBefore(newcompany, this);
-            }else{
-                this.biNisleaf = this.$store.getters.treeInfo.nisleaf ;
-                this.adressArray = mini.getJsonAdress(this.jsonId, this.biNisleaf);
-                this.setTreeTableRequest();
-            }
+            // let cc = this.$store.getters.treeInfo.nisleaf ;
+            this.biNisleaf = this.$store.getters.treeInfo.nisleaf ;
+            this.items = [] ;
+            this.adressArray = mini.getJsonAdress(this.jsonId, this.biNisleaf);
+            this.setTreeTableRequest();
+            // if(cc === this.biNisleaf){
+            //     this.items = [] ;
+            //     this.loadModuleBefore(newcompany, this);
+            // }else{
+            //     this.items = [] ;
+            //     this.biNisleaf = this.$store.getters.treeInfo.nisleaf ;
+            //     this.adressArray = mini.getJsonAdress(this.jsonId, this.biNisleaf);
+            //     this.setTreeTableRequest();
+            // }
         },
         // 切换单位触发
         conversion(newconversion){
@@ -362,7 +368,7 @@ export default {
                     }
                 }
             };
-            debugger
+            // debugger
             if (Array.isArray(data) && data.length > 0) {
                 data = tools.sortByKey(data, "scode");
                 data = data.filter(function(item) {

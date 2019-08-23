@@ -3,7 +3,7 @@
  * @Date: 2018-12-11 17:34:38 
  * @Decription: 本项目用到的通用方法 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-03-12 10:40:29
+ * @Last Modified time: 2019-08-22 09:19:34
  */
 //加载工具类 lodash
 let _ = require('lodash');
@@ -31,16 +31,16 @@ export default {
         currency = currency != null ? currency : '$'
         decimals = decimals != null ? decimals : 2
         let stringified = Math.abs(valuex).toFixed(decimals)
-        let _int = decimals
-            ? stringified.slice(0, -1 - decimals)
-            : stringified
+        let _int = decimals ?
+            stringified.slice(0, -1 - decimals) :
+            stringified
         let i = _int.length % 3
-        let head = i > 0
-            ? (_int.slice(0, i) + (_int.length > 3 ? ',' : ''))
-            : ''
-        let _float = decimals
-            ? stringified.slice(-1 - decimals)
-            : ''
+        let head = i > 0 ?
+            (_int.slice(0, i) + (_int.length > 3 ? ',' : '')) :
+            ''
+        let _float = decimals ?
+            stringified.slice(-1 - decimals) :
+            ''
         let sign = valuex < 0 ? '-' : ''
         return sign + currency + head +
             _int.slice(i).replace(digitsRE, '$1,') +
@@ -78,8 +78,8 @@ export default {
     //将数组转为父子节点的对象 该方法来自于ztree方法
     transformToeTreeNodes(setting, simpleNodes) {
         return this.transformTozTreeFormat(setting, simpleNodes);
-    }
-    , nodeChildren(setting, node, newChildren) {
+    },
+    nodeChildren(setting, node, newChildren) {
         if (!node) {
             return null;
         }
@@ -88,8 +88,9 @@ export default {
             node[key] = newChildren;
         }
         return node[key];
-    }
-    , transformTozTreeFormat(setting, sNodes) {
+    },
+    transformTozTreeFormat(setting, sNodes) {
+        // debugger;
         var i,
             l,
             key = setting.data.simpleData.idKey,
@@ -124,20 +125,22 @@ export default {
     /**
      * @Decription 消息提示
      */
-    , showMes(mes, type) {
+    ,
+    showMes(mes, type) {
         MessageBox({
             message: mes,
             type: type,
             showConfirmButton: !1,
-            callback() { }
+            callback() {}
         });
     }
 
     //排序
-    , sortByKey(array, key) {
+    ,
+    sortByKey(array, key) {
         return array.sort((a, b) => {
-            var x = a[key];
-            var y = b[key];
+            var x = a[key] + "";
+            var y = b[key] + "";
             return ((x < y) ? -1 : ((x > y) ? 1 : 0));
         })
     }
@@ -145,8 +148,7 @@ export default {
     /**
      * 操作请求
      */
-    , opt: [{ url: "save", text: "新增", method: "post" }, { url: "update", text: "修改", method: "put" }, { url: "del", del: "删除", method: "get" }, { url: "drag", drag: "移动", method: "post" }]
+    ,
+    opt: [{ url: "save", text: "新增", method: "post" }, { url: "update", text: "修改", method: "put" }, { url: "del", del: "删除", method: "get" }, { url: "drag", drag: "移动", method: "post" }]
 
 }
-
-

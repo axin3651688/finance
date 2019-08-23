@@ -11,6 +11,17 @@
                                 </div>
                             </el-col>
                             <el-col :span="12" style="height:100%;">
+                                <div v-if="styleFlag" class="select_div">
+                                    <label for="">选择类型：</label>
+                                    <el-select v-model="styleValue" placeholder="请选择" @change="changeSelect">
+                                        <el-option
+                                            v-for="item in styleOptions"
+                                            :key="item.scode"
+                                            :label="item.sname"
+                                            :value="item.scode">
+                                        </el-option>
+                                    </el-select>
+                                </div>
                                 <div class="transverseBar" style="height:100%;">
                                     <transverseBar :chartData.sync="chartData"></transverseBar>
                                 </div>
@@ -70,7 +81,20 @@
                 chartData:[],
                 activeName:"first",
                 editableTabs: [],
-                rootRender:true
+                rootRender:true,
+                styleOptions:[
+                    {
+                        scode:0,
+                        sname:"合并"
+                    },
+                    {
+                        scode:1,
+                        sname:"单体"
+                    }
+                ],
+                styleValue:"",
+                publicData:[],
+                styleFlag:false
             }
         },
         /**
@@ -86,14 +110,22 @@
             company(newValue, oldValue) {
                 this.updateTabOther();
                 this.updateData();
+                let company = this.$store.getters.company;
+                if(company == 1001){
+                    this.styleFlag = true;
+                }else {
+                    this.styleFlag = false;
+                }
             },
             year(newValue, oldValue) {
                 this.updateTabOther();
                 this.updateData();
+                this.styleValue = "";
             },
             month(newValue, oldValue) {
                 this.updateTabOther(); 
                 this.updateData();
+                this.styleValue = "";
             }
         },
         created() {
@@ -136,6 +168,13 @@
                 bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
                 $div[0].children[0].style.height = heightNum + "px";
             }
+            //判断公司是不是一公司。
+            let company = this.$store.getters.company;
+            if(company == 1001){
+                this.styleFlag = true;
+            }else {
+                this.styleFlag = false;
+            }
         },
         methods: {
             ...mapActions(["ShowDims"]),
@@ -156,6 +195,7 @@
                 groupQuery(params).then(res => {
                     if (res.data.code == 200) {
                         me.tableData = res.data.data;
+                        me.publicData = me.deepCopy(res.data.data);
                         me.chartData = me.deepCopy(res.data.data);
                         me.treeData = me.transformationTreeData(res.data.data);
                         // me.queryBackstageDataAfter(res.data.data, judgeParams);
@@ -458,10 +498,21 @@
                     me.$refs[activeName][0].updateData(clickItemROW);
                 }
                 return true;
+            },
+            /**
+             * 切换选项。
+             */
+            changeSelect (val) {
+                let me = this;
+                me.chartData = me.publicData.filter(item => {
+                    return item.nisleaf == val;
+                });
             }
         }
     };
 </script>
-<style>
-
+<style lang="scss" scoped>
+    .select_div {
+        margin-left: 38px;
+    }
 </style>

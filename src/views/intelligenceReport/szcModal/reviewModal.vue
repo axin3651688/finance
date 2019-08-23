@@ -232,6 +232,12 @@ export default {
                 if(!item.companyname){
                     item.companyname = company;
                 }
+                //处理保留四位小数的字段。
+                if(item.B){
+                    item.B = item.B * 100;
+                }else if (item.C){
+                    item.C = item.C * 100;
+                }
             });
             return data;
         },
