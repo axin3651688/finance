@@ -175,6 +175,12 @@ export function publicReport(params) {
  */
 export function smallBell(params) {
     return request({
+        url: '/zjb/risk/Msg/query_risk_messages?pageNum=' + params.pageNum + "&pageSize=" + params.pageSize + "&account=" + params.account,
+        method: 'get'
+    })
+}
+export function smallBell_old(params) {
+    return request({
         url: '/zjb/zjb/query_fill_messages?pageNum=' + params.pageNum + "&pageSize=" + params.pageSize + "&account=" + params.account,
         method: 'get'
     })
@@ -214,6 +220,13 @@ export function smallBellCount(suser) {
  * /sys/Msg/change_fill_message_to_read
  */
 export function editStateOfMessage(params) {
+    return request({
+        url: '/zjb/risk/Msg/change_risk_message_to_read',
+        method: 'post',
+        data: params
+    })
+}
+export function editStateOfMessage_old(params) {
     return request({
         url: '/zjb/sys/Msg/change_fill_message_to_read?id=' + params.id,
         method: 'get'
