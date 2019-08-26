@@ -114,9 +114,9 @@ export default {
                         me.disabled = false ;
                     }
                 } else if (res.data.code === 1001) {
+                    me.tableData = [] ;
                     me.$message(res.data.msg + '，请添加数据！') ;
                 } else {
-                    me.tableData = [] ;
                     me.$message.error(res.data.msg) ;
                 }
             });

@@ -16,7 +16,7 @@
                 :name="item.name"
                 :closable="item.closable||false"
             >
-                <div style="width: 352px; float: left">
+                <div style="width: 152px; float: left">
                     <!-- 1. 按钮 -->
                     <el-button-group>
                         <el-button 
@@ -59,6 +59,7 @@
                 @addTab="addTab"
                 @handleDownload="handleDownload" 
                 :item="item" 
+                :newThis="newThis"
                 id="publicTable"
                 >
                 </tree-table>
@@ -85,6 +86,7 @@ export default {
     props: ["jsonAdress", "jsonId"],
     data(){
         return {
+            newThis: this ,
             tableDataValue: '',
             tabIndex: 1,
             biNisleaf: null ,
@@ -92,7 +94,8 @@ export default {
             objer2: {},
             tabsDataArray: [],
             queryEmptyArray: 0,
-            adressArray: ""
+            adressArray: "",
+            defaultExpandAll: false,
         }
     },
     created(){

@@ -751,6 +751,10 @@ export default {
         spassword2: [{ validator: validatePass2, trigger: "blur" }]
       },
       rules: {
+        landscape: [ { required: true, message: "必填项" } ],
+        education: [ { required: true, message: "必填项" } ],
+        professionalTitle: [ { required: true, message: "必填项" } ],
+        currentPosition: [ { required: true, message: "必填项" } ],
         //新增用户验证
         suser: [
           { required: true, message: "必填项" },
@@ -855,9 +859,6 @@ export default {
         birthday: [
           { required: true, message: "必选项" }
         ],
-        address: [
-          { required: true, message: "必选项" }
-        ],
         sphone: [
           { required: true, message: "必填项", trigger: "blur" },
           {
@@ -889,6 +890,18 @@ export default {
               }
             }
           }
+        ],
+        landscape:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        education:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        professionalTitle:[
+          {required: true, message: "必填项", trigger: "blur"}
+        ],
+        currentPosition:[
+          {required: true, message: "必填项", trigger: "blur"}
         ]
       }
     };

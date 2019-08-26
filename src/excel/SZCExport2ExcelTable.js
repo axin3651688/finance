@@ -88,7 +88,8 @@ function get_row_index(columns) {
     return arr;
 }
 
-function sheet_from_array_of_arrays(data, headNum, columns) {
+function sheet_from_array_of_arrays(data, headNum, columns) { 
+    // return ;
     // var ws = {};
     //这个处理只是针对于行次不用处理两位小数。
     var rowIndexs = get_row_index(columns);
@@ -182,7 +183,7 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
                                 horizontal: "right", //左右位置
                                 vertical: "center" //上下位置
                             },
-                            NumberFormatLocal: "#,##0.00"
+                            // NumberFormatLocal: "#,##0.00"
                         }
                     }
                 }
@@ -199,6 +200,16 @@ function sheet_from_array_of_arrays(data, headNum, columns) {
             if (typeof cell.v === 'number' && C > 0) {
                 if (rowIndexs && rowIndexs.length > 0 && rowIndexs.indexOf(C) != -1) {} else {
                     cell.v = cell.v.toFixed(2) + "";
+                }
+                if(
+                    ( 
+                        (C === 8 && columns[C].id==='ll' && columns[C].text === '利率（%）*' ) || 
+                        (C === 9 && columns[C].id==='zhcb' && columns[C].text === '综合成本（%）*') || 
+                        (C === 4 && columns[C].id==='zhcb' && columns[C].text === '加权平均融资成本（%）')
+                    ) && 
+                    !isNaN(value) && value !== 0
+                ) {
+                    cell.v =  value.toFixed(4) + "";
                 }
             }
             if (typeof cell.v === 'number' && C > 0) cell.t = 'n';

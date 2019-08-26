@@ -98,7 +98,7 @@
       {
         "text": "银行账户名称",
         "type":"string",
-        "width":"350",
+        "width":"420",
         "id": "yhzhmc"
       },
       {

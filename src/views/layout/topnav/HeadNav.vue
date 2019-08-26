@@ -78,7 +78,7 @@
         </el-dropdown-menu>
       </el-dropdown>
       <!-- 消息提醒 -->
-      <el-badge :value="messageValue" @click.native="messageHandle" v-if="false">
+      <el-badge :value="messageValue" @click.native="messageHandle">
         <i class="el-icon-bell iconclass"></i>
       </el-badge>
       <span class="username">
@@ -590,7 +590,7 @@ export default {
     getMessage(){
       let me = this,suser = this.$store.getters.user.user.userName,router = me.$router;
       request({
-        url: '/zjb/sys/Msg/query_nolook_count?user=' + suser,
+        url: '/zjb/risk/Msg/query_nolook_count?user=' + suser,
         method: 'get',
         validateStatus: function(status) {
             if (status == 999) {
@@ -669,13 +669,13 @@ export default {
      */
     messageHandle () {
       let me = this,storeParams = me.$store.getters;
-      if(this.messageValue == 0){
-        this.$message({
-          message:"暂无消息！",
-          type:"warning"
-        });
-        return;
-      };
+      // if(this.messageValue == 0){
+      //   this.$message({
+      //     message:"暂无消息！",
+      //     type:"warning"
+      //   });
+      //   return;
+      // };
       let params = {
         pageNum:0,
         pageSize:20,
@@ -705,12 +705,13 @@ export default {
         num = me.messageValue/20 + (me.messageValue%20 > 0? 1:0);
       }
       this.modalConfig = {
-        title:"报表审阅",//modal框标题
+        title:"风险消息列表",//modal框标题
         rowListener:"checkfilldata",//事件监听方法名
         dialogVisible:true,
         width:"70%",
         type:"s-table",//要显示的类型
         id:'userReport',//modal框的id
+        headerBtn:true,//按钮的显示控制
         datas: {
           dataCount:parseInt(num),
           tHeader:[
@@ -747,25 +748,40 @@ export default {
      * @author szc 2019年4月3日14:38:13
      */
     checkFillDataHandle (rowData,sign) {
-      let me = this,id = rowData.id;
+      debugger;
+      let me = this,arr = [];
+      if(sign == "allRead"){
+        rowData.forEach(item => {
+          arr.push(item.id)
+        });
+      }else {
+        let id = rowData.id
+        arr.push(id);
+      }
       let params = {
-        id:id
+        ids:arr
       };
       if(sign){
         if(sign == "agree"){
           me.ageeOrNoReturnHandler(rowData,true);
         }else if(sign == "noAgree") {
           me.ageeOrNoReturnHandler(rowData,false);
-        }else if(sign == "unread") {
+        }else if(sign == "unread" || sign == "allRead") {
           editStateOfMessage (params).then(res => {
             if(res.data.code == 200){
-              rowData.sislook = 'Y';
+              if(sign == "allRead"){
+                rowData.forEach(item => {
+                  item.sislook = 'Y';
+                });
+              }else {
+                rowData.sislook = 'Y';
+              }
               me.$message({
                 message:"操作成功！",
                 type:"success"
               });
             }else {
-              me.$message.error(res.data.data);
+              me.$message.error(res.data.msg);
             }
           });
         }

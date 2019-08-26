@@ -33,6 +33,9 @@
         >{{ item.templatename }}</el-checkbox>
     </div>
     <div v-else-if="modalConfig.type == 's-table'">
+        <div v-if="modalConfig.headerBtn" class="headerBtn_class">
+            <el-button @click="handleClick(modalConfig.datas.datas,'allRead')" type="primary">全部标为已读</el-button>
+        </div>
         <el-table :data="modalConfig.datas.datas || datas">
             <el-table-column 
             v-for="(item,index) in modalConfig.datas.tHeader" 
@@ -175,9 +178,10 @@ export default {
          * @author szc 2019年4月3日14:28:17
          */
         handleClick (row,sign) {
+            debugger;
             let me = this,eventListener = this.modalConfig.rowListener;
             if(eventListener){
-                this.$emit(eventListener,row.row,sign);
+                this.$emit(eventListener,sign == "allRead"? row:row.row,sign);
             }
         },
         /**
@@ -247,6 +251,11 @@ export default {
     display: block;
     color: #606266;
     font-size: 24px;
+}
+.headerBtn_class {
+    text-align: right;
+    margin-bottom: 10px;
+    margin-right: 10px;
 }
 </style>
 

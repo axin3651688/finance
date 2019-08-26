@@ -85,8 +85,13 @@
                 </el-table-column>
                 <el-table-column fixed="right" label="操作" width="135" align="center" >
                     <template slot-scope="scope">
-                        <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
-                        <el-button type="text" size="small" v-show="isbtnModify" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
+                        <span v-if="scope.row.period === riskPeriod">
+                            <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
+                            <el-button type="text" size="small" v-show="isbtnModify" @click.native.prevent="modifyRow(scope.$index, tableData)">修改</el-button>
+                        </span>
+                        <span v-else>
+                            <el-button type="text" size="small" @click.native.prevent="viewRow(scope.$index, tableData)">查看</el-button>
+                        </span>
                     </template>
                 </el-table-column>
             </el-table>
@@ -165,7 +170,6 @@ import {
 } from "~api/cube.js"
 // 引用vuex
 import { mapGetters, mapActions } from "vuex";
-import { debounce } from '../../../utils';
 export default {
     components: {
         diaLog,
@@ -221,6 +225,8 @@ export default {
             htmlText: "",
             elementui3: [] ,
             elementui3_num: 0 ,
+            // 
+            riskPeriod: "" ,
         }
     },
     created(){
@@ -229,6 +235,7 @@ export default {
         // this.periodtype = this.$store.getters.user.globalparam[0].periodtype ;
         // this.reporttype = this.$store.getters.user.globalparam[0].reporttype ;
         let $params = this.$store.state.prame.command;
+        this.riskPeriod = mini.getPeriod_two($params) ;
         // this.uploadData.company = $params.company ;
         // this.uploadData.period = this.getPeriod($params) ;
         // 点进节点时默认计算的高度
@@ -258,11 +265,15 @@ export default {
         // 切换年触发
         year: function(newyear){
             this.selection = [] ;
+            let $params = this.$store.state.prame.command;
+            this.riskPeriod = mini.getPeriod_two($params) ;
             this.loadModuleBefore() ;
         },
         // 切换月触发
         month: function(newmonth){
             this.selection = [] ;
+            let $params = this.$store.state.prame.command;
+            this.riskPeriod = mini.getPeriod_two($params) ;
             this.loadModuleBefore() ;
         },
         /**
@@ -289,7 +300,6 @@ export default {
     },
     methods: {
         // 
-        
         // 单元格的 className 的回调方法，也可以使用字符串为所有单元格设置一个固定的 className。
         cellClassName({row, column, rowIndex, columnIndex}){
             // debugger
@@ -425,7 +435,7 @@ export default {
         },
         // 1.3 数据获取之后的处理
         queryDataAfter(datas){
-            debugger
+            // debugger
             let me = this ;
             let obj = me.objer ;
             let $params = me.$store.state.prame.command;
@@ -460,26 +470,6 @@ export default {
                 me.elementui = [] ;
             }
             
-            // 必须要有数据
-            // if(me.tableData.length > 0){
-            //     me.elementui = [] ;
-            //     let one = me.tableData.filter(first => { return first.gradename=="可接受风险" }) ;
-            //     let two = me.tableData.filter(second => { return second.gradename=="一般风险" }) ;
-            //     let three = me.tableData.filter(third => { return third.gradename=="中等风险" }) ;
-            //     let four = me.tableData.filter(fourth => { return fourth.gradename=="重大风险" }) ;
-            //     let five = me.tableData.filter(fifth => { return fifth.gradename == "巨大风险" }) ;
-            //     let six = me.tableData.filter(sixth => { return sixth.gradename == "最低风险" }) ;
-            //     let seven = me.tableData.filter(seventh => { return seventh.gradename == "高风险" }) ;
-            //     if(one.length > 0)me.elementui.push({ text: "可接受风险", html: "<a>可接受风险"+one.length+"条</a>" }) ;
-            //     if(two.length > 0)me.elementui.push({ text: "一般风险", html: "<a>一般风险"+two.length+"条</a>" }) ;
-            //     if(three.length > 0)me.elementui.push({ text: "中等风险", html: "<a>中等风险"+three.length+"条</a>" }) ;
-            //     if(four.length > 0)me.elementui.push({ text: "重大风险", html: "<a>重大风险"+four.length+"条</a>" }) ;
-            //     if(five.length > 0)me.elementui.push({ text: "巨大风险", html: "<a>巨大风险"+five.length+"条</a>" }) ;
-            //     if(six.length > 0)me.elementui.push({ text: "最低风险", html: "<a>最低风险"+six.length+"条</a>" }) ;
-            //     if(seven.length > 0)me.elementui.push({ text: "高风险", html: "<a>高风险"+seven.length+"条</a>" }) ;
-            // }else{
-            //     me.elementui = [] ;
-            // }
             // 本属公司才能操作按钮，切换到非本属公司只能刷新和查看。单体公司不显示下达(2个)按钮，
             if($params.company === information.companyId){
                 if(nisleaf){
@@ -494,19 +484,28 @@ export default {
                 // 上报状态下当前月的识别无添加、导入、修改按钮
                 if(me.tableData.length > 0){
                     // debugger
-                    let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;    // 过滤出来提交的风险
+                    let $params = me.$store.state.prame.command;
+                    let riskPeriod = mini.getPeriod_two($params) ;
+                    let submit = me.tableData.filter(dd => { return dd.sissubmit == "已提交" && dd.period === riskPeriod }) ;    // 过滤出来提交的风险
+                    let filterData = submit.some(abc => { return abc.period === riskPeriod })        // 过滤出本期间的数据
                     let isTrue = submit.some(ee => { return ee.sisreport == 1 }) ;                  // 一真即真 1为上报状态
-                    // 为上报状态
-                    if(isTrue){
-                        me.isbtnModify = false ;    // 修改按钮隐藏
-                        me.isbtnShow3 = false ;     // 添加按钮隐藏
-                        me.isbtnShow4 = false ;     // 导入按钮隐藏
-                        me.$message({ message: "温馨提示：风险已上报！", type: "warning" }) ;
-                    }else{
-                        me.isbtnModify = true ;     // 修改按钮显示
-                        me.isbtnShow3 = true ;      // 添加按钮显示
-                        me.isbtnShow4 = true ;      // 导入按钮显示
-                    }
+                    // if(!filterData) {
+                    //     me.isbtnModify = true ;     // 修改按钮显示
+                    //     me.isbtnShow3 = true ;      // 添加按钮显示
+                    //     me.isbtnShow4 = true ;      // 导入按钮显示
+                    // } else {
+                        // 为上报状态
+                        if(isTrue){
+                            me.isbtnModify = false ;    // 修改按钮隐藏
+                            me.isbtnShow3 = false ;     // 添加按钮隐藏
+                            me.isbtnShow4 = false ;     // 导入按钮隐藏
+                            me.$message({ message: "温馨提示：风险已上报！", type: "warning" }) ;
+                        }else{
+                            me.isbtnModify = true ;     // 修改按钮显示
+                            me.isbtnShow3 = true ;      // 添加按钮显示
+                            me.isbtnShow4 = true ;      // 导入按钮显示
+                        }
+                    // }                   
                 }
             }else{
                 me.isbtnShow = false ;          me.isbtnShow3 = false ;
