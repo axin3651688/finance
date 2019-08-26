@@ -75,7 +75,7 @@
         {
             "id": "sname",
             "type": "string",
-            "width": "360px",
+            "width": "400px",
             "fixed":true,
             "text": "行业名称"
         },
