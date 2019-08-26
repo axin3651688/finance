@@ -30,7 +30,7 @@
         </el-dialog>
         <!-- 1 -->
         <p class="title1">风险表现</p>
-            <el-form :model="form" :inline="true" :rules="rules2" ref="sub2" label-width="120px" >
+            <el-form :model="form" :inline="true" ref="sub2" label-width="120px" >
                 <el-form-item label="风险名称：" prop="sriskname">
                     <el-input v-model="form.sriskname" auto-complete="off" maxlength="50" :readonly="readonly" @change="descInput_sriskname" placeholder="请输入风险名称" class="input"></el-input>
                 </el-form-item>
@@ -59,14 +59,14 @@
                     <el-input v-model="form.sfilluser" auto-complete="off" readonly class="input"></el-input>
                 </el-form-item>
             </el-form>
-            <el-form :model="form" :inline="false" :rules="rules3" ref="sub3" label-width="120px">
+            <el-form :model="form" :inline="false" ref="sub3" label-width="120px">
                 <el-form-item label="风险概述：" prop="sriskdescription">
                     <el-input type="textarea" v-model="form.sriskdescription" maxlength="1000" :readonly="readonly" @change="descInput_sriskdescription" placeholder="请输入风险概述..."></el-input>
                 </el-form-item>
             </el-form>
         <!-- 2 -->
         <p class="title1">风险分析</p>
-            <el-form :model="form" :inline="true" :rules="rules4" ref="sub4" label-width="120px">
+            <el-form :model="form" :inline="true" ref="sub4" label-width="120px">
                 <el-form-item label="风险发生概率：" prop="nprobability">
                     <el-select v-model="form.nprobability" :disabled="readonly" @change="selectChange" placeholder="请选择风险概率" class="input2">
                         <el-option v-for="(option,index) in optionl" :key="option.id" :label="option.sname" :value="option.id"></el-option>
@@ -86,7 +86,7 @@
                     <el-input v-model="form.gradename" auto-complete="off" placeholder="不可编辑" readonly class="input"></el-input>
                 </el-form-item>
             </el-form>
-            <el-form :model="form" :inline="false" :rules="rules5" ref="sub5" label-width="120px">
+            <el-form :model="form" :inline="false" ref="sub5" label-width="120px">
                 <el-form-item label="风险矩阵：">
                     <risk-matrix :data="riskTableRow" :fsgl="fsgl" :yxcd="yxcd"></risk-matrix>
                 </el-form-item>
@@ -98,7 +98,7 @@
             </el-form>
         <!-- 3 -->
         <p class="title1">风险处理方法</p>
-        <el-form :model="form" :inline="false" :rules="rules6" ref="sub6" label-width="120px">
+        <el-form :model="form" :inline="false" ref="sub6" label-width="120px">
             <el-form-item label="采取措施：" prop="smeasures">
                 <el-input type="textarea" placeholder="请输入采取措施..." maxlength="1000" :readonly="readonly" @change="descInput_smeasures" v-model="form.smeasures"></el-input>
             </el-form-item>
@@ -117,7 +117,12 @@
                     <el-button type="primary" v-show="isBtn4" @click="saveClick('add')" :disabled="saveAndsubmit2">新 增</el-button>
                     <el-button type="primary" v-show="isBtn" @click="saveClick('save')" :disabled="saveAndsubmit">保 存</el-button>
                     <el-button type="success" v-show="isBtn2" @click="saveClick('sub2','sub3','sub4','sub5','sub6')" :disabled="saveAndsubmit">提 交</el-button>
-                    <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button>
+                    <span v-if="isclosenameDialog === '未关闭'" style="marginRight: 5px;">
+                        <el-button type="info" v-show="isBtn3" @click="riskCloseClick">风险关闭</el-button>
+                    </span>
+                    <span v-else style="marginRight: 5px;">
+                        <el-button type="success" v-show="isBtn3" @click="riskCloseClick">风险启用</el-button>
+                    </span>
                     <el-button @click="resetClick('sub2','sub3','sub4','sub5','sub6')">取 消</el-button>
                 </el-col>
             </el-row>
@@ -223,24 +228,7 @@ export default {
             isAddParse: 0,
             isCheckbox: true ,      // 控制下达选择按钮的显示与隐藏（注：单体公司无法下达故此隐藏，合并公司可以下达故此显示）
             // 
-            rules2:{
-                // sriskname: [{ validator: validate_sriskname, trigger: 'blur' }],
-                // srisktype: [{ validator: validate_srisktype, trigger: 'change' }]
-            },
-            rules3:{
-                // sriskdescription: [{ validator: validate_sriskdescription, trigger: 'blur' }]
-            },
-            rules4:{
-                // nprobability: [{ validator: validate_nprobability, trigger: 'change' }],
-                // ninfluence: [{ validator: validate_ninfluence, trigger: 'change' }]
-            },
-            rules5:{
-                // sreporttype: [{ validator: validate_sreporttype, trigger: 'change' }]
-            },
-            rules6:{
-                // smeasures: [{ validator: validate_smeasures, trigger: 'blur' }],
-                // sproposal: [{ validator: validate_sproposal, trigger: 'blur' }]
-            }
+            isclosenameDialog: "未关闭"
         }
     },
     created(){ 
@@ -345,6 +333,7 @@ export default {
                 this.riskbulkOrderser = false ;
                 this.checkbox = false ;
                 viewRow = this.newThis.view_row ;
+                this.isclosenameDialog = viewRow.isclosename ;
                 let $cc = viewRow.srisktypename ;
                 this.valueTitle = $cc ;
                 for(let key in this.form){
@@ -355,6 +344,7 @@ export default {
                 }  
                 // debugger            
             }else{
+                this.isclosenameDialog = '未关闭' ;
                 this.valueTitle = "";
                 this.isAddParse = 0 ;
                 this.riskbulkOrderser = false ;
@@ -586,9 +576,17 @@ export default {
             let viewTrue = false ;
             me.newThis.axiosJson() ;
             // 查询上报状态
-            let submit = me.newThis.tableData.filter(dd => { return dd.sissubmit == "已提交" }) ;
+            let time = me.$store.state.prame.command;
+            let riskPeriod = mini.getPeriod_two(time) ;
+            let submit = me.newThis.tableData.filter(dd => { return dd.sissubmit == "已提交" && dd.period === riskPeriod }) ;
             let isTrue = submit.some(ee => { return ee.sisreport == 1 }) ; 
-            if(isTrue)return false ;
+            let filterData = submit.some(abc => { return abc.period === riskPeriod })
+            if(submit.length > 0 && isTrue){
+                me.$message.warning('风险已被上报，无法继续添加或提交！')
+                return false 
+            }
+            // if(isTrue)return false ;
+            
             // if(isTrue) {
             //     me.$message('风险已上报，无法添加和提交！') ;
             //     return false ;
@@ -782,9 +780,14 @@ export default {
         // 风险关闭按钮请求
         riskdistinguish_update_sisclose_request(data, me){
             riskdistinguish_update_sisclose(data).then(ress => {
-                // debugger
-                if(ress.data.code === 200){
+                debugger
+                if(ress.data.code === 200){ 
                     me.$message({ message: "关闭成功!", type: "success" });
+                    if(me.isclosenameDialog === '未关闭') {
+                        me.isclosenameDialog = '已关闭' ;
+                    } else {
+                        me.isclosenameDialog = '未关闭' ;
+                    }
                     me.newThis.axiosJson() ;
                 }else{
                     me.$message({ message: "温馨提示：未批示/未反馈的风险无法关闭！", type: "warning" });
