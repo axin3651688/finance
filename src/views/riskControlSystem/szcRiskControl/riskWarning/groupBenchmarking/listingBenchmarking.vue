@@ -110,7 +110,7 @@
             </el-row>
         </div>
         <div>
-            <el-dialog title="收货地址" :visible.sync="dialogTableVisible">
+            <el-dialog :title="titleName" :visible.sync="dialogTableVisible">
                 <el-table
                     v-if="tableFlag"
                     ref="multipleTable"
@@ -159,6 +159,7 @@
         },
         data() {
             return {
+                titleName:"维度选择",
                 //选中公司名称。
                 valueSname:'',
                 treeData: [{
