@@ -859,9 +859,6 @@ export default {
         birthday: [
           { required: true, message: "必选项" }
         ],
-        address: [
-          { required: true, message: "必选项" }
-        ],
         sphone: [
           { required: true, message: "必填项", trigger: "blur" },
           {
