@@ -223,7 +223,7 @@ export function editStateOfMessage(params) {
     return request({
         url: '/zjb/risk/Msg/change_risk_message_to_read',
         method: 'post',
-        data: params
+        data: params.ids
     })
 }
 export function editStateOfMessage_old(params) {

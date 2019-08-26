@@ -1818,10 +1818,18 @@ export default {
      */
     template8CellMeta (row,columns) {
       let me = this,ssrccode = me.$store.getters.treeInfo.ssrccode;
-      if(ssrccode && ssrccode != '1' && ssrccode != '0' && columns != 5){
+      if(ssrccode && ssrccode != '1' && ssrccode != '0'){
+        if(columns == 5){
+          return false;
+        }
         return true;
       }else {
-        if(row == 0 && columns < 5){
+        if(row == 0){
+          if(columns != 3 && columns != 5){
+            return true;
+          }else {
+            return false;
+          }
           return true;
         }else if(columns == 4 || columns == 1 || columns == 3){
           return true;
@@ -1928,7 +1936,6 @@ export default {
      * @author szc 2019年5月31日11:17:28
      */
     changeFormatOfTable(instance,td,row,col,prop,value,cellProperties){
-      debugger;
       td.style.textAlign = "center"
       // if (!value) {
       //   td.innerHTML = companyname;
