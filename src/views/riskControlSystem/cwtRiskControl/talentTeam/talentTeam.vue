@@ -217,7 +217,7 @@
             getSelectedData() {
                 let _this = this;
                 let params = this.getDimParams();
-                params['type'] = 'selected';
+                params['type'] = 'all';
                 _this.getSelectedPersonRequestSend(params);
             },
 
