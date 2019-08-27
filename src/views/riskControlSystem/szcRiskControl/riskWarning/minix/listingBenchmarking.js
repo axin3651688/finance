@@ -201,8 +201,10 @@ export default {
             me.submitSign = sign;
             if (sign == 'list') {
                 me.tableData = me.afterCompanyipo;
+                me.titleName = "公司选择";
             } else if (sign == 'indicator') {
                 me.tableData = me.afterIndicators;
+                me.titleName = "指标选择";
             }
         },
         /**
