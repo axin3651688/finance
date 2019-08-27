@@ -174,10 +174,8 @@ export default {
             if(res.status === 200) { 
                 if(res.data.code === 200) {
                     // debugger
-                    me.previewURL = res.data.data ;
-                    let a = document.getElementById(me.review)
-                    a.setAttribute("onclick",'');
-                    a.click();
+                    let previewURL = res.data.data ;
+                    window.open(previewURL,'_blank');
                 } else {
                     me.$message.error(res.data.msg) ;
                 }
