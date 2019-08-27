@@ -392,7 +392,8 @@
             initEchartData(data) {
                 let _this = this;
                 let emptyData = [];
-                let eD = ['101', '103', '104', '105', '106'];
+                let eD = ['100', '101', '103', '104', '105', '106'];
+                let _yysr = 0;
                 let nagetiveDataCount = 0;
                 for (let x in data) {
                     let i = data[x];
@@ -402,11 +403,15 @@
                             let _m = {name: '', value: 0};
                             _m.name = z.name;
                             _m.value = z.value;
-                            if (_m.value !== '0' && _m.value !== '0.00') {
-                                if (parseFloat(_m.value) < 0) {
-                                    nagetiveDataCount++;
+                            if (z.nid !== '100') {
+                                if (_m.value !== '0' && _m.value !== '0.00') {
+                                    if (parseFloat(_m.value) < 0) {
+                                        nagetiveDataCount++;
+                                    }
+                                    emptyData.push(_m);
                                 }
-                                emptyData.push(_m);
+                            } else {
+                                _yysr = _m.value * 1;
                             }
                         }
                     }
@@ -414,7 +419,13 @@
                 _this.hasNagetiveNum = nagetiveDataCount > 0;
                 _this.gaugeEchartData.data = data.partx.cellData1;
                 _this.pieEchartData.data = emptyData;
+                if (!_this.hasNagetiveNum) {
+                    emptyData.forEach((a) => {
+                        a.value = ((a.value * 1) / _yysr);
+                    })
+                }
                 _this.funnelEchartData.data = emptyData;
+
                 _this.dataFresh = !_this.dataFresh;
 
             },
