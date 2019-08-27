@@ -57,12 +57,14 @@
                         <!-- 一级内容层 -->
                         <div class="content_first" v-for="(cont,index2) in contentA" v-show="getContentView(item, cont)">
                             <div class="content_first-A" @click="changeContent2(cont, index2)">
-                                <div class="content_first-icon" v-if="firstShow">
+                                <div class="content_first-icon">
                                     <span v-if="!cont.showContent"><i class="el-icon-arrow-right first_icon"></i></span>
                                     <span v-else><i class="el-icon-arrow-down first_icon"></i></span>
                                 </div>
                                 <!-- <div class="content_first-text">{{ cont.scontent }}</div> -->
-                                <div class="content_first-text" v-if="firstShow" v-html="cont.scontent"></div>
+                                <div class="content_first-text" v-html="cont.scontent">
+
+                                </div>
                             </div>
 
                             <!-- 二级内容层 -->
@@ -143,9 +145,9 @@ export default {
             review: "review" ,      // id
 
             dialogVisible_first: false ,            // 目录弹出层 默认不显示false | true显示
-            firstShow: true ,       // 第一层次的显示控制
-            secondShow:true ,       // 第二层次的显示控制
-            thirdShow: true ,       // 第二层次的显示控制
+            firstContent: "" ,       // 第一层次的显示控制
+            secondContent:"" ,       // 第二层次的显示控制
+            thirdContent: "" ,       // 第二层次的显示控制
         }
     },
     mounted(){
@@ -304,9 +306,7 @@ export default {
             let array = this.contentA.filter(element => { return element.catalogid == item.id })
             if(array.length == 1 && array[0].id == null && array[0].scontent == null) {
                 this.$message.info('暂无数据显示，请添加数据')
-                this.firstShow = false ;
-            } else {
-                this.firstShow = true ;
+                return ;
             }
             let temp = this.directory
             temp[index].showContent = !temp[index].showContent
@@ -319,6 +319,7 @@ export default {
             let array = this.contentB.filter(element => { return element.pid == cont.id }) 
             if(array.length == 0) {
                 this.$message.info('暂无数据显示，请添加数据')
+                return ;
             } 
             let temp = this.contentA
             temp[index].showContent = !temp[index].showContent
@@ -331,6 +332,7 @@ export default {
             let array = this.contentC.filter(element => { return element.pid == todo.id }) 
             if(array.length == 0) {
                 this.$message.info('暂无数据显示，请添加数据')
+                return ;
             } 
             this.contentCC = [] ;
             this.contentCC = this.contentC.filter(res => {
@@ -371,11 +373,11 @@ export default {
          * 预览按钮
          */   
         previewClick(previewURL) {
-            if(previewURL === "") {
+            // if(previewURL === "") {
                 riskGuidance.importRiskGuidanceWorld(this, "preview") ;
-            } else {
-                window.open(previewURL,'_blank') // 新窗口打开外链接
-            }
+            // } else {
+            //     window.open(previewURL,'_blank') // 新窗口打开外链接
+            // }
         }
     }
 }
