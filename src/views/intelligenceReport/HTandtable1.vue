@@ -3177,6 +3177,28 @@ export default {
         this.years = date;
         Handsontable.dom.addEvent(el, "click", function(event) {
           // arr.alter("remove_row", row);//删除当前行
+          let tableState = me.tableState;
+          if(tableState && [1,2,3].indexOf(tableState) != -1){
+            let msg = "报表已被处理！";
+            switch (tableState) {
+              case 1:
+                msg = "报表已上报，不能删除！"
+                break;
+              case 2:
+                msg = "报表在申请退回中，不能删除！"
+                break;
+              case 3:
+                msg = "报表已被审阅，不能删除！"
+                break;
+              default:
+                break;
+            }
+            me.$message({
+              message:msg,
+              type:"warning"
+            });
+            return 
+          }
           let tabledata = me.tableData;
           let datas = me.settings.data;
           let nid;
