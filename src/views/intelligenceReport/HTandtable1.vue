@@ -2816,7 +2816,6 @@ export default {
       // console.log("传递的data", this.datas);
       let me = this;
       inquire(this.datas).then(res => {
-        
         console.log("查询", res);
         let columns = res.data.data.columns;
         let rows = res.data.data.rows;
@@ -2827,6 +2826,15 @@ export default {
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
           this.parsePercent(rows);
+        }else if (this.templateId == "8" && rows && rows.length > 0){
+          if(rows && rows.length == 1){
+            let item = rows[0],arr = ['A','B','C'];
+            arr.forEach(it => {
+              if(item[it] == 0){
+                item[it] = null;
+              }
+            });
+          }
         }
         //查询当前选中报表的状态。
         me.queryStateOfFillTable(columns,rows,res);
@@ -3147,6 +3155,9 @@ export default {
         el.className = "flag";
         el.id = "flag";
         el.innerHTML = "删除";
+        if(this.templateId == 8 && row == 0){
+          el.innerHTML = "";
+        }
         td.appendChild(el);
         // if (this.templateId == 8) {
         //   let dd = document.getElementsByTagName("td")[5];
