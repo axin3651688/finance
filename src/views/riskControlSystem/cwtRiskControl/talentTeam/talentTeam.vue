@@ -218,6 +218,7 @@
                 let _this = this;
                 let params = this.getDimParams();
                 params['type'] = 'all';
+                params['company'] = _this.$store.getters.company;
                 _this.getSelectedPersonRequestSend(params);
             },
 
