@@ -102,7 +102,7 @@
               <i class="about"></i>
               <span @aboutSoftware="aboutSoftware">关于软件</span>
             </el-dropdown-item>
-            <el-dropdown-item command="info" class="icon-bottom">
+            <el-dropdown-item command="help" class="icon-bottom">
               <i class="help"></i>
               <span>帮助</span>
             </el-dropdown-item>
@@ -216,7 +216,7 @@ import Hamburger from "@v/layout/sidebar/Hamburger";
 import { mapGetters, mapActions } from "vuex";
 import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
-import { logout } from "~api/interface.js";
+import { logout,helpRequest } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
 import request from 'utils/http'
 import {
@@ -521,6 +521,7 @@ export default {
       "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
+      debugger;
       //    console.log(cmdItem)
       switch (cmdItem) {
         case "info":
@@ -534,7 +535,21 @@ export default {
         case "aboutSoftware":
           this.aboutSoftware();
           break;
+        case "help":
+          this.helpHandler();
+          break;
       }
+    },
+    /**
+     * 文档帮助。
+     */
+    helpHandler () {
+      let me = this;
+      helpRequest().then(res => {
+        if(res.data.code == 200){
+          window.open(res.data.data,"文档帮助");
+        }
+      });
     },
     getname(e) {
       console.log("a:", e);
