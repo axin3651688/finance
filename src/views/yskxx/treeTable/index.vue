@@ -32,9 +32,9 @@
         <el-table-column v-if="columns.length > 0" v-for="(column, index) in columns" :key="column.id" :prop="column.id" :label="column.text" :width="column.width" :align="column.align">
             <el-table-column v-for="tool in column.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align">
                 <template slot-scope="scope">
-                    <el-tooltip :content="getCellValues(scope,tool)" placement="right" effect="light">
+                    <!-- <el-tooltip :content="getCellValues(scope,tool)" placement="right" effect="light"> -->
                         <span>{{ getCellValues(scope,tool) }}</span>
-                    </el-tooltip>
+                    <!-- </el-tooltip> -->
                 </template>
             </el-table-column>
             <template slot-scope="scope">
@@ -47,9 +47,9 @@
                     <!-- <i v-else class="iconfont icon-minus-square" aria-hidden="true"></i> -->
                 <!-- </!--> 
                 <!-- {{scope.row[column.id]}} -->
-                <el-tooltip :content="getCellValues(scope,column)" placement="right" effect="light">
+                <!-- <el-tooltip :content="getCellValues(scope,column)" placement="right" effect="light"> -->
                     <span>{{ getCellValues(scope,column) }}</span>
-                </el-tooltip>
+                <!-- </el-tooltip> -->
                 <!-- sjz 按钮 -->
                 <span v-if="column.id === 'cz' && item.tableBtn.length>0" >
                     <el-button                 

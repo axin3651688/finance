@@ -38,18 +38,36 @@
 
                                 </div>
                                 <div class="demo-drawer__main-B">
-                                    <!-- 删除按钮 -->
-                                    <el-tooltip content="删除" placement="top" effect="light">
-                                        <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" :disabled="disabled1" @click="deleteClick(element, index, '2')">
-                                            <i class="el-icon-delete second_A"></i> 
-                                        </el-button>
-                                    </el-tooltip>
-                                    <!-- 下级按钮 -->
-                                    <el-tooltip content="下级" placement="top" effect="light">
-                                        <el-button type="text" class="riskGuidanceDialog_btnC" size="mini" :disabled="disabled1" @click="lowerLevelClick(element, '1')">
-                                            <i class="iconfont icon-xiajicaozuo second_B"></i> 
-                                        </el-button>
-                                    </el-tooltip>
+                                    <div style="margin: auto; width: 86px;">
+                                        <!-- 删除按钮 -->
+                                        <el-tooltip content="删除" placement="top" effect="light">
+                                            <el-button class="riskGuidanceDialog_btnB" type="text" size="mini" :disabled="disabled1" @click="deleteClick(element, index, '2')">
+                                                <i class="el-icon-delete second_A"></i> 
+                                            </el-button>
+                                        </el-tooltip>
+                                        <!-- 下级按钮 -->
+                                        <el-tooltip content="下级" placement="top" effect="light">
+                                            <el-button type="text" class="riskGuidanceDialog_btnC" size="mini" :disabled="disabled1" @click="lowerLevelClick(element, '1')">
+                                                <i class="iconfont icon-xiajicaozuo second_B"></i> 
+                                            </el-button>
+                                        </el-tooltip>
+                                    
+                                        <!-- 图片按钮 -->
+                                        <!-- <el-upload
+                                        class="upload-demo directoryDialog_A_2-btn2"
+                                        action="/zjb/riskguidecontent/upload_chart"
+                                        :before-upload="beforeAvatarUpload"
+                                        :on-success="onSuccess"
+                                        :data="dataUpload"
+                                        style="float: left; width: 18px;"
+                                        >
+                                            <el-tooltip content="上传图片" placement="top" effect="light">
+                                                <el-button type="text" class="riskGuidanceDialog_btnC" size="mini" :disabled="disabled1" @click="lowerPictureClick(element, '1')">
+                                                    <i class="iconfont icon-tupian second_C"></i> 
+                                                </el-button>
+                                            </el-tooltip>
+                                        </el-upload> -->
+                                    </div>
                                 </div>
                             </div>
                         </li>
@@ -222,6 +240,11 @@ export default {
             number: "" ,                // 点击输入框的区分等级用的
             controllerCtrl: true ,      // 控制器 应用于保存 1 Ctrl+s
             controllerBlur: true ,      // 控制器 应用于保存 2 blur()
+
+            dataUpload: {               // 上传图片时的额外参数
+                oldFilePath: ""
+            },
+            picArray: {} ,              // 图片按钮存储信息
         }   
     },
     methods: {
@@ -419,10 +442,8 @@ export default {
         /**
          * @event 内容【修改】接口
          */
-        riskguidecontentUpdate_request(element, scontent) {
+        riskguidecontentUpdate_request(element, scontent) { 
             const me = this ;
-            // me.controllerCtrl = true ;  // 初始化
-            // me.controllerBlur = true ;  // 初始化
             let params = [{
                 id: element.id,
                 chartpath: "",
@@ -441,7 +462,7 @@ export default {
         /**
          * @event 内容【添加】接口
          */
-        riskguidecontentAdd_request(element, scontent, stype) {
+        riskguidecontentAdd_request(element, scontent, stype) { 
             const me = this ;
             let contPid ;
             // me.controllerCtrl = true ;  // 初始化
@@ -492,19 +513,69 @@ export default {
             }
             selectAll(params).then(res => {
                 if (res.data.code === 200) {
+                    let obj = me.lowerLevelObj ;
                     me.contentA = res.data.data.filter(elementA => { return elementA.nlevel === 1 }) ;
                     me.contentB = res.data.data.filter(elementB => { return elementB.nlevel === 2 }) ;
                     me.contentC = res.data.data.filter(elementC => { return elementC.nlevel === 3 }) ;
+                    me.contentA.forEach(element => {
+                        if(element.id === null && element.scontent === null) {
+                            element.id = 'B' + me.random(1, 1000) ;
+                            element.scode = 0 ;
+                        }
+                    });
+                    
                 } else {
                     me.$message.error(res.data.msg) ;
                 }
             })
-        }
+        },
+        /** ------------------------------------------------------------------------------- */
+        /**
+         * 图片上传按钮（第一级）
+         */
+        lowerPictureClick(element, stype) {
+            this.picArray = {} ;
+            this.picArray = element ;
+        },
+        /**
+         * 图片上传按钮   上传文件之前的钩子，参数为上传的文件，若返回 false 或者返回 Promise 且被 reject，则停止上传
+         */
+        beforeAvatarUpload(file){
+            const isJPG = file.type === 'image/jpeg';
+            const isPNG = file.type === 'image/png' ;
+            if(!isJPG && !isPNG) {
+                this.$message({ message: "图片只能上传 JPG 格式 或者 PNG 格式！", type: "warning" }) ;
+                return false ;
+            }
+        },
+        /**
+         * 图片上传按钮   文件上传成功时的钩子
+         */
+        onSuccess(response, file, fileList){ 
+            if(response.code === 200) {
+                if(response.data.code === 200) {  debugger
+                    // this.$message({ message: response.data.msg, type: "success" }) ;
+                    let idContent = document.getElementById(this.picArray.id) ;
+                    let url = response.data.data ;
+                    let img = " <el-link type='success' class='ffrop' style='color: green; cursor: pointer;' @click='viewPicture(" + url+ " )'>" +
+                              "<i class='el-icon-view el-icon--right'>查看附件</el-link>"
+                            //   innerHTML = "<a href='#' οnclick=\"doGo(this.title);return false;\" >" + citys + "</a>"
+                    let scontent = this.picArray.scontent + img ;
+                    this.riskguidecontentUpdate_request(this.picArray, scontent) ;
+                } else {
+                    this.$message({ message: response.data.msg, type: "warning" }) ;
+                }
+            } 
+        },
+        
     }
 }
 </script>
 <style scoped src="./riskGuidanceCss/riskGuidanceDialog.css"></style>
 <style>
+.directoryDialog_A_2-btn2 .el-upload-list {
+    display: none ;
+}
 .riskGuidanceDialog-container .el-drawer__header {
     margin-bottom: 0 ;
 }

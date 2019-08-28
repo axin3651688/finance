@@ -101,10 +101,10 @@ export default {
   methods: {
     ...mapActions(["GetSideMid", "GettRreeInfo","ShowDims"]),
     submitForm(formName) {
-      this.$refs[formName].validate(valid => {
+      this.$refs[formName].validate(valid => { 
         if (valid) {
           login(this.loginUser)
-            .then(res => {
+            .then(res => { 
               // 获取token
               // console.log(res);
               if(res.data && res.data.code != 200){

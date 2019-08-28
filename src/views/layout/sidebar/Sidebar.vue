@@ -52,7 +52,7 @@ import NavMenu from "./NavMenu.vue";
 //
 export default {
   name: "Leftmenu",
-  created() {
+  created() { 
     // let num = 247;
     //头像图片的地址。
     let userCng = this.$store.getters.user.user;
