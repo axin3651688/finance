@@ -37,9 +37,9 @@
         class="tree_table"
         id="publicTable"
         >
-            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id" :width="items.width" :align="items.align" :fixed="items.fixed" :show-overflow-tooltip="items.showOverflowTooltip">
-                <el-table-column v-for="too in items.children" :prop="too.id" :label="too.text" :key="too.id" :width="too.width" :align="too.align" :show-overflow-tooltip="too.showOverflowTooltip">
-                    <el-table-column v-for="tool in too.children" :prop="tool.id" :label="tool.text" :key="tool.id" :width="tool.width" :align="tool.align" :show-overflow-tooltip="tool.showOverflowTooltip">
+            <el-table-column v-for="(items,index) in columns" :prop="items.id" :label="items.text" :key="items.id + index" :width="items.width" :align="items.align" :fixed="items.fixed" :show-overflow-tooltip="items.showOverflowTooltip">
+                <el-table-column v-for="(too,index) in items.children" :prop="too.id" :label="too.text" :key="too.id + index" :width="too.width" :align="too.align" :show-overflow-tooltip="too.showOverflowTooltip">
+                    <el-table-column v-for="(tool,index) in too.children" :prop="tool.id" :label="tool.text" :key="tool.id + index" :width="tool.width" :align="tool.align" :show-overflow-tooltip="tool.showOverflowTooltip">
                         <template slot-scope="scope">
                             <el-tooltip :content="getCellValues(scope,tool) + ''" placement="right" effect="light">
                                 <span>{{ getCellValues(scope,tool) }}</span>

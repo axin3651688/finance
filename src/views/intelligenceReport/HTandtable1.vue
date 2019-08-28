@@ -2825,7 +2825,7 @@ export default {
         // me.$set(me.settings, "data", res.data.data.rows);
         if(this.templateId == "7" && rows && rows.length > 0){
           this.parseNameOfFinance(rows);
-          this.parsePercent(rows);
+          // this.parsePercent(rows);
         }else if (this.templateId == "8" && rows && rows.length > 0){
           if(rows && rows.length == 1){
             let item = rows[0],arr = ['A','B','C'];

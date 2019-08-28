@@ -243,13 +243,13 @@ export default {
                 if(!item.companyname){
                     item.companyname = company;
                 }
-                //处理保留四位小数的字段。
-                if(item.B){
-                    item.B = item.B * 100;
-                }
-                if (item.C){
-                    item.C = item.C * 100;
-                }
+                //处理保留四位小数的字段。 sql已经乘了
+                // if(item.B){
+                //     item.B = item.B * 100;
+                // }
+                // if (item.C){
+                //     item.C = item.C * 100;
+                // }
             });
             return data;
         },
