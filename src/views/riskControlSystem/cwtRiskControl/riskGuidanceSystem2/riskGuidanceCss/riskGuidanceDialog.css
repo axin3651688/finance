@@ -110,6 +110,7 @@
     border-radius: 0px 0px 2px 2px;
     font-family: Microsoft YaHei;
     font-weight: 400;
+    height: 44px;
     line-height: 22px;
     font-size: 14px;
     color: rgba(144,144,144,0.50);
@@ -151,4 +152,8 @@
 }
 .demo-drawer__main2-A {
     padding-left: 24px ;
+}
+
+.directoryDialog_A_2-btn2 {
+    float: left;
 }
