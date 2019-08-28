@@ -25,6 +25,13 @@ export default {
         this.array(datas) ;
         // console.log("ABC",this.item.rows);
         this.assignMent(this.item.rows) ;
+        if(this.item.stype == "elementTree"){
+            this.heights = document.body.offsetHeight - 40 - 64 - 15 ;
+        }else{
+            // 计算当前页面的高度 得出表格的高度
+            if(!this.item.property)this.heights = document.body.offsetHeight - 40 - 64 - 22 - 40;
+            if(this.item.property)this.heights = document.body.offsetHeight - 200;
+        }
     },
     mounted(){
 

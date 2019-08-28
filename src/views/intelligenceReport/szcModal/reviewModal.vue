@@ -142,6 +142,17 @@ export default {
             return result;
         },
         /**
+         * 百分号转换
+         */
+        parsePercent (rows) {
+            let me = this,keys = ['B','C'];
+            rows.forEach(item => {
+                for(let i = 0;i < keys.length;i++){
+                    item[keys[i]] = item[keys[i]]? item[keys[i]] * 100:item[keys[i]];
+                }
+            });
+        },
+        /**
          * 查询table的数据。
          * @author szc 2019年5月8日16:50:13
          */
@@ -232,12 +243,13 @@ export default {
                 if(!item.companyname){
                     item.companyname = company;
                 }
-                //处理保留四位小数的字段。
-                if(item.B){
-                    item.B = item.B * 100;
-                }else if (item.C){
-                    item.C = item.C * 100;
-                }
+                //处理保留四位小数的字段。 sql已经乘了
+                // if(item.B){
+                //     item.B = item.B * 100;
+                // }
+                // if (item.C){
+                //     item.C = item.C * 100;
+                // }
             });
             return data;
         },

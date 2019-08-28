@@ -39,19 +39,22 @@
                         formatter(data) {
                             let showData = data.value;
                             if (showData && showData !== null) {
-                                showData = Math.round(showData * 100) / 100;
+                                // showData = Math.round(showData * 100) / 100;
                                 let str = showData.toLocaleString();
-                                let valueArr = str.split(".");
-                                if (valueArr.length === 1) {
-                                    str = str + ".00";
-                                } else {
-                                    if (valueArr[1].length === 1) {
-                                        valueArr[1] = valueArr[1] + '0';
-                                        str = valueArr[0] + '.' + valueArr[1]
-                                    }
-                                }
+                                // let valueArr = str.split(".");
+                                // if (valueArr.length === 1) {
+                                //     str = str + ".00";
+                                // } else {
+                                //     if (valueArr[1].length === 1) {
+                                //         valueArr[1] = valueArr[1] + '0';
+                                //         str = valueArr[0] + '.' + valueArr[1]
+                                //     }
+                                // }
                                 // let html = '<div><p>' + data.name +' </p><p> ' + str + ' </p></div>';
-                                return '<div><p>' + data.name + ' </p><p> ' + str + ' </p></div>';
+
+                                str = showData.toFixed(4);
+
+                                return '<div><p>' + data.name + ' </p><p> ' + str + ' %</p></div>';
                             } else if (showData === 0) {
                                 return '';
                             }
@@ -67,14 +70,23 @@
                             width: '80%',
 
                             min: 0,
-                            max: 100,
-                            minSize: '30%',
+                            max: 1,
+                            minSize: '1%',
                             maxSize: '100%',
                             sort: 'descending',
-                            gap: 2,
+                            gap: 1,
                             label: {
-                                show: true,
-                                position: 'inside'
+                                normal: {
+                                    show: true,
+                                    position: 'inside',
+                                    formatter(params){        // 金字塔外标签
+                                        debugger;
+                                        let showData = params.value;
+                                        // str = showData.toFixed(4);
+                                        return showData.toFixed(4) + ' %';
+                                        // '<div><p>' + data.name + ' </p><p> ' + str + ' %</p></div>';
+                                    }
+                                },
                             },
                             labelLine: {
                                 length: 10,

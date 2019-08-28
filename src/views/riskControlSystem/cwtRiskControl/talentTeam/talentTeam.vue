@@ -146,7 +146,7 @@
                 selectedColumns: [],
                 selectedTableType: {
                     type: 'noCurrentPage',
-                    height: 510
+                    height: 480
                 },
 
                 allTableData: [],
@@ -343,7 +343,7 @@
     .talent-team-center {
         display: inline-flex;
         overflow: hidden;
-
+        height: 430px;
     }
 
     .center-echart {

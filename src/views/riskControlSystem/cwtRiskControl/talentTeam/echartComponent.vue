@@ -61,7 +61,7 @@
                             name: '访问来源',
                             type: 'pie',
                             radius: '60%',
-                            center: ['50%', '60%'],
+                            center: ['50%', '43%'],
                             data: echartData,
                             itemStyle: {
                                 emphasis: {
