@@ -115,8 +115,7 @@
                                     }
                                 },
                                 color: function (params){
-
-                                    if(params.name === '天津市' || params.name === '食品集团'){
+                                    if(params.name === '天津市' || params.name === '天津食品集团有限公司（合并）'){
                                         return '#FF9900'
                                     }else{
                                         return '#2196F3'
