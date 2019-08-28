@@ -4,7 +4,7 @@
     </div>
 </template>
 <script>
-import treeColumns from '@c/treeElement/treeColumns.vue' ;
+import treeColumns from '@c/treeElement/treeColumns' ;
 import treeToArray from "../treegrid/eval";
 import tools from "utils/tools";
 export default {
@@ -20,11 +20,10 @@ export default {
         }
     },
     created(){
-        // debugger
         this.columns = this.item.config.columns ;
         let datas = this.item.datas ;
         this.array(datas) ;
-        console.log("ABC",this.item.rows);
+        // console.log("ABC",this.item.rows);
         this.assignMent(this.item.rows) ;
     },
     mounted(){

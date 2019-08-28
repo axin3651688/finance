@@ -3,7 +3,7 @@
  * @Date: 2018-12-11 17:34:38 
  * @Decription: 本项目用到的通用方法 
  * @Last Modified by: mikey.zhaopeng
- * @Last Modified time: 2019-08-22 09:19:34
+ * @Last Modified time: 2019-08-28 15:28:45
  */
 //加载工具类 lodash
 let _ = require('lodash');
@@ -27,7 +27,7 @@ export default {
      */
     currency(value, currency, decimals) {
         let valuex = parseFloat(value);
-        if (!isFinite(valuex) || (!valuex && valuex !== 0)) return ''
+        if (!isFinite(valuex) || (!valuex && valuex === 0)) return '--'
         currency = currency != null ? currency : '$'
         decimals = decimals != null ? decimals : 2
         let stringified = Math.abs(valuex).toFixed(decimals)
