@@ -383,6 +383,8 @@
     .loop-content {
         margin-left: 20px;
         margin-bottom: 30px;
+        font-size: 18px;
+        margin-top: 15px;
     }
 
     .content-down-title {
