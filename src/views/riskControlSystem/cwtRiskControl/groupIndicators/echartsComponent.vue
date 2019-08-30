@@ -91,9 +91,9 @@
                                 label: {   // 图形上的文本标签
                                     show: true,
                                     position: 'top', // 相对位置
-                                    rotate: 0,  // 旋转角度
+                                    rotate: 10,  // 旋转角度
                                     color: '#000',
-                                    fontSize: 16,
+                                    fontSize: 13,
                                     normal: {
                                         formatter: '{c}\n'
                                     },
