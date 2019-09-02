@@ -381,6 +381,15 @@
                     }
                 }
             },
+            resizeWindow(){
+                let $div = document.getElementsByClassName("transverseBar");
+                let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
+                $div[0].children[0].style.height = heightNum + "px";
+                window.onresize = function temp(){
+                    bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
+                    $div[0].children[0].style.height = heightNum + "px";
+                }
+            },
             /**
              * 公司的名称的下钻。
              * @author szc 2019年6月4日19:19:23
@@ -488,6 +497,7 @@
                 this.$nextTick(() => {
                     this.rootRender = true;
                 });
+                // this.resizeWindow();
             },
             /**
              * 暂时没用。
