@@ -124,7 +124,7 @@ export function riskSystemDelete(params) {
         method: 'post',
         // contentType: "application/json; charset=utf-8",
         // dataType: 'json',
-        params: {vos: params}
+        params: { vos: params }
     })
 }
 
@@ -261,7 +261,7 @@ export function riskReportExport(params) {
     return request({
         url: '/exp/exportDocx',
         method: 'post',
-        responseType:'blob',
+        responseType: 'blob',
         data: params
     })
 }
@@ -323,7 +323,7 @@ export function findThirdPartData1(params) {
     return request({
         method: "post",
         url: params.url || "/zjb/zjb/find_cube_map/",
-        responseType:'blob',
+        responseType: 'blob',
         params: params
     })
 }
@@ -336,7 +336,7 @@ export function riskSuggestChange(params) {
     return request({
         method: "post",
         url: '/zjb/risk_sys/update_advice',
-        responseType:'blob',
+        responseType: 'blob',
         params: params
     })
 }
@@ -348,9 +348,19 @@ export function riskSuggestDelete(params) {
     return request({
         method: "post",
         url: '/zjb/risk_sys/delete_advice',
-        responseType:'blob',
+        responseType: 'blob',
         params: params
     })
 }
-
-
+/**
+ * 风险制度的修改。
+ * @param {*} params 
+ */
+export function editReport(params) {
+    return request({
+        method: "post",
+        url: '/zjb/risk_sys/add',
+        responseType: 'blob',
+        params: params
+    })
+}
