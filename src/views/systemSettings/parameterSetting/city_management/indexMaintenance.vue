@@ -12,6 +12,7 @@
         <el-table
         :data="tableData"
         style="width: 100%"
+        row-key="scode"
         :height="heighter"
         stripe
         border>
@@ -48,6 +49,8 @@
                 <el-button @click="cancelClick('form')">取 消</el-button>
             </span>
         </el-dialog>
+        <hr>
+        <pre>{{ tableData }}</pre>
     </div>
 </template>
 <script>
@@ -62,8 +65,12 @@ import {
     dim_target_add,
     // 删除接口
     // dimIndex_delete
-    dim_target_delete
+    dim_target_delete,
+    // 指标移动
+    change_sort_target
 } from '~api/cube.js'
+// 引用表格拖拽js文件
+import Sortable from 'sortablejs';
 import { helper } from 'handsontable';
 export default {
     props: {
@@ -92,6 +99,8 @@ export default {
     mounted(){
         // 查询表格数据
         this.dimIndex_query_by_stypeA() ;
+        // 行拖拽触发事件
+        this.rowDrop() ;
     },
     computed: {
         heighter(){
@@ -99,6 +108,33 @@ export default {
         }
     },
     methods: {
+        //行拖拽
+        rowDrop() {
+            const tbody = document.querySelector('.el-table__body-wrapper tbody')
+            const _this = this
+            let params = [] 
+            Sortable.create(tbody, { 
+                onEnd({ newIndex, oldIndex }) {
+                    const currRow = _this.tableData.splice(oldIndex, 1)[0]
+                    _this.tableData.splice(newIndex, 0, currRow)
+                    params = []
+                    _this.tableData.forEach((res, index) => {
+                        params.push({                            
+                            nsort: index+=1,
+                            scode: res.scode,
+                            stype: 'SQY'
+                        })
+                    })
+                    change_sort_target(params).then(item => {
+                        if(item.data.code === 200) {
+
+                        } else {
+                            console.log('行业指标移动请求失败')
+                        }
+                    })
+                }
+            })
+        },
         /**
          * @description 查询表格数据
          */

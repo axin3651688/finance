@@ -13,6 +13,7 @@
         :data="tableData"
         style="width: 100%"
         :height="heighter"
+        row-key="scode"
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
@@ -62,9 +63,13 @@ import {
     dim_target_add,
     // 删除接口
     // dimIndex_delete
-    dim_target_delete
+    dim_target_delete,
+    // 指标移动
+    change_sort_target
 } from '~api/cube.js'
 import { helper } from 'handsontable';
+// 引用表格拖拽js文件
+import Sortable from 'sortablejs';
 export default {
     props: {
         height: Number
@@ -92,6 +97,8 @@ export default {
     mounted(){
         // 查询表格数据
         this.dimIndex_query_by_stypeA() ;
+        // 行拖拽触发事件
+        this.rowDrop() ;
     },
     computed: {
         heighter(){
@@ -99,6 +106,33 @@ export default {
         }
     },
     methods: {
+        //行拖拽
+        rowDrop() {
+            const tbody = document.querySelector('.el-table__body-wrapper tbody')
+            const _this = this
+            let params = [] 
+            Sortable.create(tbody, { 
+                onEnd({ newIndex, oldIndex }) {
+                    const currRow = _this.tableData.splice(oldIndex, 1)[0]
+                    _this.tableData.splice(newIndex, 0, currRow)
+                    params = []
+                    _this.tableData.forEach((res, index) => {
+                        params.push({                            
+                            nsort: index+=1,
+                            scode: res.scode,
+                            stype: 'HY'
+                        })
+                    })
+                    change_sort_target(params).then(item => {
+                        if(item.data.code === 200) {
+
+                        } else {
+                            console.log('行业指标移动请求失败')
+                        }
+                    })
+                }
+            })
+        },
         /**
          * @description 查询表格数据
          */

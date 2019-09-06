@@ -13,6 +13,7 @@
         :data="tableData"
         style="width: 100%"
         :height="heighter"
+        row-key="scode"
         stripe
         border>
             <el-table-column type="index" prop="index" label="序号" width="80" align="center"></el-table-column>
@@ -51,6 +52,8 @@
     </div>
 </template>
 <script>
+// 引用表格拖拽js文件
+import Sortable from 'sortablejs';
 import {
     // 添加弹出框指标选择器接口
     dimIndex_queryzb_by_stype,
@@ -59,7 +62,9 @@ import {
     // 添加接口
     dimIndex_add,
     // 删除接口
-    dimIndex_delete
+    dimIndex_delete,
+    // 移动
+    change_sort
 } from '~api/cube.js'
 import { helper } from 'handsontable';
 export default {
@@ -84,12 +89,14 @@ export default {
             rules: {                    // 验证
                 scode: [{ required: true, message: '请选择指标名称', trigger: 'blur' },]
                 // scode: [{ validator: validateScode, trigger: 'blur', required: true }]
-            }
+            },
         }
     },
     mounted(){
         // 查询表格数据
         this.dimIndex_query_by_stypeA() ;
+        // 行拖拽触发事件
+        this.rowDrop() ;
     },
     computed: {
         heighter(){
@@ -97,13 +104,40 @@ export default {
         }
     },
     methods: {
+        //行拖拽
+        rowDrop() {
+            const tbody = document.querySelector('.el-table__body-wrapper tbody')
+            const _this = this
+            let params = [] 
+            Sortable.create(tbody, { 
+                onEnd({ newIndex, oldIndex }) {
+                    const currRow = _this.tableData.splice(oldIndex, 1)[0]
+                    _this.tableData.splice(newIndex, 0, currRow)
+                    params = [] ;
+                    _this.tableData.forEach((res, index) => {
+                        params.push({
+                            nsort: index+=1,
+                            scode: res.scode,
+                            stype: res.stype
+                        })
+                    }) 
+                    change_sort(params).then(item => {
+                        if (item.data.code === 200) {
+                            console.log('移动成功') 
+                        } else {
+                            console.log('请求失败') 
+                        }
+                    })
+                }
+            })
+        },
         /**
          * @description 查询表格数据
          */
         dimIndex_query_by_stypeA(){
             let me = this ;
             let params = { stype: "JT" } ;
-            dimIndex_query_by_stype(params).then(res => {debugger
+            dimIndex_query_by_stype(params).then(res => {
                 if(res.data.code === 200){
                     me.tableData = res.data.data ;
                     if(me.tableData.length >= 9){

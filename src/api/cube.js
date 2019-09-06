@@ -602,3 +602,39 @@ export function selectQuery(data) {
         params: data
     })
 }
+/**
+ * name: sjz
+ * 说明：集团指标 & 国资委指标 使用
+ * 指标移动
+ */
+export function change_sort(data) {
+    return request({
+        url: "/zjb/dimIndex/change_sort",
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：行业指标 使用
+ * 指标移动
+ */
+export function change_sort_target(data) {
+    return request({
+        url: '/zjb/dim_target/change_sort',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：上市企业指标 使用
+ * 指标移动
+ */
+export function change_sort_listed(data) {
+    return request({
+        url: '/zjb/dim_listedcompany/change_sort' ,
+        method: 'post' ,
+        data: data
+    })
+}
