@@ -415,11 +415,15 @@ export default {
          * 处理设置类型
          */
         handlerTypeOfValue (scope) {
+            debugger;
             let me = this,selectTable = me.modalConfig.templateParams;
             let value = scope.row[scope.column.property],unit = "";
             if(typeof value == "string" && value.indexOf("%") != -1){
                 unit = "%";
                 value = value.replace("%","") - 0;
+                if(value == 0){
+                    unit = "";
+                }
             }
             //value不能为null
             value = value? value:0;

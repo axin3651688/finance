@@ -80,7 +80,7 @@
 </template>
 
 <script>
-    import {riskSystemAdd} from '~api/cwtRiskControl/riskControlRequest'
+    import {riskSystemAdd,editReport} from '~api/cwtRiskControl/riskControlRequest'
     import cwtPublicJS from "../mixin/cwtPublicJS"
 
     export default {
@@ -130,9 +130,31 @@
         mounted() {
         },
         methods: {
+            /**
+             * 修改请求。
+             */
+            editReportContent (params) {
+                editReport(params).then(res => {
+                    if(res.status == 200){
+                        this.$message({
+                            message:"修改成功！",
+                            type:"success"
+                        });
+                        this.$emit("addSuccess", 'systemAdd');
+                        this.$emit("pageClose", 'systemAdd');
+                    }else{
+                        this.$message({
+                            message:"修改出错！",
+                            type:"error"
+                        });
+                    }
+                    
+                    // this.dataFresh();
+                });
+            },
             onSubmit() {
                 let _this = this;
-
+                debugger;
                 let params = this.formData;
 
                 params.writtenDate = this.getDateNowYMD(this.formData.writtenDate);
@@ -140,10 +162,11 @@
 
                 if (_this.$refs.upload.$el.innerText === '选取文件') {
                     // 'success' | 'warning' | 'info' | 'error'
-                    this.$message({
-                        message: '请录入完整信息',
-                        type: 'warning'
-                    });
+                    // this.$message({
+                    //     message: '请录入完整信息',
+                    //     type: 'warning'
+                    // });
+                    this.editReportContent(params);
                     return;
                 }
 
@@ -210,6 +233,7 @@
              * 上传成功的回调
              */
             onSuccess(ee) {
+                debugger;
                 let _this = this;
                 if (ee.code === '0') {
                     _this.$message({

@@ -285,6 +285,7 @@
              * @param params
              */
             getSelectedPersonRequestSend(params) {
+                debugger;
                 let _this = this;
                 getAllPerson(params).then(res => {
                     if (res.data.code === 200) {
@@ -310,7 +311,8 @@
             currentChange(value) {
                 let _this = this;
                 let params = {
-                    page: value
+                    page: value,
+                    company:_this.$store.getters.company
                 };
                 getCurrentPageData(params).then(res => {
                     if (res.data.code === 200) {

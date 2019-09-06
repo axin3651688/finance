@@ -94,15 +94,15 @@
               <i class="info"></i>
               <span @sayhidden="sayhidden">个人信息</span>
             </el-dropdown-item>
-            <!-- <el-dropdown-item command="info">
+            <el-dropdown-item command="manage">
               <i class="manage"></i>
-              <span>管理互动</span>
-            </el-dropdown-item> -->
+              <span>修改密码</span>
+            </el-dropdown-item>
             <el-dropdown-item command="aboutSoftware">
               <i class="about"></i>
               <span @aboutSoftware="aboutSoftware">关于软件</span>
             </el-dropdown-item>
-            <el-dropdown-item command="info" class="icon-bottom">
+            <el-dropdown-item command="help" class="icon-bottom">
               <i class="help"></i>
               <span>帮助</span>
             </el-dropdown-item>
@@ -123,18 +123,6 @@
       <div class="img-box"></div>
       <el-row class="row-bg" style="text-align:center">
         <div class="user">
-          <!-- :http-request="uploadAvar" -->
-          <!-- <el-upload
-            class="avatar-uploader"
-            action="avar/upload/avar"
-            :data="{suser:'szc'}"
-            :show-file-list="false"
-            :on-success="handleAvatarSuccess"
-            :before-upload="beforeAvatarUpload">
-            <img v-if="true" :src="user.user.avatar" class="avatar">
-            <i v-else class="el-icon-plus avatar-uploader-icon"></i>
-            <!-- <div v-if="true" slot="tip" class="el-upload__tip">只能上传jpg/png文件，且不超过1MB</div> -->
-          <!--</el-upload> -->
           <img :src="user.user.avatar" class="avatar">
         </div>
         <div class="user-item">
@@ -152,23 +140,7 @@
           </div>
         </div>
       </el-row>
-      <!-- <el-button @click="isShow = false" class="btn-primary">关闭</el-button> -->
     </el-dialog>
-    <!-- <el-dialog
-      custom-class="info-dialog"
-      :visible.sync="aboutShow"
-      v-if="aboutShow"
-      :modal-append-to-body="false"
-    >
-      <div>
-        <span>产品信息：</span>
-        <span>智能财务顾问决策分析系统</span>
-      </div>
-      <div>
-        <span>产品版本：</span>
-        <span>V2.0</span>
-      </div>
-    </el-dialog> -->
   </header>
   <div>
     <el-dialog
@@ -208,6 +180,9 @@
   <div class="messageCtn">
     <SRModal v-if="true" v-on:checkfilldata="checkFillDataHandle" :modalConfig.sync="modalConfig" v-on:publicHandler="publicHandler"></SRModal>
   </div>
+  <div>
+    <HeadModal v-if="editFlag" :modalConfig.sync="editModalConfig"></HeadModal>
+  </div>
 </div>
 </template>
 
@@ -216,8 +191,9 @@ import Hamburger from "@v/layout/sidebar/Hamburger";
 import { mapGetters, mapActions } from "vuex";
 import CompanyTree from "@v/common/CompanyTree";
 import { getClientParams } from "utils/index";
-import { logout } from "~api/interface.js";
+import { logout,helpRequest } from "~api/interface.js";
 import SRModal from "@v/intelligenceReport/SRModal";
+import HeadModal from "./HeadModal";
 import request from 'utils/http'
 import {
   smallBell,
@@ -257,13 +233,20 @@ export default {
         { id: 100000000, text: "亿元" }
       ],
       monthNum:1,
-      monthUnit:"月"
+      monthUnit:"月",
+      editModalConfig:{
+        title:"修改密码",
+        width:"30%",
+        dialogVisible:false
+      },
+      editFlag:false
     };
   },
   components: {
     Hamburger,
     CompanyTree,
-    SRModal
+    SRModal,
+    HeadModal
   },
   watch: {
     month(newValue,oldValue) {
@@ -521,6 +504,7 @@ export default {
       "GettRreeInfo"
     ]),
     setDialogInfo(cmdItem) {
+      debugger;
       //    console.log(cmdItem)
       switch (cmdItem) {
         case "info":
@@ -534,7 +518,30 @@ export default {
         case "aboutSoftware":
           this.aboutSoftware();
           break;
+        case "help":
+          this.helpHandler();
+          break;
+        case "manage":
+          this.manageHandler();
+          break;
       }
+    },
+    manageHandler () {
+      debugger;
+      let me = this;
+      me.editFlag = true;
+      me.editModalConfig.dialogVisible = true;
+    },
+    /**
+     * 文档帮助。
+     */
+    helpHandler () {
+      let me = this;
+      helpRequest().then(res => {
+        if(res.data.code == 200){
+          window.open(res.data.data,"文档帮助");
+        }
+      });
     },
     getname(e) {
       console.log("a:", e);

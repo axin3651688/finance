@@ -98,7 +98,7 @@ export default {
         this.updateData();
     },
     mounted() {
-        
+        this.resizeWindow();
     },
     watch: {
         chartData:{
@@ -114,7 +114,6 @@ export default {
     },
     methods: {
         updateData(){
-            debugger;
             let me = this;
             if(me.chartData && me.chartData.length > 0){
                 let datas = me.chartData,yDatas = [],seriesData = [];
@@ -146,6 +145,7 @@ export default {
                 me.receive.yAxis.data = yDatas.reverse();
                 me.receive.series[0].data = seriesData.reverse();
             }
+            // this.resizeWindow();
         },
         /**
          * 排序
@@ -160,7 +160,16 @@ export default {
                     return 0;
                 }
             });
-        }
+        },
+        resizeWindow(){
+            let $div = document.getElementsByClassName("transverseBar");
+            let bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
+            $div[0].children[0].style.height = heightNum + "px";
+            window.onresize = function temp(){
+                bodyHgt = document.body.offsetHeight,heightNum = bodyHgt - 115;
+                $div[0].children[0].style.height = heightNum + "px";
+            }
+        },
     },
 }
 </script>

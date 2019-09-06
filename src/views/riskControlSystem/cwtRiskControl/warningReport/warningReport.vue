@@ -29,7 +29,7 @@
             <div class="content-up-loop">
                 <template v-for="(item, index) of loopData1">
                     <div class="loop-title">
-                        {{numberToChineseString(index + 1)}}、{{item.sname}}
+                        {{index + 1}}、{{item.sname}}
                     </div>
                     <p class="loop-content">
                         {{companyname}},{{showperiod}}{{item.sname}}为{{setNumberToStander(item.sjz)}}。较以往五年数据相比，与最高值相比<template v-if="item.yzgzxc>=0">多出</template><template v-if="item.yzgzxc<0">相差</template>{{setNumberToStanderABS(item.yzgzxc)}}，与平均值相比<template v-if="item.ypjzxc>=0">多出</template><template v-if="item.ypjzxc<0">相差</template>{{setNumberToStanderABS(item.ypjzxc)}}
@@ -59,15 +59,16 @@
             </div>
 
 
-            <div class="content-down-title">
-                {{companyDownName}}{{showyear}}国内对标情况如下
-            </div>
+
 
             <div class="content-up-loop">
+                <div class="content-down-title">
+                    {{companyDownName}}{{showyear}}国内对标情况如下
+                </div>
                 <template v-if="loopData2.length > 0">
                     <template v-for="(item, index) of loopData2">
                         <div class="loop-title">
-                            {{numberToChineseString(index + 1)}}、{{item.sname}}
+                            {{index + 1}}、{{item.sname}}
                         </div>
 
 
@@ -373,18 +374,25 @@
 
     .content-up-loop {
         margin-bottom: 40px;
+        background-color: white;
+        margin-top: 10px;
+        padding: 10px 10px 10px 10px;
+
     }
 
     .loop-content {
         margin-left: 20px;
         margin-bottom: 30px;
+        font-size: 18px;
+        margin-top: 15px;
     }
 
     .content-down-title {
         font-size: 20px;
         font-weight: 600;
-        margin-bottom: 20px;
+        margin-bottom: 40px;
         margin-top: 20px;
+        /*background-color: white;*/
     }
     /*.dialog-components{*/
         /*height: 300px;*/
