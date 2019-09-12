@@ -474,11 +474,17 @@ const router = new Router({
                     component: () =>
                         import ('@v/systemSettings/globalControl')
                 },
-                { // 初始化管理
+                { // 初始化管理 - 在线导入
                     path: '/initialize',
                     name: 'initialize',
                     component: () =>
                         import ('@v/systemSettings/initialize')
+                },
+                { // 初始化管理 - 在线编辑
+                    path: '/onlineEditing',
+                    name: 'onlineEditing',
+                    component: () =>
+                        import ('@v/systemSettings/onlineEditing')
                 },
                 { // 应收账款（sjz）
                     path: '/yszk',

@@ -176,6 +176,16 @@ export function ageanalysis_delete(data) {
         data: data
     })
 }
+/**
+ * name: sjz
+ * 说明：【风险策略】接口 /riskstrategy/query_all
+ */
+export function riskstrategy() {
+    return request ({
+        url: '/zjb/riskstrategy/query_all',
+        method: 'get'
+    })
+}
 /**1.
  * name: sjz
  * 说明：风险识别的【风险发生概率-参照按钮】接口 /riskprobability/query_tovo
@@ -635,6 +645,194 @@ export function change_sort_listed(data) {
     return request({
         url: '/zjb/dim_listedcompany/change_sort' ,
         method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险发生概率 添加接口
+ * /riskprobability/add
+ */
+export function riskprobability_add(data) {
+    return request ({
+        url: '/zjb/riskprobability/add',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险发生概率 修改接口
+ * @param {*} data 
+ */
+export function riskprobability_update(data) {
+    return request ({
+        url: '/zjb/riskprobability/update',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name：sjz
+ * 说明：在线编辑 - 风险发生概率 删除接口
+ * @param {*} data 
+ */
+export function riskprobability_delete(data) {
+    return request ({
+        url: '/zjb/riskprobability/delete',
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险影响程度 添加接口
+ * @param {*} data 
+ */
+export function risk_influence_degree_add(data) {
+    return request ({
+        url: '/zjb/risk_influence_degree/add' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险影响程度 删除接口
+ * @param {*} data 
+ */
+export function risk_influence_degree_delete(data) {
+    return request ({
+        url: '/zjb/risk_influence_degree/delete' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险影响程度 修改接口
+ * @param {*} data 
+ */
+export function risk_influence_degree_update(data) {
+    return request ({
+        url: '/zjb/risk_influence_degree/update' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险等级 添加接口
+ * @param {*} data 
+ */
+export function riskmatrix_add(data) {
+    return request ({
+        url: '/zjb/riskmatrix/add' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险等级 删除接口
+ * @param {*} data 
+ */
+export function riskmatrix_delete(data) {
+    return request ({
+        url: '/zjb/riskmatrix/delete' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险等级 修改接口
+ * @param {*} data 
+ */
+export function riskmatrix_update(data) {
+    return request ({
+        url: '/zjb/riskmatrix/update' ,
+        method: 'post' ,
+        data: data
+    })
+}
+
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险策略 添加接口
+ * @param {*} data 
+ */
+export function riskstrategy_add(data) {
+    return request ({
+        url: '/zjb/riskstrategy/add' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险策略 删除接口
+ * @param {*} data 
+ */
+export function riskstrategy_delete(data) {
+    return request ({
+        url: '/zjb/riskstrategy/delete_byid' ,
+        method: 'get' ,
+        params: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险策略 修改接口
+ * @param {*} data 
+ */
+export function riskstrategy_update(data) {
+    return request ({
+        url: '/zjb/riskstrategy/update' ,
+        method: 'post' ,
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险类型 查询接口
+ */
+export function risktype_All() {
+    return request ({
+        url: '/zjb/risktype/query_all' ,
+        method: 'get'
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险类型 修改接口
+ */
+export function risktype_update(data) {
+    return request ({
+        url: '/zjb/risktype/update' ,
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险类型 删除接口
+ */
+export function risktype_delete(data) {
+    return request ({
+        url: '/zjb/risktype/delete' ,
+        method: 'post',
+        data: data
+    })
+}
+/**
+ * name: sjz
+ * 说明：在线编辑 - 风险类型 添加接口
+ */
+export function risktype_add(data) {
+    return request ({
+        url: '/zjb/risktype/add' ,
+        method: 'post',
         data: data
     })
 }
