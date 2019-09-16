@@ -1,44 +1,49 @@
 /**
- * name：sjz
- * 在线编辑
+ * 系统设置 -> 初始化管理 - 在线编辑
  */
 <template>
     <div id="onlineEditing">
-        <el-tabs v-model="activeName" @tab-click="handleClick">
-            <el-tab-pane v-for="(item, index) in columns" :key="index + ''" :label="item.label" :name="item.name">
-                <onlineEditing-tabs :ref="item.name" :type="activeName"></onlineEditing-tabs>
+        <el-tabs :tab-position="tabPosition" v-model="activeName" type="" @tab-click="handleClick" style="height: 100%;">
+            <el-tab-pane v-for="(item, index) in tabs" :key="index + ''" :name="item.name">
+                <span slot="label">{{ item.text }}</span>
+                <onlineEditing-table v-if="item.name !== 'fourth'" :ref="item.name" :type="activeName"></onlineEditing-table>
+                <onlineEditing-tree v-else :ref="item.name" :type="activeName"></onlineEditing-tree>
             </el-tab-pane>
         </el-tabs>
     </div>
 </template>
+
 <script>
+import cols from 'utils/columns.js'
 export default {
     components: {
-        onlineEditingTabs: () => import("./onlineEditing-tabs.vue")
+        onlineEditingTable: () => import('./onlineEditing-table.vue'),
+        onlineEditingTree: () => import('./onlineEditing-tree.vue')
     },
     data(){
         return{
-            columns: [
-                { label: '风险发生概率', name: 'first' },
-                { label: '风险影响等级', name: 'second' },
-                { label: '风险等级', name: 'third' },
-                { label: '风险类型', name: 'fourth' },
-                { label: '风险策略', name: 'fifth' }
-            ],
-            activeName: 'first'
+            tabPosition: "top",
+            tabs: cols.onlineEditing_tabs(),
+            activeName: "" ,
+            type: "" ,
         }
     },
     created(){
-
+        this.activeName = this.tabs[0].name
     },
     methods: {
-        handleClick(tabs) {
-            this.activeName = tabs.name
-            this.$refs[tabs.name][0].requestMethods(tabs.name)
+        // tab 被选中时触发
+        handleClick(obj) {
+            this.activeName = obj.name
+            this.$refs[obj.name][0].request_methods(obj.name) 
         }
     }
 }
 </script>
-<style scoped>
 
+<style>
+#onlineEditing {
+    width: 100% ;
+    height: 100%;
+}
 </style>
