@@ -14,7 +14,7 @@
             ref="table"
             border
             stripe
-            :height="heights"
+            :height="getHeights()"
             :data="tableData"
             :header-cell-style="headerCellStyle"
             :cell-style="cellStyle"
@@ -72,9 +72,9 @@ export default {
     },
     data(){
         return{
-            heights: 550 ,
             fartherThis: this ,
             stype: "" ,
+            heights: 0 ,
             tableData: [],
             columns: cols.onlineEditing_table()
         }
@@ -82,8 +82,18 @@ export default {
     created(){
         this.request_methods(this.type)
     },
+    mounted(){
+        let me = this 
+        window.onresize = function temp(){ 
+            me.request_methods(me.type)
+        }
+    },
     methods: {
-        
+        getHeights() {
+            let val
+            let hei = window.innerHeight 
+            return val = hei - 160
+        },
         /**
          * @event 表格方法
          */
@@ -170,7 +180,7 @@ export default {
         /**
          * @event 请求区域
          */
-        async request_methods(type) {
+        async request_methods(type) { 
             let res
             this.tableData = []
             // 1. 风险发生概率请求
