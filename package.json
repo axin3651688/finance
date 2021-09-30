@@ -13,7 +13,7 @@
     "@marketconnect/vue-pivot-table": "^0.0.1",
     "axios": "^0.18.0",
     "echarts": "^4.2.0-rc.2",
-    "handsontable": "^6.2.0",
+    "handsontable": "^10.0.0",
     "handsontable-pro": "^6.2.2",
     "js-cookie": "^2.2.0",
     "lodash": "^4.17.10",
